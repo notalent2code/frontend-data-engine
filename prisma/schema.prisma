@@ -1,0 +1,524 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator zod {
+  provider = "zod-prisma-types"
+  createInputTypes = false
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(nanoid())
+  first_name    String   @db.VarChar(50)
+  last_name     String   @db.VarChar(50)
+  phone_number  String   @unique @db.VarChar(20)
+  email         String   @unique @db.VarChar(50)
+  password      String
+  role          Role     @default(INVESTOR)
+  status        Status   @default(INACTIVE)
+  refresh_token String?
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  investor Investor?
+
+  @@map("users")
+}
+
+model PasswordResets {
+  id         Int      @id @default(autoincrement())
+  email      String
+  token      String
+  created_at DateTime @default(now())
+
+  @@map("password_resets")
+}
+
+model Investor {
+  id                      String                 @id @default(nanoid())
+  user_id                 String?                @unique
+  name                    String                 @unique @db.VarChar(50)
+  appetites               String                 @db.Text()
+  instrument_type         InstrumentType
+  investment_stage        InvestmentStage[]
+  investment_syndication  InvestmentSyndication
+  investor_classification InvestorClassification
+  focused_sectors         String[]               @default([])
+  remarks                 String                 @db.Text()
+  ticket_size_min         BigInt
+  ticket_size_max         BigInt
+  created_at              DateTime               @default(now())
+  updated_at              DateTime               @updatedAt
+
+  user            User?             @relation(fields: [user_id], references: [id])
+  StartupToInvest StartupToInvest[]
+
+  @@map("investors")
+}
+
+model StartupToInvest {
+  id          String             @id @default(nanoid())
+  startup_id  Int
+  investor_id String
+  progress    InvestmentProgress
+  detail      String             @db.Text()
+  created_at  DateTime           @default(now())
+  updated_at  DateTime           @updatedAt
+
+  startup  Startup  @relation(fields: [startup_id], references: [id])
+  investor Investor @relation(fields: [investor_id], references: [id])
+
+  @@map("startup_to_invests")
+}
+
+model Startup {
+  id            Int             @id
+  name          String          @unique @db.VarChar(50)
+  description   String          @db.Text()
+  category      StartupCategory
+  latest_stage  StartupStage
+  status        StartupStatus
+  intake_type   StartupIntake
+  intake_year   Int
+  pitchdeck_url String
+  website_url   String
+  logo_url      String
+  created_at    DateTime        @default(now())
+  updated_at    DateTime        @updatedAt
+
+  StartupToInvest    StartupToInvest[]
+  Alumni             Alumni?
+  Location           Location?
+  People             People[]
+  Performance        Performance[]
+  Contract           Contract?
+  FinancialReport    FinancialReport[]
+  Synergy            Synergy[]
+  Strategic          Strategic[]
+  Service            Service[]
+  ProblemSolutionFit ProblemSolutionFit[]
+  GrowthStrategy     GrowthStrategy[]
+  RevenueModel       RevenueModel[]
+
+  @@map("startups")
+}
+
+model Location {
+  id         String   @id @default(nanoid())
+  startup_id Int      @unique
+  address    String   @db.Text()
+  latitude   Float?
+  longitude  Float?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  startup Startup @relation(fields: [startup_id], references: [id])
+
+  @@map("locations")
+}
+
+model People {
+  id           String         @id @default(nanoid())
+  startup_id   Int
+  name         String         @db.VarChar(50)
+  phone_number String?        @db.VarChar(20)
+  email        String?        @unique @db.VarChar(50)
+  job_title    PeopleJobTitle
+  privy_id     String?        @db.VarChar(30)
+  photo_url    String?
+  qr_code_url  String?
+  linkedin_url String?
+  created_at   DateTime       @default(now())
+  updated_at   DateTime       @updatedAt
+
+  startup Startup @relation(fields: [startup_id], references: [id])
+
+  @@map("peoples")
+}
+
+model Performance {
+  id                 String   @id @default(nanoid())
+  startup_id         Int
+  year               Int
+  performance_update String?  @db.Text()
+  people_update      String?  @db.Text()
+  product_update     String?  @db.Text()
+  action_plan        String?  @db.Text()
+  created_at         DateTime @default(now())
+  updated_at         DateTime @updatedAt
+
+  startup Startup @relation(fields: [startup_id], references: [id])
+
+  @@map("performances")
+}
+
+model Contract {
+  id                      String         @id @default(nanoid())
+  startup_id              Int            @unique
+  pks_number              String         @unique
+  signed_pks_date         DateTime       @db.Date
+  closing_bak_date        DateTime       @db.Date
+  total_funding           BigInt
+  convertible_note        Decimal        @db.Decimal(10, 2)
+  convertible_note_year   Int
+  convertible_note_months Int
+  convertible_note_status ContractStatus
+  created_at              DateTime       @default(now())
+  updated_at              DateTime       @updatedAt
+
+  startup Startup @relation(fields: [startup_id], references: [id])
+
+  @@map("contracts")
+}
+
+model FinancialReport {
+  id              String   @id @default(nanoid())
+  startup_id      Int
+  year            Int
+  yearly_revenue  BigInt
+  monthly_revenue BigInt
+  valuation       BigInt
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  startup Startup @relation(fields: [startup_id], references: [id])
+
+  @@map("financial_reports")
+}
+
+model Synergy {
+  id               String                 @id @default(nanoid())
+  startup_id       Int
+  telkom_group     String                 @db.VarChar(50)
+  entity           String                 @db.VarChar(50)
+  model            SynergyModel
+  description      String                 @db.Text()
+  progress         SynergyProgress
+  lead_time_week   Int
+  output           SynergyOutput
+  confidence_level SynergyConfidenceLevel
+  project_status   ProjectStatus
+  initiation_date  DateTime               @db.Date
+  created_at       DateTime               @default(now())
+  updated_at       DateTime               @updatedAt
+
+  startup Startup @relation(fields: [startup_id], references: [id])
+
+  @@map("synergies")
+}
+
+model Strategic {
+  id             String                 @id @default(nanoid())
+  startup_id     Int
+  business_point StrategicBusinessPoint
+  description    String                 @db.Text()
+  created_at     DateTime               @default(now())
+  updated_at     DateTime               @updatedAt
+
+  startup Startup @relation(fields: [startup_id], references: [id])
+
+  @@map("strategics")
+}
+
+model Service {
+  id                 String   @id @default(nanoid())
+  startup_id         Int
+  title              String   @db.VarChar(50)
+  revenue_percentage Int
+  created_at         DateTime @default(now())
+  updated_at         DateTime @updatedAt
+
+  startup Startup @relation(fields: [startup_id], references: [id])
+
+  @@map("services")
+}
+
+model ProblemSolutionFit {
+  id          String   @id @default(nanoid())
+  startup_id  Int
+  title       String   @db.Text()
+  description String   @db.Text()
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  startup Startup @relation(fields: [startup_id], references: [id])
+
+  @@map("problem_solution_fits")
+}
+
+model GrowthStrategy {
+  id          String   @id @default(nanoid())
+  startup_id  Int
+  description String   @db.Text()
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  startup Startup @relation(fields: [startup_id], references: [id])
+
+  @@map("growth_strategies")
+}
+
+model RevenueModel {
+  id          String   @id @default(nanoid())
+  startup_id  Int
+  description String   @db.Text()
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  startup Startup @relation(fields: [startup_id], references: [id])
+
+  @@map("revenue_models")
+}
+
+enum InvestmentProgress {
+  STOP_NOT_INTEREST
+  DUE_DILIGENCE_DATAROOM
+  INTRO
+  FOLLOW_UP_MEETING
+  OFFERING
+}
+
+enum StrategicBusinessPoint {
+  TRACTION
+  PARTNERSHIP
+  BUSINESS_MODEL
+}
+
+enum ProjectStatus {
+  APPROACHING
+  CONTRACT_DEAL_SIGN
+  DELIVERY_OGP
+  POC
+  PRICE_CONTRACT_NEGO
+  SOLUTION_OFFERING
+}
+
+enum SynergyConfidenceLevel {
+  PERCENT_0_TO_20
+  PERCENT_21_TO_40
+  PERCENT_41_TO_60
+  PERCENT_61_TO_80
+  PERCENT_81_TO_100
+}
+
+enum SynergyOutput {
+  MOM_KESEPAKATAN
+  PKS
+  INVOICE
+  BAK
+  NDA
+  OGP
+  SPK
+  BAK_HARGA
+  MOU
+  SPH
+  DIGITAL_TOUCH_POINT
+  HOLD
+}
+
+enum SynergyProgress {
+  DONE
+  ADMINISTRATION_FOLLOW_UP
+  TECHNICAL_FOLLOW_UP
+  INITIAL_MEETING
+  DROP
+  HOLD
+}
+
+enum SynergyModel {
+  CO_CREATION
+  TELKOM_SERVICE
+  VENDORSHIP
+  GO_TO_MARKET
+}
+
+enum ContractStatus {
+  AKTIF
+  DIBEBANKAN
+  ALIH_KELOLA
+}
+
+enum PeopleJobTitle {
+  CEO
+  CTO
+  CIO
+  COO
+  CPO
+  CBO
+  CFO
+  CMO
+  CCO
+  CRO
+  CMS
+  FOUNDER
+  CO_FOUNDER
+  PRESIDENT_FOUNDER
+  CEO_FOUNDER
+  CHAIR_WOMAN
+  MANAGING_DIRECTOR
+  APP_SUPPORT
+  GENERAL_AFFAIRS
+  BUSINESS_SALES
+  PRODUCT_CREATIVE
+  RESEARCH_DEVELOPMENT
+}
+
+model Alumni {
+  id                                  String                @id @default(nanoid())
+  startup_id                          Int                   @unique
+  cluster                             AlumniCluster
+  product_cluster                     AlumniProductCluster
+  industry_cluster                    AlumniIndustryCluster
+  current_funding_stage               AlumniFundingStage
+  is_product_stopped_or_vacuum        Boolean
+  is_product_active_but_not_developed Boolean
+  is_startup_disband                  Boolean
+  is_startup_developed_other_product  Boolean
+  created_at                          DateTime              @default(now())
+  updated_at                          DateTime              @updatedAt
+
+  startup Startup @relation(fields: [startup_id], references: [id])
+
+  @@map("alumnis")
+}
+
+enum AlumniFundingStage {
+  PRE_SEED
+  SEED
+  ANGEL
+}
+
+enum AlumniIndustryCluster {
+  MSME
+  FARMING
+  ENTERPRISE
+  ENVIRONMENT_AND_SUSTAINABILITY
+  AGRICULTURE
+  EDUCATION
+  LOGISTIC
+  FISHERIES
+  SMART_CITY
+  LIFESTYLE
+  MOBILE_GAMES
+  IT_SECURITY
+  TRAVEL_AND_TOURISM
+  FINANCE_AND_BANKING
+  HEALTH
+  PROPERTY
+  GOV_AND_PUBLIC_SERVICE
+  MEDIA
+  LEGAL_AND_PARTNERSHIP
+  OTHERS
+  PC_GAMES
+}
+
+enum AlumniProductCluster {
+  SAAS
+  FINTECH
+  MARKET_PLACE
+  IOT
+  APPLICATION
+  BIGDATA_AI
+  VR_AR
+  EDUCATION
+}
+
+enum AlumniCluster {
+  DOG
+  QUESTION_MARK
+  CASHCOW
+  STAR
+}
+
+enum StartupStatus {
+  AKTIF
+  ALUMNI
+  DIBEBANKAN
+  TRANSFER
+  FOF
+}
+
+enum StartupIntake {
+  REGULAR
+  GAMES
+  INCIDENTAL
+}
+
+enum StartupStage {
+  PV_STAGE
+  BMV_STAGE
+  MV_STAGE
+  ALPHA_STAGE
+  BETA_STAGE
+  GOLD_STAGE
+  CV_STAGE
+  MDI
+}
+
+enum StartupCategory {
+  AGRICULTURE
+  BIG_DATA
+  EDUCATION
+  ECOMMERCE
+  ENTERPRISE
+  FINTECH
+  GAMES
+  HEALTH
+  HRIS
+  IOT
+  LOGISTIC
+  SMART_CITY
+  SME
+  TRAVEL_TOURISM
+  VIRTUALIZATION
+  ADTECH_ENTERPRISE
+}
+
+enum InstrumentType {
+  CN
+  EQUITY
+  CN_EQUITY
+}
+
+enum InvestmentStage {
+  PRE_SEED
+  SEED
+  PRE_SERIES_A
+  SERIES_A
+  SERIES_B
+  ABOVE_SERIES_B
+  PRE_IPO
+  SECONDARIES
+  UNDISCLOSED
+}
+
+enum InvestmentSyndication {
+  FOLLOW
+  LEAD
+  DOMINANT_FOLLOW
+  DOMINANT_LEAD
+}
+
+enum InvestorClassification {
+  MAINSTREAM_AGNOSTIC
+  SPECIFIC_SECTOR
+  IMPACT_INVESTMENT
+}
+
+enum Role {
+  INVESTOR
+  ADMIN
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
+}
