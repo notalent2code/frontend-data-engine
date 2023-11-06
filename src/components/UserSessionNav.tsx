@@ -30,14 +30,14 @@ export function UserSessionNav() {
       <DropdownMenuTrigger>
         <Avatar>
           <span className='sr-only'>{user.first_name}</span>
-          <Icons.user className='w-8 h-8 text-muted-foreground' />
+          <Icons.user className='w-8 h-8 text-primary' />
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className='bg-white' align='end'>
         <div className='flex items-center justify-start gap-2 p-2'>
           <div className='flex flex-col space-y-1 leading-none'>
             <p className='font-medium'>{`${user.first_name} (${user.role})`}</p>
-            <p className='w-[200px] truncate text-sm text-muted-foreground'>
+            <p className='w-[200px] truncate text-sm text-primary'>
               {user.email}
             </p>
           </div>
