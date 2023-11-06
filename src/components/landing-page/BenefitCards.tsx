@@ -48,7 +48,7 @@ const BenefitCards = () => {
 
   return benefitData.map((benefit, index) => (
     <Card key={index} className='-space-y-4 pt-6 flex flex-col items-center'>
-      <benefit.icon color='red' className='mb-2' />
+      <benefit.icon className='mb-2 text-primary' />
       <CardHeader>
         <CardTitle className='font-semibold'>{benefit.title}</CardTitle>
       </CardHeader>
