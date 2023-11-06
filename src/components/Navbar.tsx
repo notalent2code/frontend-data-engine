@@ -24,7 +24,7 @@ const Navbar = () => {
         justify-between gap-2'
         >
           <Link href='/' className='flex gap-2 items-center'>
-            <Icons.logo />
+            <Icons.logo name='logo' />
           </Link>
 
           <Link
