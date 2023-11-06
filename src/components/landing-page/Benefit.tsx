@@ -1,71 +1,32 @@
-import React from 'react';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/Card';
-import {
-  BarChart2,
-  Building,
-  CircleDollarSign,
-  LucideIcon,
-  Presentation,
-  Users2,
-} from 'lucide-react';
+import React, { FC } from 'react';
+import BenefitCards from '@/components/landing-page/BenefitCards';
 
-type Benefit = {
-  icon: LucideIcon;
-  title: string;
-  content: string;
-};
+interface BenefitProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-const BenefitCard = () => {
-  const benefitData: Benefit[] = [
-    {
-      icon: Presentation,
-      title: 'Mentoring',
-      content: 'Bimbingan dan konsultasi dari 50+ mentor yang berpengalaman',
-    },
-    {
-      icon: CircleDollarSign,
-      title: 'Funding',
-      content: 'Raih peluang mendapatkan pendanaan hingga Rp 2 Miliar',
-    },
-    {
-      icon: Users2,
-      title: 'Telkom Group Digital Platform',
-      content: 'Kesempatan untuk berkolaborasi dengan PT Telkom Indonesia',
-    },
-    {
-      icon: BarChart2,
-      title: 'Global VC & Support',
-      content:
-        'Menjembatani startup untuk mendapatkan pendanaan dari Venture Capital berskala global',
-    },
-    {
-      icon: Building,
-      title: 'Coworking Space',
-      content:
-        'Akses ke Coworking Space Indigo (Indigo Hub dan Indigo Space) di seluruh Indonesia',
-    },
-  ];
-
+const Benefit: FC<BenefitProps> = ({...props}) => {
   return (
-    benefitData.map((benefit, index) => (
-      <Card key={index} className='-space-y-4 pt-6 flex flex-col items-center'>
-        <benefit.icon color='red' className='mb-2' />
-        <CardHeader>
-          <CardTitle className='font-semibold'>
-            {benefit.title}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className='text-sm'>{benefit.content}</p>
-        </CardContent>
-      </Card>
-    ))
+    <section {...props}>
+      <div className='container px-4 md:px-6'>
+        <div className='grid gap-6 items-center'>
+          <div className='flex flex-col justify-center space-y-8 text-center'>
+            <div className='space-y-2'>
+              <h1 className='text-3xl md:text-5xl font-extrabold text-transparent leading-tight sm:leading-tight md:leading-tight xl:leading-tight bg-clip-text bg-gradient-to-r from-black to-red-500'>
+                Benefit Mengikuti Program Indigo
+              </h1>
+              <p className='max-w-[600px] text-lg md:text-xl text-zinc-700 dark:text-zinc-100 font-semibold mx-auto'>
+                Fasilitas apa saja yang akan diperoleh?
+              </p>
+            </div>
+            <div className='w-full max-w-full space-y-4 mx-auto'>
+              <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4'>
+                <BenefitCards />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 };
 
-export default BenefitCard;
+export default Benefit;
