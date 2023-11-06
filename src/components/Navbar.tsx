@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { Icons } from './Icons';
-import { buttonVariants } from '@/components/ui/Button';
 import { UserSessionNav } from '@/components/UserSessionNav';
 import { useEffect, useState } from 'react';
 
@@ -16,7 +15,7 @@ const Navbar = () => {
   return (
     isMounted && (
       <div
-        className='fixed top-0 inset-x-0 h-fit border-b
+        className='fixed top-0 inset-x-0 h-fit
        border-zinc-300 z-[10] py-2 backdrop-blur-md bg-opacity-70 shadow-md'
       >
         <div
@@ -29,7 +28,7 @@ const Navbar = () => {
 
           <Link
             href='/portfolio'
-            className={buttonVariants({ variant: 'ghost' })}
+            className='text-md font-bold text-primary'
           >
             Portfolio
           </Link>
