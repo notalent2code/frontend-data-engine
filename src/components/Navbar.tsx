@@ -16,9 +16,9 @@ const Navbar = () => {
     isMounted && (
       <div
         className='fixed top-0 inset-x-0 h-fit z-[10] py-2 px-10 backdrop-blur-md 
-        bg-opacity-70 shadow-md overflow-x-hidden'
+          bg-slate-50 bg-opacity-10 shadow-md'
       >
-        <div className='container w-full h-full flex justify-between'>
+        <div className='sm:container max-w-7xl h-full flex justify-between items-center'>
           <Link href='/'>
             <Icons.logo name='logo' />
           </Link>
