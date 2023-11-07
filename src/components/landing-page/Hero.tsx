@@ -17,7 +17,7 @@ const Hero: FC<HeroProps> = ({...props}) => {
           <h2 className='text-xl'>
             Akselerasi perkembangan startup kamu <br /> bersama Indigo!
           </h2>
-          <Link href='/portfolio' className={cn(buttonVariants(), 'bg-black')}>
+          <Link href='/portfolio' className={cn(buttonVariants({variant: 'outline'}))}>
             <p className='px-6'>Lihat Portfolio</p>
           </Link>
         </div>

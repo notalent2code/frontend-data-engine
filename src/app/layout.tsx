@@ -27,7 +27,7 @@ export default function RootLayout({
         <link rel='icon' href='/favicon.ico' sizes='any' />
       </head>
       <body className='min-h-screen pt-12 bg-slate-50 antialiased'>
-        <div className='container max-w-7xl mx-auto h-full pt-12'>
+        <div className='mx-auto h-full'>
           <Providers>
             <Navbar />
             {children}
