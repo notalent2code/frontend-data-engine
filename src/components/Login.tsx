@@ -1,20 +1,19 @@
 import Link from 'next/link';
 import LoginForm from '@/components/LoginForm';
+import { Heading } from '@/components/ui/Heading';
 
 const Login = () => {
   return (
-    <div className='containe mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[400px]'>
-      <div className='flex flex-col space-y-1'>
-        <h1 className='text-2xl font-semibold tracking-tight'>
-          Log into your account
-        </h1>
-        <p className='text-sm text-muted-foreground'>
-          Enter your email and password to continue.
-        </p>
+    <div className='container mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[400px]'>
+      <div className='flex flex-col'>
+        <Heading
+          title='Log into your account'
+          description='Enter your email and password to continue'
+        />
         <p className='text-sm text-muted-foreground'>
           Don&apos;t have an account?{' '}
           <Link
-            href='/auth/register'
+            href='/register'
             className='hover:text-brand text-sm underline underline-offset-4'
           >
             Register
@@ -22,7 +21,6 @@ const Login = () => {
         </p>
       </div>
       <LoginForm />
-
     </div>
   );
 };
