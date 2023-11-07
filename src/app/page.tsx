@@ -4,13 +4,10 @@ import Benefit from '@/components/landing-page/Benefit';
 
 export default function Home() {
   return (
-    <div className='flex flex-col gap-8'>
-      <Hero className='py-8 px-8' id='hero' />
+    <div className='flex flex-col gap-8 pt-12'>
+      <Hero className='p-8' id='hero' />
       <Program />
-      <Benefit
-        className='py-8 bg-gradient-radial 
-        from-slate-200 to-zinc-100'
-      />
+      <Benefit className='p-8 bg-gradient-radial from-slate-100 to-zinc-200' />
     </div>
   );
 }
