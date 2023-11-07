@@ -22,7 +22,7 @@ export function UserSessionNav() {
 
   const logout = () => {
     authStore.deleteSession();
-    router.push('/auth/login');
+    router.push('/login');
     router.refresh();
   };
 
@@ -76,7 +76,7 @@ export function UserSessionNav() {
       <Link href='/portfolio' className='text-md font-bold text-primary'>
         Portfolio
       </Link>
-      <Link href='/auth/login' className={buttonVariants()}>
+      <Link href='/login' className={buttonVariants()}>
         Log In
       </Link>
     </>
