@@ -18,7 +18,6 @@ import {
   FormMessage,
 } from '@/components/ui/Form';
 import { toast } from 'react-hot-toast';
-import { AxiosError } from 'axios';
 import { useAuthStore } from '@/store/auth-store';
 import { Session } from '@/types/user-session';
 import { useRouter } from 'next/navigation';
@@ -53,14 +52,8 @@ const LoginForm = () => {
 
       router.refresh();
       router.push('/');
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        if (error.response?.status === 401) {
-          toast.error('Invalid credentials');
-        }
-      } else {
-        toast.error('An error occurred');
-      }
+    } catch (error: any) {
+      toast.error(error.response.data.message);
     } finally {
       setIsLoading(false);
     }
@@ -114,7 +107,7 @@ const LoginForm = () => {
           <p className='text-sm text-muted-foreground'>
             Forgot your password?{' '}
             <Link
-              href='/auth/forgot-password'
+              href='/forgot-password'
               className='hover:text-brand text-sm underline underline-offset-4'
             >
               Reset
