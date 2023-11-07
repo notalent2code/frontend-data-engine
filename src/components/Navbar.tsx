@@ -15,27 +15,14 @@ const Navbar = () => {
   return (
     isMounted && (
       <div
-        className='fixed top-0 inset-x-0 h-fit
-       border-zinc-300 z-[10] py-2 backdrop-blur-md bg-opacity-70 shadow-md'
+        className='fixed top-0 inset-x-0 h-fit z-[10] py-2 px-10 backdrop-blur-md 
+        bg-opacity-70 shadow-md overflow-x-hidden'
       >
-        <div
-          className='container max-w-7xl h-full mx-auto flex items-center 
-        justify-between gap-2'
-        >
-          <Link href='/' className='flex gap-2 items-center'>
+        <div className='container w-full h-full flex justify-between'>
+          <Link href='/'>
             <Icons.logo name='logo' />
           </Link>
-
-          <Link
-            href='/portfolio'
-            className='text-md font-bold text-primary'
-          >
-            Portfolio
-          </Link>
-
-          <div className='flex gap-2 items-center'>
-            <UserSessionNav />
-          </div>
+          <UserSessionNav />
         </div>
       </div>
     )
