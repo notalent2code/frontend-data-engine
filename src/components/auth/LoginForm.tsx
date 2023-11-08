@@ -8,10 +8,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Loader } from '@/components/ui/Loader';
-import axios from '@/lib/axios';
+import useAxiosPrivate from '@/hooks/use-axios-private';
 import { toast } from 'react-hot-toast';
 import { useAuthStore } from '@/store/auth-store';
-import { Session } from '@/types/user-session';
 import { useRouter } from 'next/navigation';
 import {
   Form,
@@ -30,8 +29,9 @@ const loginSchema = z.object({
 const LoginForm = () => {
   const [isMounted, setIsMounted] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const authStore = useAuthStore();
   const router = useRouter();
+  const axios = useAxiosPrivate();
+  const authStore = useAuthStore();
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -44,7 +44,10 @@ const LoginForm = () => {
 
       toast.success('Login successful');
 
-      authStore.setSession(response.data as Session);
+      const { access_token, ...user } = response.data;
+      
+      axios.defaults.headers.common.Authorization = `Bearer ${access_token}`;
+      authStore.setSession(user);
 
       router.push('/');
     } catch (error: any) {
