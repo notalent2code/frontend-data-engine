@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import LoginForm from '@/components/LoginForm';
+import LoginForm from '@/components/auth/LoginForm';
 import { Heading } from '@/components/ui/Heading';
 
 const Login = () => {
@@ -13,7 +13,7 @@ const Login = () => {
         <p className='text-sm text-muted-foreground'>
           Don&apos;t have an account?{' '}
           <Link
-            href='/register'
+            href='/auth/register'
             className='hover:text-brand text-sm underline underline-offset-4'
           >
             Register

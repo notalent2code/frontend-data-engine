@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import Link from 'next/link';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Loader } from '@/components/ui/Loader';
 import axios from '@/lib/axios';
+import { toast } from 'react-hot-toast';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   Form,
   FormControl,
@@ -17,41 +18,39 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/Form';
-import { toast } from 'react-hot-toast';
-import { useAuthStore } from '@/store/auth-store';
-import { Session } from '@/types/user-session';
-import { useRouter } from 'next/navigation';
 
-const loginSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8),
-});
-
-const LoginForm = () => {
-  const [isMounted, setIsMounted] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const authStore = useAuthStore();
-  const router = useRouter();
-
-  const form = useForm<z.infer<typeof loginSchema>>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
+const resetPasswordSchema = z
+  .object({
+    new_password: z.string(),
+    confirm_new_password: z.string(),
+  })
+  .refine((data) => data.new_password === data.confirm_new_password, {
+    message: 'Password not match',
+    path: ['confirm_password'],
   });
 
-  const onSubmit = async (data: z.infer<typeof loginSchema>) => {
+const ResetPasswordForm = () => {
+  const [isMounted, setIsMounted] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const form = useForm<z.infer<typeof resetPasswordSchema>>({
+    resolver: zodResolver(resetPasswordSchema),
+  });
+
+  const onSubmit = async (data: z.infer<typeof resetPasswordSchema>) => {
     try {
       setIsLoading(true);
-      const response = await axios.post('/auth/login', data);
+      // eslint-disable-next-line no-unused-vars
+      const { confirm_new_password, ...rest } = data;
+      const token = searchParams.get('token');
+      const payload = { ...rest, token };
+      await axios.post('/auth/reset-password', payload);
 
-      toast.success('Login successful');
+      toast.success('Password has been changed successfully!');
 
-      authStore.setSession(response.data as Session);
-
-      router.refresh();
-      router.push('/');
+      router.push('/auth/login');
     } catch (error: any) {
       toast.error(error.response.data.message);
     } finally {
@@ -68,13 +67,14 @@ const LoginForm = () => {
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
         <FormField
           control={form.control}
-          name='email'
+          name='new_password'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>New password</FormLabel>
               <FormControl>
                 <Input
-                  placeholder='john.doe@example.mail'
+                  type='password'
+                  placeholder='Enter your new password'
                   autoFocus
                   {...field}
                 />
@@ -85,14 +85,14 @@ const LoginForm = () => {
         />
         <FormField
           control={form.control}
-          name='password'
+          name='confirm_new_password'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Confirm new password</FormLabel>
               <FormControl>
                 <Input
                   type='password'
-                  placeholder='Enter your password'
+                  placeholder='Confirm new password'
                   {...field}
                 />
               </FormControl>
@@ -100,20 +100,9 @@ const LoginForm = () => {
             </FormItem>
           )}
         />
-        <div className='mt-4 flex flex-row align-middle justify-between items-center col-span-2'>
-          <Button type='submit' className='w-50%' disabled={isLoading}>
-            Submit
-          </Button>
-          <p className='text-sm text-muted-foreground'>
-            Forgot your password?{' '}
-            <Link
-              href='/forgot-password'
-              className='hover:text-brand text-sm underline underline-offset-4'
-            >
-              Reset
-            </Link>
-          </p>
-        </div>
+        <Button type='submit' className='w-50%' disabled={isLoading}>
+          Submit
+        </Button>
       </form>
     </Form>
   ) : (
@@ -121,4 +110,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default ResetPasswordForm;

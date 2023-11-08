@@ -8,6 +8,9 @@ import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Loader } from '@/components/ui/Loader';
 import axios from '@/lib/axios';
+import { toast } from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
+import { AxiosError } from 'axios';
 import {
   Form,
   FormControl,
@@ -16,8 +19,6 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/Form';
-import { toast } from 'react-hot-toast';
-import { useRouter } from 'next/navigation';
 
 const registerSchema = z
   .object({
@@ -51,9 +52,15 @@ const RegisterForm = () => {
 
       toast.success('Account registered successfully!');
 
-      router.push('/login');
+      router.push('/auth/login');
     } catch (error: any) {
-      toast.error(error.response.data.message);
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 409) {
+          toast.error('Account with this email already exists!');
+        }
+      } else {
+        toast.error('Something went wrong!');
+      }
     } finally {
       setIsLoading(false);
     }

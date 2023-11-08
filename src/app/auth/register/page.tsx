@@ -3,12 +3,12 @@ import { FC } from 'react';
 import { ChevronLeft } from 'lucide-react';
 import { buttonVariants } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
-import Login from '@/components/Login';
+import Register from '@/components/auth/Register';
 
 const Page: FC = () => {
   return (
-    <div className='absolute inset-0'>
-      <div className='h-full max-w-2xl mx-auto mt-10 flex flex-col items-center justify-center gap-5'>
+    <div className='container'>
+      <div className='max-w-2xl mx-auto h-fit pt-[100px] space-y-4'>
         <Link
           href='/'
           className={cn(
@@ -20,7 +20,7 @@ const Page: FC = () => {
           Home
         </Link>
 
-        <Login />
+        <Register />
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import RegisterForm from '@/components/RegisterForm';
+import RegisterForm from '@/components/auth/RegisterForm';
 import { Heading } from '@/components/ui/Heading';
 
 const Register = () => {
@@ -16,7 +16,7 @@ const Register = () => {
         <p className='text-sm text-muted-foreground'>
           Already have an account?{' '}
           <Link
-            href='/login'
+            href='/auth/login'
             className='hover:text-brand text-sm underline underline-offset-4'
           >
             Login
