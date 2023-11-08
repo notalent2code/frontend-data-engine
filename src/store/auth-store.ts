@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { Session } from '@/types/user-session';
+import { UserSession } from '@/types/user-session';
 
 type AuthStore = {
-  session: Session | undefined;
-  setSession: (session: Session | undefined) => void;
+  session: UserSession | undefined;
+  setSession: (session: UserSession) => void;
   deleteSession: () => void;
 };
 
