@@ -14,16 +14,27 @@ import {
 } from '@/components/ui/DropdownMenu';
 import { useRouter } from 'next/navigation';
 import { Home, LayoutDashboard, LogOut, Trophy } from 'lucide-react';
+import toast from 'react-hot-toast';
+import useAxiosPrivate from '@/hooks/use-axios-private';
 
 export function UserSessionNav() {
   const router = useRouter();
   const authStore = useAuthStore();
+  const axios = useAxiosPrivate();
   const user = authStore.session;
 
-  const logout = () => {
-    authStore.deleteSession();
-    router.push('/auth/login');
-    router.refresh();
+  const logout = async () => {
+    try {
+      const { data } = await axios.delete('/auth/logout');
+
+      toast.success(data.message);
+
+      authStore.deleteSession();
+
+      router.push('/auth/login');
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+    }
   };
 
   return user ? (
@@ -46,8 +57,8 @@ export function UserSessionNav() {
           </div>
         </div>
 
-        <DropdownMenuSeparator/>
-        
+        <DropdownMenuSeparator />
+
         <DropdownMenuItem className='cursor-pointer'>
           <Home className='mr-2 h-4 w-4' />
           <Link href='/'>Home</Link>
@@ -64,7 +75,7 @@ export function UserSessionNav() {
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
-       
+
         <DropdownMenuItem className='cursor-pointer' onSelect={() => logout()}>
           <LogOut className='mr-2 h-4 w-4' />
           <p>Log Out</p>
