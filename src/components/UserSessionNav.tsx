@@ -29,7 +29,9 @@ export function UserSessionNav() {
 
       toast.success(data.message);
 
+      delete axios.defaults.headers.common.Authorization
       authStore.deleteSession();
+      authStore.deleteToken();
 
       router.push('/auth/login');
     } catch (error: any) {

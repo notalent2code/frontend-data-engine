@@ -30,8 +30,8 @@ const LoginForm = () => {
   const [isMounted, setIsMounted] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
-  const axios = useAxiosPrivate();
   const authStore = useAuthStore();
+  const axios = useAxiosPrivate();
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -46,7 +46,7 @@ const LoginForm = () => {
 
       const { access_token, ...user } = response.data;
       
-      axios.defaults.headers.common.Authorization = `Bearer ${access_token}`;
+      authStore.setToken(access_token);
       authStore.setSession(user);
 
       router.push('/');
