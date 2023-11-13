@@ -49,7 +49,7 @@ const LoginForm = () => {
       authStore.setToken(access_token);
       authStore.setSession(user);
 
-      router.push('/');
+      router.back();
     } catch (error: any) {
       toast.error(error.response.data.message);
     } finally {
