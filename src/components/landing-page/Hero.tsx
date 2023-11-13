@@ -6,18 +6,23 @@ import { buttonVariants } from '@/components/ui/Button';
 
 interface HeroProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-const Hero: FC<HeroProps> = ({...props}) => {
+const Hero: FC<HeroProps> = ({ ...props }) => {
   return (
     <section {...props}>
       <div className='grid items-center gap-12 lg:grid-cols-2'>
         <div className='px-10 space-y-4 text-white text-center xl:text-left'>
           <h1 className='text-7xl font-bold tracking-tight'>
-            Indigo<br />Data Engine
+            Indigo
+            <br />
+            Data Engine
           </h1>
           <h2 className='text-xl'>
             Akselerasi perkembangan startup kamu <br /> bersama Indigo!
           </h2>
-          <Link href='/portfolio' className={cn(buttonVariants({variant: 'outline'}))}>
+          <Link
+            href='/startups'
+            className={cn(buttonVariants({ variant: 'outline' }))}
+          >
             <p className='px-6'>Lihat Portfolio</p>
           </Link>
         </div>
