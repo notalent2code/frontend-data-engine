@@ -29,7 +29,7 @@ export function UserSessionNav() {
 
       toast.success(data.message);
 
-      delete axios.defaults.headers.common.Authorization
+      delete axios.defaults.headers.common.Authorization;
       authStore.deleteSession();
       authStore.deleteToken();
 
@@ -73,7 +73,7 @@ export function UserSessionNav() {
 
         <DropdownMenuItem className='cursor-pointer'>
           <Trophy className='mr-2 h-4 w-4' />
-          <Link href='/portfolio'>Portfolio</Link>
+          <Link href='/startups'>Portfolio</Link>
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
@@ -86,7 +86,7 @@ export function UserSessionNav() {
     </DropdownMenu>
   ) : (
     <>
-      <Link href='/portfolio' className='text-md font-bold text-primary'>
+      <Link href='/startups' className='text-md font-bold text-primary'>
         Portfolio
       </Link>
       <Link href='/auth/login' className={buttonVariants()}>
