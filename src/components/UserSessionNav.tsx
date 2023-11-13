@@ -61,20 +61,26 @@ export function UserSessionNav() {
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem className='cursor-pointer'>
-          <Home className='mr-2 h-4 w-4' />
-          <Link href='/'>Home</Link>
-        </DropdownMenuItem>
+        <Link href='/'>
+          <DropdownMenuItem className='cursor-pointer'>
+            <Home className='mr-2 h-4 w-4' />
+            Home
+          </DropdownMenuItem>
+        </Link>
 
-        <DropdownMenuItem className='cursor-pointer'>
-          <LayoutDashboard className='mr-2 h-4 w-4' />
-          <Link href='/dashboard'>Dashboard</Link>
-        </DropdownMenuItem>
+        <Link href='/dashboard'>
+          <DropdownMenuItem className='cursor-pointer'>
+            <LayoutDashboard className='mr-2 h-4 w-4' />
+            Dashboard
+          </DropdownMenuItem>
+        </Link>
 
-        <DropdownMenuItem className='cursor-pointer'>
-          <Trophy className='mr-2 h-4 w-4' />
-          <Link href='/startups'>Portfolio</Link>
-        </DropdownMenuItem>
+        <Link href='/startups'>
+          <DropdownMenuItem className='cursor-pointer'>
+            <Trophy className='mr-2 h-4 w-4' />
+            Portfolio
+          </DropdownMenuItem>
+        </Link>
 
         <DropdownMenuSeparator />
 
