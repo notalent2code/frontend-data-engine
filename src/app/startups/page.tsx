@@ -2,31 +2,47 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { Fragment, useEffect, useRef, useState } from 'react';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { Startup } from '@prisma/client';
-import { Pagination } from '@/types';
+import { useEffect, useRef, useState } from 'react';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
+import { Role, Startup } from '@prisma/client';
+import { Pagination, startupCategoryOptions } from '@/types';
 import { Badge } from '@/components/ui/Badge';
 import useAxiosPrivate from '@/hooks/use-axios-private';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import Search from '@/components/Search';
 import { useDebounce } from '@uidotdev/usehooks';
+import { Loader } from '@/components/ui/Loader';
+import SelectDropdown from '@/components/SelectDropdown';
+import enumReplacer from '@/util/enum-replacer';
+import { useAuthStore } from '@/store/auth-store';
+import { buttonVariants } from '@/components/ui/Button';
 
 const Page = () => {
   const axios = useAxiosPrivate();
   const intersectionRef = useRef(null);
+  const role = useAuthStore((state) => state.session?.role);
+  const queryClient = useQueryClient();
+  const [category, setCategory] = useState<string>('');
   const [search, setSearch] = useState<string>('');
   const debouncedSearch = useDebounce(search, 500);
 
+  const handleCategoryChange = (value: string) => {
+    setCategory(value);
+  };
+
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
-  }
+  };
 
   const fetchStartups = async ({ pageParam = 1 }) => {
-    let url = `startups?limit=50&page=${pageParam}`;
+    let url = `startups?page=${pageParam}`;
+    if (!!category) {
+      url += `&category=${category}`;
+    }
     if (!!debouncedSearch) {
       url += `&search=${debouncedSearch}`;
     }
+
     const { data: result } = await axios.get(url);
 
     return {
@@ -44,11 +60,17 @@ const Page = () => {
     isFetchingNextPage,
     status,
   } = useInfiniteQuery({
-    queryKey: ['startups', useDebounce],
+    queryKey: ['startups', category, debouncedSearch],
     queryFn: fetchStartups,
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.meta.next,
   });
+
+  useEffect(() => {
+    queryClient.invalidateQueries({
+      queryKey: ['startups', category, debouncedSearch],
+    });
+  }, [category, debouncedSearch, queryClient]);
 
   useEffect(() => {
     const options: IntersectionObserverInit = {
@@ -86,68 +108,79 @@ const Page = () => {
   }, [fetchNextPage, hasNextPage, isFetching, isFetchingNextPage]);
 
   return status === 'pending' ? (
-    <p>Loading...</p>
+    <Loader />
   ) : status === 'error' ? (
     <p>Error: {error.message}</p>
   ) : (
     <div className='pt-20'>
-      <div className=''>
-        <Search value={search} onChange={handleSearchChange} />
+      <div className='flex flex-col md:flex-row gap-4 items-center justify-start md:justify-between pb-4 md:pb-2'>
+        <div className='flex flex-col md:flex-row md:gap-4 items-center'>
+          <Search autoFocus value={search} onChange={handleSearchChange} />
+          <SelectDropdown
+            name={enumReplacer(category) || 'Category'}
+            options={startupCategoryOptions}
+            onChange={handleCategoryChange}
+          />
+        </div>
+        {role === Role.ADMIN ? (
+          <Link href='/admin/startups/new' className={buttonVariants()}>
+            Add Startup
+          </Link>
+        ) : null}
       </div>
       {data.pages.map((page, i) => (
-        <Fragment key={i}>
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-            {page.data.map((startup) => (
-              <Link href={`/startups/${startup.id}/catalog`} key={startup.id}>
-                <Card
-                  key={startup.id}
-                  className='grid grid-flow-row items-end justify-start h-full'
-                >
-                  <CardHeader className='grid grid-flow-row lg:grid-flow-col items-center justify-start'>
-                    <div className='w-20 h-20 flex justify-start items-center'>
-                      <Image
-                        src={startup.logo_url}
-                        width={80}
-                        height={80}
-                        style={{ width: 'auto', height: 'auto' }}
-                        alt={startup.name}
-                      />
+        <div key={i} className='grid grid-cols-1 md:grid-cols-2 gap-6 pb-6'>
+          {page.data.map((startup) => (
+            <Link href={`/startups/${startup.id}/catalog`} key={startup.id}>
+              <Card
+                key={startup.id}
+                className='grid grid-flow-row items-start justify-start h-full'
+              >
+                <CardHeader className='grid grid-flow-row lg:grid-flow-col items-center justify-start'>
+                  <div className='w-20 h-20 flex justify-start items-center'>
+                    <Image
+                      src={startup.logo_url}
+                      width={80}
+                      height={80}
+                      alt={startup.name}
+                    />
+                  </div>
+                  <div className='space-y-2 lg:pl-6'>
+                    <h2 className='text-md text-left font-semibold'>
+                      {startup.name}
+                    </h2>
+                    <div className='grid grid-cols-2 lg:flex lg:flex-row gap-2 pb-4'>
+                      <Badge className='text-xs bg-primary'>
+                        {enumReplacer(startup.category)}
+                      </Badge>
+                      <Badge className='text-xs bg-tertiary hover:bg-tertiary hover:opacity-90'>
+                        {enumReplacer(startup.latest_stage)}
+                      </Badge>
+                      <Badge className='text-xs bg-blue-800 hover:bg-blue-800 hover:opacity-90 '>
+                        {startup.status}
+                      </Badge>
+                      <Badge className='text-xs bg-black hover:bg-black hover:opacity-90 '>
+                        {startup.intake_year}
+                      </Badge>
                     </div>
-                    <div className='space-y-2 lg:pl-6'>
-                      <h2 className='text-md text-left font-semibold'>
-                        {startup.name}
-                      </h2>
-                      <div className='grid grid-cols-2 lg:flex lg:flex-row gap-2 pb-4'>
-                        <Badge className='text-xs bg-primary'>
-                          {startup.category}
-                        </Badge>
-                        <Badge className='text-xs bg-tertiary hover:bg-tertiary hover:opacity-90'>
-                          {startup.latest_stage}
-                        </Badge>
-                        <Badge className='text-xs bg-blue-800 hover:bg-blue-800 hover:opacity-90 '>
-                          {startup.status}
-                        </Badge>
-                        <Badge className='text-xs bg-black hover:bg-black hover:opacity-90 '>
-                          {startup.intake_year}
-                        </Badge>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className='line-clamp-3'>{startup.description}</p>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-          </div>
-        </Fragment>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <p className='line-clamp-5'>{startup.description}</p>
+                </CardContent>
+              </Card>
+            </Link>
+          ))}
+        </div>
       ))}
-      <div ref={intersectionRef}></div> {/* Add this element for observing */}
-      <div className=''>
-        {isFetchingNextPage ? 'Loading more...' : 'Nothing more to load'}
-      </div>
-      <div className=''>
-        {isFetching && !isFetchingNextPage ? 'Fetching...' : null}
+      {/* Infinite scrolling observer */}
+      <div ref={intersectionRef}></div>
+      <div className='text-sm text-muted-foreground'>
+        {isFetchingNextPage || (isFetching && !isFetchingNextPage)
+          ? 'Loading...'
+          : !data.pages[0].data.length
+          ? 'Data not found'
+          : 'All data fetched'}
       </div>
     </div>
   );
