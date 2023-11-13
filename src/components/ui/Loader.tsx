@@ -2,7 +2,7 @@
 
 export const Loader = () => {
   return (
-    <div className='flex h-full w-full items-center justify-center'>
+    <div className='fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md'>
       <svg
         aria-hidden='true'
         className='inline w-10 h-10 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-red-600'
