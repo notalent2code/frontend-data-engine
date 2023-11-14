@@ -1,7 +1,9 @@
+'use client';
+
 import Link from 'next/link';
 import { BarChart2, Landmark, LucideIcon, Users, Wallet2 } from 'lucide-react';
 import { Role } from '@prisma/client';
-import { FC } from 'react';
+import { useAuthStore } from '@/store/auth-store';
 
 type NavigationLink = {
   name: string;
@@ -45,11 +47,9 @@ export const investorLinks: NavigationLink[] = [
   },
 ];
 
-interface NavigationLinksProps {
-  role: Role| undefined;
-}
+const NavigationLinks = () => {
+  const role = useAuthStore((state) => state.session?.role);
 
-const NavigationLinks: FC<NavigationLinksProps> = ({ role }) => {
   return role === Role.ADMIN
     ? adminLinks.map((link) => (
         <Link href={link.path} key={link.name}>
