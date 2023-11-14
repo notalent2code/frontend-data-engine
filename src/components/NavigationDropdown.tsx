@@ -2,14 +2,16 @@ import {
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
 } from '@/components/ui/NavigationMenu';
 import { Menu } from 'lucide-react';
-import { links } from '@/components/NavigationLinks';
+import NavigationLinks from '@/components/NavigationLinks';
+import { useAuthStore } from '@/store/auth-store';
 
 const NavigationDropdown = () => {
+  const role = useAuthStore((state) => state.session?.role);
+
   return (
     <NavigationMenu className='block md:hidden'>
       <NavigationMenuList>
@@ -17,17 +19,8 @@ const NavigationDropdown = () => {
           <NavigationMenuTrigger className='bg-transparent'>
             <Menu />
           </NavigationMenuTrigger>
-          <NavigationMenuContent className='w-[200px] space-y-4 p-4 list-none'>
-            {links.map((link) => (
-              <NavigationMenuItem key={link.name}>
-                <NavigationMenuLink href={link.path}>
-                  <div className='flex items-center space-x-2'>
-                    <link.icon className='w-4 h-4' />
-                    <span className='text-sm'>{link.name}</span>
-                  </div>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-            ))}
+          <NavigationMenuContent className='w-[200px] space-y-4 p-4 list-none main-bg'>
+            <NavigationLinks role={role} />
           </NavigationMenuContent>
         </NavigationMenuItem>
       </NavigationMenuList>
