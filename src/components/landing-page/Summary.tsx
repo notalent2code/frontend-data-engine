@@ -16,7 +16,7 @@ const Summary: FC<SummaryProps> = ({ ...props }) => {
             </div>
             <div className='w-full max-w-full space-y-4 mx-auto pb-8'>
               <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10'>
-                <SummaryCards />
+                <SummaryCards type={'home'} />
               </div>
             </div>
           </div>
