@@ -3,9 +3,13 @@
 import Link from 'next/link';
 import { Icons } from './Icons';
 import { UserSessionNav } from '@/components/UserSessionNav';
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
-const Navbar = () => {
+interface NavbarProps {
+  logo: boolean;
+}
+
+const Navbar: FC<NavbarProps> = ({ logo }) => {
   const [isMounted, setIsMounted] = useState<boolean>(false);
 
   useEffect(() => {
@@ -13,10 +17,11 @@ const Navbar = () => {
   }, []);
 
   return (
-    isMounted && (
+    isMounted &&
+    (logo ? (
       <div
         className='fixed top-0 inset-x-0 h-fit z-[10] py-2 px-10 backdrop-blur-md 
-          bg-slate-50 bg-opacity-10 shadow-md'
+          bg-white bg-opacity-10 shadow-md'
       >
         <div className='sm:container max-w-7xl h-full flex justify-between items-center'>
           <Link href='/'>
@@ -25,7 +30,11 @@ const Navbar = () => {
           <UserSessionNav />
         </div>
       </div>
-    )
+    ) : (
+      <div className='fixed top-0 inset-x-0 z-[5] max-w-8xl flex justify-end items-center gap-4 p-2 pr-8 bg-gray-100'>
+        <UserSessionNav />
+      </div>
+    ))
   );
 };
 
