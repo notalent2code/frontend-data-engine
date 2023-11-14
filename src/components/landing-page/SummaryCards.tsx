@@ -9,7 +9,7 @@ import {
 import SmallCard from '../SmallCard';
 import useAxiosPrivate from '@/hooks/use-axios-private';
 import { useQuery } from '@tanstack/react-query';
-import { StartupSummary } from '@/types/startup-summary';
+import { StartupSummary } from '@/types';
 
 const SummaryCards = () => {
   const axios = useAxiosPrivate();

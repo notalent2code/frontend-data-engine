@@ -28,137 +28,137 @@ export const isValidDecimalInput =
 // ENUMS
 /////////////////////////////////////////
 
-export const TransactionIsolationLevelSchema = z.enum(['ReadUncommitted', 'ReadCommitted', 'RepeatableRead', 'Serializable']);
+export const TransactionIsolationLevelSchema = z.enum(['ReadUncommitted','ReadCommitted','RepeatableRead','Serializable']);
 
-export const UserScalarFieldEnumSchema = z.enum(['id', 'first_name', 'last_name', 'phone_number', 'email', 'password', 'role', 'status', 'refresh_token', 'created_at', 'updated_at']);
+export const UserScalarFieldEnumSchema = z.enum(['id','first_name','last_name','phone_number','email','password','role','status','refresh_token','created_at','updated_at']);
 
-export const PasswordResetsScalarFieldEnumSchema = z.enum(['id', 'email', 'token', 'created_at']);
+export const PasswordResetsScalarFieldEnumSchema = z.enum(['id','email','token','created_at']);
 
-export const InvestorScalarFieldEnumSchema = z.enum(['id', 'user_id', 'name', 'appetites', 'instrument_type', 'investment_stage', 'investment_syndication', 'investor_classification', 'focused_sectors', 'remarks', 'ticket_size_min', 'ticket_size_max', 'created_at', 'updated_at']);
+export const InvestorScalarFieldEnumSchema = z.enum(['id','user_id','name','appetites','instrument_type','investment_stage','investment_syndication','investor_classification','focused_sectors','remarks','ticket_size_min','ticket_size_max','created_at','updated_at']);
 
-export const StartupToInvestScalarFieldEnumSchema = z.enum(['id', 'startup_id', 'investor_id', 'progress', 'detail', 'created_at', 'updated_at']);
+export const StartupToInvestScalarFieldEnumSchema = z.enum(['id','startup_id','investor_id','progress','detail','created_at','updated_at']);
 
-export const StartupScalarFieldEnumSchema = z.enum(['id', 'name', 'description', 'category', 'latest_stage', 'status', 'intake_type', 'intake_year', 'pitchdeck_url', 'website_url', 'logo_url', 'created_at', 'updated_at']);
+export const StartupScalarFieldEnumSchema = z.enum(['id','name','description','category','latest_stage','status','intake_type','intake_year','pitchdeck_url','website_url','logo_url','created_at','updated_at']);
 
-export const LocationScalarFieldEnumSchema = z.enum(['id', 'startup_id', 'address', 'latitude', 'longitude', 'created_at', 'updated_at']);
+export const LocationScalarFieldEnumSchema = z.enum(['id','startup_id','address','latitude','longitude','created_at','updated_at']);
 
-export const PeopleScalarFieldEnumSchema = z.enum(['id', 'startup_id', 'name', 'phone_number', 'email', 'job_title', 'privy_id', 'photo_url', 'qr_code_url', 'linkedin_url', 'created_at', 'updated_at']);
+export const PeopleScalarFieldEnumSchema = z.enum(['id','startup_id','name','phone_number','email','job_title','privy_id','photo_url','qr_code_url','linkedin_url','created_at','updated_at']);
 
-export const PerformanceScalarFieldEnumSchema = z.enum(['id', 'startup_id', 'year', 'performance_update', 'people_update', 'product_update', 'action_plan', 'created_at', 'updated_at']);
+export const PerformanceScalarFieldEnumSchema = z.enum(['id','startup_id','year','performance_update','people_update','product_update','action_plan','created_at','updated_at']);
 
-export const ContractScalarFieldEnumSchema = z.enum(['id', 'startup_id', 'pks_number', 'signed_pks_date', 'closing_bak_date', 'total_funding', 'convertible_note', 'convertible_note_year', 'convertible_note_months', 'convertible_note_status', 'created_at', 'updated_at']);
+export const ContractScalarFieldEnumSchema = z.enum(['id','startup_id','pks_number','signed_pks_date','closing_bak_date','total_funding','convertible_note','convertible_note_year','convertible_note_months','convertible_note_status','created_at','updated_at']);
 
-export const FinancialReportScalarFieldEnumSchema = z.enum(['id', 'startup_id', 'year', 'yearly_revenue', 'monthly_revenue', 'valuation', 'created_at', 'updated_at']);
+export const FinancialReportScalarFieldEnumSchema = z.enum(['id','startup_id','year','yearly_revenue','monthly_revenue','valuation','created_at','updated_at']);
 
-export const SynergyScalarFieldEnumSchema = z.enum(['id', 'startup_id', 'telkom_group', 'entity', 'model', 'description', 'progress', 'lead_time_week', 'output', 'confidence_level', 'project_status', 'initiation_date', 'created_at', 'updated_at']);
+export const SynergyScalarFieldEnumSchema = z.enum(['id','startup_id','telkom_group','entity','model','description','progress','lead_time_week','output','confidence_level','project_status','initiation_date','created_at','updated_at']);
 
-export const StrategicScalarFieldEnumSchema = z.enum(['id', 'startup_id', 'business_point', 'description', 'created_at', 'updated_at']);
+export const StrategicScalarFieldEnumSchema = z.enum(['id','startup_id','business_point','description','created_at','updated_at']);
 
-export const ServiceScalarFieldEnumSchema = z.enum(['id', 'startup_id', 'title', 'revenue_percentage', 'created_at', 'updated_at']);
+export const ServiceScalarFieldEnumSchema = z.enum(['id','startup_id','title','revenue_percentage','created_at','updated_at']);
 
-export const ProblemSolutionFitScalarFieldEnumSchema = z.enum(['id', 'startup_id', 'title', 'description', 'created_at', 'updated_at']);
+export const ProblemSolutionFitScalarFieldEnumSchema = z.enum(['id','startup_id','title','description','created_at','updated_at']);
 
-export const GrowthStrategyScalarFieldEnumSchema = z.enum(['id', 'startup_id', 'description', 'created_at', 'updated_at']);
+export const GrowthStrategyScalarFieldEnumSchema = z.enum(['id','startup_id','description','created_at','updated_at']);
 
-export const RevenueModelScalarFieldEnumSchema = z.enum(['id', 'startup_id', 'description', 'created_at', 'updated_at']);
+export const RevenueModelScalarFieldEnumSchema = z.enum(['id','startup_id','description','created_at','updated_at']);
 
-export const AlumniScalarFieldEnumSchema = z.enum(['id', 'startup_id', 'cluster', 'product_cluster', 'industry_cluster', 'current_funding_stage', 'is_product_stopped_or_vacuum', 'is_product_active_but_not_developed', 'is_startup_disband', 'is_startup_developed_other_product', 'created_at', 'updated_at']);
+export const AlumniScalarFieldEnumSchema = z.enum(['id','startup_id','cluster','product_cluster','industry_cluster','current_funding_stage','is_product_stopped_or_vacuum','is_product_active_but_not_developed','is_startup_disband','is_startup_developed_other_product','created_at','updated_at']);
 
-export const SortOrderSchema = z.enum(['asc', 'desc']);
+export const SortOrderSchema = z.enum(['asc','desc']);
 
-export const QueryModeSchema = z.enum(['default', 'insensitive']);
+export const QueryModeSchema = z.enum(['default','insensitive']);
 
-export const NullsOrderSchema = z.enum(['first', 'last']);
+export const NullsOrderSchema = z.enum(['first','last']);
 
-export const InvestmentProgressSchema = z.enum(['STOP_NOT_INTEREST', 'DUE_DILIGENCE_DATAROOM', 'INTRO', 'FOLLOW_UP_MEETING', 'OFFERING']);
+export const InvestmentProgressSchema = z.enum(['STOP_NOT_INTEREST','DUE_DILIGENCE_DATAROOM','INTRO','FOLLOW_UP_MEETING','OFFERING']);
 
 export type InvestmentProgressType = `${z.infer<typeof InvestmentProgressSchema>}`
 
-export const StrategicBusinessPointSchema = z.enum(['TRACTION', 'PARTNERSHIP', 'BUSINESS_MODEL']);
+export const StrategicBusinessPointSchema = z.enum(['TRACTION','PARTNERSHIP','BUSINESS_MODEL']);
 
 export type StrategicBusinessPointType = `${z.infer<typeof StrategicBusinessPointSchema>}`
 
-export const ProjectStatusSchema = z.enum(['APPROACHING', 'CONTRACT_DEAL_SIGN', 'DELIVERY_OGP', 'POC', 'PRICE_CONTRACT_NEGO', 'SOLUTION_OFFERING']);
+export const ProjectStatusSchema = z.enum(['APPROACHING','CONTRACT_DEAL_SIGN','DELIVERY_OGP','POC','PRICE_CONTRACT_NEGO','SOLUTION_OFFERING']);
 
 export type ProjectStatusType = `${z.infer<typeof ProjectStatusSchema>}`
 
-export const SynergyConfidenceLevelSchema = z.enum(['PERCENT_0_TO_20', 'PERCENT_21_TO_40', 'PERCENT_41_TO_60', 'PERCENT_61_TO_80', 'PERCENT_81_TO_100']);
+export const SynergyConfidenceLevelSchema = z.enum(['PERCENT_0_TO_20','PERCENT_21_TO_40','PERCENT_41_TO_60','PERCENT_61_TO_80','PERCENT_81_TO_100']);
 
 export type SynergyConfidenceLevelType = `${z.infer<typeof SynergyConfidenceLevelSchema>}`
 
-export const SynergyOutputSchema = z.enum(['MOM_KESEPAKATAN', 'PKS', 'INVOICE', 'BAK', 'NDA', 'OGP', 'SPK', 'BAK_HARGA', 'MOU', 'SPH', 'DIGITAL_TOUCH_POINT', 'HOLD']);
+export const SynergyOutputSchema = z.enum(['MOM_KESEPAKATAN','PKS','INVOICE','BAK','NDA','OGP','SPK','BAK_HARGA','MOU','SPH','DIGITAL_TOUCH_POINT','HOLD']);
 
 export type SynergyOutputType = `${z.infer<typeof SynergyOutputSchema>}`
 
-export const SynergyProgressSchema = z.enum(['DONE', 'ADMINISTRATION_FOLLOW_UP', 'TECHNICAL_FOLLOW_UP', 'INITIAL_MEETING', 'DROP', 'HOLD']);
+export const SynergyProgressSchema = z.enum(['DONE','ADMINISTRATION_FOLLOW_UP','TECHNICAL_FOLLOW_UP','INITIAL_MEETING','DROP','HOLD']);
 
 export type SynergyProgressType = `${z.infer<typeof SynergyProgressSchema>}`
 
-export const SynergyModelSchema = z.enum(['CO_CREATION', 'TELKOM_SERVICE', 'VENDORSHIP', 'GO_TO_MARKET']);
+export const SynergyModelSchema = z.enum(['CO_CREATION','TELKOM_SERVICE','VENDORSHIP','GO_TO_MARKET']);
 
 export type SynergyModelType = `${z.infer<typeof SynergyModelSchema>}`
 
-export const ContractStatusSchema = z.enum(['AKTIF', 'DIBEBANKAN', 'ALIH_KELOLA']);
+export const ContractStatusSchema = z.enum(['AKTIF','DIBEBANKAN','ALIH_KELOLA']);
 
 export type ContractStatusType = `${z.infer<typeof ContractStatusSchema>}`
 
-export const PeopleJobTitleSchema = z.enum(['CEO', 'CTO', 'CIO', 'COO', 'CPO', 'CBO', 'CFO', 'CMO', 'CCO', 'CRO', 'CMS', 'FOUNDER', 'CO_FOUNDER', 'PRESIDENT_FOUNDER', 'CEO_FOUNDER', 'CHAIR_WOMAN', 'MANAGING_DIRECTOR', 'APP_SUPPORT', 'GENERAL_AFFAIRS', 'BUSINESS_SALES', 'PRODUCT_CREATIVE', 'RESEARCH_DEVELOPMENT']);
+export const PeopleJobTitleSchema = z.enum(['CEO','CTO','CIO','COO','CPO','CBO','CFO','CMO','CCO','CRO','CMS','FOUNDER','CO_FOUNDER','PRESIDENT_FOUNDER','CEO_FOUNDER','CHAIR_WOMAN','MANAGING_DIRECTOR','APP_SUPPORT','GENERAL_AFFAIRS','BUSINESS_SALES','PRODUCT_CREATIVE','RESEARCH_DEVELOPMENT']);
 
 export type PeopleJobTitleType = `${z.infer<typeof PeopleJobTitleSchema>}`
 
-export const AlumniFundingStageSchema = z.enum(['PRE_SEED', 'SEED', 'ANGEL']);
+export const AlumniFundingStageSchema = z.enum(['PRE_SEED','SEED','ANGEL']);
 
 export type AlumniFundingStageType = `${z.infer<typeof AlumniFundingStageSchema>}`
 
-export const AlumniIndustryClusterSchema = z.enum(['MSME', 'FARMING', 'ENTERPRISE', 'ENVIRONMENT_AND_SUSTAINABILITY', 'AGRICULTURE', 'EDUCATION', 'LOGISTIC', 'FISHERIES', 'SMART_CITY', 'LIFESTYLE', 'MOBILE_GAMES', 'IT_SECURITY', 'TRAVEL_AND_TOURISM', 'FINANCE_AND_BANKING', 'HEALTH', 'PROPERTY', 'GOV_AND_PUBLIC_SERVICE', 'MEDIA', 'LEGAL_AND_PARTNERSHIP', 'OTHERS', 'PC_GAMES']);
+export const AlumniIndustryClusterSchema = z.enum(['MSME','FARMING','ENTERPRISE','ENVIRONMENT_AND_SUSTAINABILITY','AGRICULTURE','EDUCATION','LOGISTIC','FISHERIES','SMART_CITY','LIFESTYLE','MOBILE_GAMES','IT_SECURITY','TRAVEL_AND_TOURISM','FINANCE_AND_BANKING','HEALTH','PROPERTY','GOV_AND_PUBLIC_SERVICE','MEDIA','LEGAL_AND_PARTNERSHIP','OTHERS','PC_GAMES']);
 
 export type AlumniIndustryClusterType = `${z.infer<typeof AlumniIndustryClusterSchema>}`
 
-export const AlumniProductClusterSchema = z.enum(['SAAS', 'FINTECH', 'MARKET_PLACE', 'IOT', 'APPLICATION', 'BIGDATA_AI', 'VR_AR', 'EDUCATION']);
+export const AlumniProductClusterSchema = z.enum(['SAAS','FINTECH','MARKET_PLACE','IOT','APPLICATION','BIGDATA_AI','VR_AR','EDUCATION']);
 
 export type AlumniProductClusterType = `${z.infer<typeof AlumniProductClusterSchema>}`
 
-export const AlumniClusterSchema = z.enum(['DOG', 'QUESTION_MARK', 'CASHCOW', 'STAR']);
+export const AlumniClusterSchema = z.enum(['DOG','QUESTION_MARK','CASHCOW','STAR']);
 
 export type AlumniClusterType = `${z.infer<typeof AlumniClusterSchema>}`
 
-export const StartupStatusSchema = z.enum(['AKTIF', 'ALUMNI', 'DIBEBANKAN', 'TRANSFER', 'FOF']);
+export const StartupStatusSchema = z.enum(['AKTIF','ALUMNI','DIBEBANKAN','TRANSFER','FOF']);
 
 export type StartupStatusType = `${z.infer<typeof StartupStatusSchema>}`
 
-export const StartupIntakeSchema = z.enum(['REGULAR', 'GAMES', 'INCIDENTAL']);
+export const StartupIntakeSchema = z.enum(['REGULAR','GAMES','INCIDENTAL']);
 
 export type StartupIntakeType = `${z.infer<typeof StartupIntakeSchema>}`
 
-export const StartupStageSchema = z.enum(['PV_STAGE', 'BMV_STAGE', 'MV_STAGE', 'ALPHA_STAGE', 'BETA_STAGE', 'GOLD_STAGE', 'CV_STAGE', 'MDI']);
+export const StartupStageSchema = z.enum(['PV_STAGE','BMV_STAGE','MV_STAGE','ALPHA_STAGE','BETA_STAGE','GOLD_STAGE','CV_STAGE','MDI']);
 
 export type StartupStageType = `${z.infer<typeof StartupStageSchema>}`
 
-export const StartupCategorySchema = z.enum(['AGRICULTURE', 'BIG_DATA', 'EDUCATION', 'ECOMMERCE', 'ENTERPRISE', 'FINTECH', 'GAMES', 'HEALTH', 'HRIS', 'IOT', 'LOGISTIC', 'SMART_CITY', 'SME', 'TRAVEL_TOURISM', 'VIRTUALIZATION', 'ADTECH_ENTERPRISE']);
+export const StartupCategorySchema = z.enum(['AGRICULTURE','BIG_DATA','EDUCATION','ECOMMERCE','ENTERPRISE','FINTECH','GAMES','HEALTH','HRIS','IOT','LOGISTIC','SMART_CITY','SME','TRAVEL_TOURISM','VIRTUALIZATION','ADTECH_ENTERPRISE']);
 
 export type StartupCategoryType = `${z.infer<typeof StartupCategorySchema>}`
 
-export const InstrumentTypeSchema = z.enum(['CN', 'EQUITY', 'CN_EQUITY']);
+export const InstrumentTypeSchema = z.enum(['CN','EQUITY','CN_EQUITY']);
 
 export type InstrumentTypeType = `${z.infer<typeof InstrumentTypeSchema>}`
 
-export const InvestmentStageSchema = z.enum(['PRE_SEED', 'SEED', 'PRE_SERIES_A', 'SERIES_A', 'SERIES_B', 'ABOVE_SERIES_B', 'PRE_IPO', 'SECONDARIES', 'UNDISCLOSED']);
+export const InvestmentStageSchema = z.enum(['PRE_SEED','SEED','PRE_SERIES_A','SERIES_A','SERIES_B','ABOVE_SERIES_B','PRE_IPO','SECONDARIES','UNDISCLOSED']);
 
 export type InvestmentStageType = `${z.infer<typeof InvestmentStageSchema>}`
 
-export const InvestmentSyndicationSchema = z.enum(['FOLLOW', 'LEAD', 'DOMINANT_FOLLOW', 'DOMINANT_LEAD']);
+export const InvestmentSyndicationSchema = z.enum(['FOLLOW','LEAD','DOMINANT_FOLLOW','DOMINANT_LEAD']);
 
 export type InvestmentSyndicationType = `${z.infer<typeof InvestmentSyndicationSchema>}`
 
-export const InvestorClassificationSchema = z.enum(['MAINSTREAM_AGNOSTIC', 'SPECIFIC_SECTOR', 'IMPACT_INVESTMENT']);
+export const InvestorClassificationSchema = z.enum(['MAINSTREAM_AGNOSTIC','SPECIFIC_SECTOR','IMPACT_INVESTMENT']);
 
 export type InvestorClassificationType = `${z.infer<typeof InvestorClassificationSchema>}`
 
-export const RoleSchema = z.enum(['INVESTOR', 'ADMIN']);
+export const RoleSchema = z.enum(['INVESTOR','ADMIN']);
 
 export type RoleType = `${z.infer<typeof RoleSchema>}`
 
-export const StatusSchema = z.enum(['ACTIVE', 'INACTIVE']);
+export const StatusSchema = z.enum(['ACTIVE','INACTIVE']);
 
 export type StatusType = `${z.infer<typeof StatusSchema>}`
 
@@ -327,7 +327,7 @@ export const ContractSchema = z.object({
   signed_pks_date: z.coerce.date(),
   closing_bak_date: z.coerce.date(),
   total_funding: z.bigint(),
-  convertible_note: z.union([z.number(), z.string(), DecimalJSLikeSchema,]).refine((v) => isValidDecimalInput(v), { message: "Field 'convertible_note' must be a Decimal. Location: ['Models', 'Contract']", }),
+  convertible_note: z.union([z.number(),z.string(),DecimalJSLikeSchema,]).refine((v) => isValidDecimalInput(v), { message: "Field 'convertible_note' must be a Decimal. Location: ['Models', 'Contract']",  }),
   convertible_note_year: z.number().int(),
   convertible_note_months: z.number().int(),
   created_at: z.coerce.date(),
