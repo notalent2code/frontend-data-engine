@@ -1,3 +1,5 @@
+import { StartupCategory } from "@prisma/client";
+
 export type StartupSummary = {
   count: number;
   incubation: number;
@@ -10,3 +12,9 @@ export type StartupSummary = {
   total_revenue: bigint;
   total_funding: bigint;
 };
+
+export type StartupSectors = Record<StartupCategory, {
+  PV: number;
+  BMV: number;
+  MV: number;
+}>;
