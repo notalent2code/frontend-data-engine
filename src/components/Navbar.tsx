@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Icons } from './Icons';
 import { UserSessionNav } from '@/components/UserSessionNav';
 import { FC, useEffect, useState } from 'react';
+import NavigationDropdown from '@/components/NavigationDropdown';
 
 interface NavbarProps {
   logo: boolean;
@@ -31,7 +32,8 @@ const Navbar: FC<NavbarProps> = ({ logo }) => {
         </div>
       </div>
     ) : (
-      <div className='fixed top-0 inset-x-0 z-[5] max-w-8xl flex justify-end items-center gap-4 p-2 pr-8 bg-gray-100'>
+      <div className='fixed top-0 inset-x-0 w-full z-[5] max-w-8xl flex justify-between md:justify-end items-center gap-4 p-2 px-8 bg-gray-100'>
+        <NavigationDropdown />
         <UserSessionNav />
       </div>
     ))
