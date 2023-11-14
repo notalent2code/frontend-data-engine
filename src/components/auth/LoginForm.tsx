@@ -45,11 +45,12 @@ const LoginForm = () => {
       toast.success('Login successful');
 
       const { access_token, ...user } = response.data;
-      
+
       authStore.setToken(access_token);
       authStore.setSession(user);
 
-      router.back();
+      router.push('/dashboard/analytics');
+
     } catch (error: any) {
       toast.error(error.response.data.message);
     } finally {
