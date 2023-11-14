@@ -29,9 +29,11 @@ export function UserSessionNav() {
 
       toast.success(data.message);
 
-      delete axios.defaults.headers.common.Authorization;
       authStore.deleteSession();
       authStore.deleteToken();
+      delete axios.defaults.headers.common.Authorization;
+      document.cookie =
+        'isLoggedIn=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax;';
 
       router.push('/auth/login');
     } catch (error: any) {
