@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "bunx prisma generate"
+    "postinstall": "bun prisma generate"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.2",
