@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { cn } from '@/lib/utils';
-import Navbar from '@/components/Navbar';
 import '@/styles/globals.css';
 import Providers from '@/components/Providers';
 import { Toaster } from 'react-hot-toast';
@@ -28,10 +27,7 @@ export default function RootLayout({
       </head>
       <body className='min-h-screen bg-slate-50 antialiased'>
         <div className='mx-auto h-full'>
-          <Providers>
-            <Navbar />
-            {children}
-          </Providers>
+          <Providers>{children}</Providers>
           <Toaster />
         </div>
       </body>
