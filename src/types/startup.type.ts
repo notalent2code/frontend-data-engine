@@ -18,3 +18,10 @@ export type StartupSectors = Record<StartupCategory, {
   BMV: number;
   MV: number;
 }>;
+
+export type GameStages = {
+  total: number;
+  alpha_stage: number;
+  beta_stage: number;
+  gold_stage: number;
+};
