@@ -1,13 +1,14 @@
 'use client';
 
-import useAxiosPrivate from '@/hooks/use-axios-private';
-import { StartupSectors } from '@/types';
-import { useQuery } from '@tanstack/react-query';
-import { Loader } from '@/components/ui/Loader';
 import { useMemo } from 'react';
+import { StartupSectors } from '@/types';
 import { AxisOptions, Chart } from 'react-charts';
-import ResizableBox from '../ResizeableBox';
-import { Card, CardTitle } from '../ui/Card';
+import { useQuery } from '@tanstack/react-query';
+import useAxiosPrivate from '@/hooks/use-axios-private';
+import { Loader } from '@/components/ui/Loader';
+import ResizableBox from '@/components/ResizeableBox';
+import { Card, CardTitle } from '@/components/ui/Card';
+import { Separator } from '../ui/Separator';
 
 const transformData = (data: StartupSectors) => {
   const transformed: any[] = [];
@@ -86,15 +87,16 @@ const StartupSectors = () => {
   return isLoading ? (
     <Loader />
   ) : (
-    <Card className='p-4'>
-      <CardTitle className='py-4 pl-1 text-lg'>Startup Sectors</CardTitle>
-      <ResizableBox>
+    <Card className='h-full'>
+      <CardTitle className='p-4 mx-4 pb-4 pl-1 text-lg'>Startup Sectors</CardTitle>
+      <Separator className='mb-4' />
+      <ResizableBox width={820} className='mx-4'>
         <Chart
           options={{
             data: chartData,
             primaryAxis,
             secondaryAxes: [secondaryAxis],
-            getSeriesStyle
+            getSeriesStyle,
           }}
         />
       </ResizableBox>
