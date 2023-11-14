@@ -1,18 +1,23 @@
-import type { Metadata } from 'next';
+'use client';
+
 import '@/styles/globals.css';
 import Sidebar from '@/components/Sidebar';
 import Navbar from '@/components/Navbar';
-
-export const metadata: Metadata = {
-  title: 'Dashboard - Indigo Data Engine',
-  description: 'Dashboard for Indigo Data Engine',
-};
+import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/store/auth-store';
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
+  const user = useAuthStore((state) => state.session);
+
+  if (!user) {
+    router.push('/auth/login');
+  }
+
   return (
     <div className='flex'>
       <Sidebar />
