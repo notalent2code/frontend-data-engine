@@ -11,6 +11,8 @@ const useAxiosPrivate = () => {
     const requestIntercept = axios.interceptors.request.use(
       (config) => {
         if (!config.headers.Authorization) {
+          // eslint-disable-next-line no-console
+          console.log('Previous token', authStore.token);
           config.headers.Authorization = `Bearer ${authStore.token}`;
         }
         return config;
