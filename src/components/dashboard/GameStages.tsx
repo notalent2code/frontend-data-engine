@@ -69,10 +69,10 @@ const GameStages = () => {
   return isLoading ? (
     <Loader />
   ) : (
-    <Card className='flex flex-col py-4 items-center h-full w-full sm:w-1/2'>
-      <CardTitle className='pb-4 pt-3'>Startup Game Stages</CardTitle>
-      <Separator className='mb-4' />
-      <Doughnut data={chartData} />
+    <Card className='flex flex-col items-center h-full w-full sm:w-1/3'>
+      <CardTitle className='py-4'>Startup Game Stages</CardTitle>
+      <Separator />
+      <Doughnut data={chartData} className='p-4' />
       {/* <CardContent>
         {labels.map((label, index) => (
           <div
