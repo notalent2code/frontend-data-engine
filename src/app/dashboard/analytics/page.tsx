@@ -6,7 +6,7 @@ const Page = () => {
   return (
     <div className='grid grid-flow-row gap-8'>
       <SummaryCards type={'dashboard'} />
-      <div className='flex flex-row items-center justify-between'>
+      <div className='flex flex-col gap-4 md:gap-0 lg:flex-row items-start md:items-center justify-between'>
         <StartupSectors />
         <GameStages />
       </div>
