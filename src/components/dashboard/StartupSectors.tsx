@@ -8,9 +8,10 @@ import useAxiosPrivate from '@/hooks/use-axios-private';
 import { Loader } from '@/components/ui/Loader';
 import ResizableBox from '@/components/ResizeableBox';
 import { Card, CardTitle } from '@/components/ui/Card';
-import { Separator } from '../ui/Separator';
+import { Separator } from '@/components/ui/Separator';
+import { enumReplacer } from '@/util';
 
-export type TransformedData = {
+type TransformedData = {
   sector: string;
   type: string;
   value: number;
@@ -39,7 +40,6 @@ const StartupSectors = () => {
 
   const fetchSectors = async () => {
     const { data } = await axios.get('/dashboard/sectors');
-
     return data as StartupSectors;
   };
 
@@ -50,7 +50,7 @@ const StartupSectors = () => {
 
   const chartData: any = useMemo(() => {
     if (!data) return [];
-    
+
     return [
       {
         label: 'PV',
@@ -67,9 +67,9 @@ const StartupSectors = () => {
     ];
   }, [data]);
 
-  const primaryAxis = useMemo(
+  const primaryAxis = useMemo<AxisOptions<TransformedData>>(
     () => ({
-      getValue: (d: TransformedData) => d.sector,
+      getValue: (d: TransformedData) => enumReplacer(d.sector),
     }),
     []
   );
