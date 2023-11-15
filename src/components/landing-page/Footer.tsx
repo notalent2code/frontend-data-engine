@@ -6,7 +6,7 @@ interface FooterProps extends React.HTMLAttributes<HTMLDivElement> {}
 const Footer: FC<FooterProps> = ({ ...props }) => {
   return (
     <section {...props}>
-      <div className='grid items-center gap-12 lg:grid-cols-2'>
+      <div className='grid items-center justify-center gap-12 lg:grid-cols-2'>
         <div className='px-10 space-y-4 text-white text-center lg:text-left'>
           <h1 className='text-2xl font-bold tracking-tight'>
             Indigo by Telkom Indonesia
