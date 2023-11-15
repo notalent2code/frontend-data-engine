@@ -1,4 +1,4 @@
-import enumReplacer from "@/util/enum-replacer";
+import { enumReplacer } from "@/util";
 import { StartupCategory } from "@prisma/client";
 
 const startupCategoryValues = Object.values(StartupCategory);
