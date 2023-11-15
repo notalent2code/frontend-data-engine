@@ -25,15 +25,14 @@ export function UserSessionNav() {
 
   const logout = async () => {
     try {
+      authStore.deleteSession();
+      authStore.deleteToken();
+      document.cookie =
+        'isLoggedIn=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax;';
+
       const { data } = await axios.delete('/auth/logout');
 
       toast.success(data.message);
-
-      authStore.deleteSession();
-      authStore.deleteToken();
-      delete axios.defaults.headers.common.Authorization;
-      document.cookie =
-        'isLoggedIn=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax;';
 
       router.push('/auth/login');
     } catch (error: any) {
