@@ -4,7 +4,7 @@ import NavigationLinks from '@/components/NavigationLinks';
 
 const Sidebar = () => {
   return (
-    <aside className='sticky top-0 z-10 hidden md:block h-screen w-56 p-4 main-bg'>
+    <aside className='sticky top-0 z-10 hidden md:block h-screen w-56 p-4 bg-main'>
       <div className='flex items-center mb-4 justify-start space-x-1 pl-2'>
         <Link href='/dashboard/analytics'>
           <Icons.whiteLogo />
