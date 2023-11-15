@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/DropdownMenu';
 import { useRouter } from 'next/navigation';
-import { Home, LayoutDashboard, LogOut, Trophy } from 'lucide-react';
+import { Home, LayoutDashboard, LogOut, Trophy, User2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import useAxiosPrivate from '@/hooks/use-axios-private';
 
@@ -67,6 +67,13 @@ export function UserSessionNav() {
           <DropdownMenuItem className='cursor-pointer'>
             <Home className='mr-2 h-4 w-4' />
             Home
+          </DropdownMenuItem>
+        </Link>
+
+        <Link href='/profile'>
+          <DropdownMenuItem className='cursor-pointer'>
+            <User2 className='mr-2 h-4 w-4' />
+            Profile
           </DropdownMenuItem>
         </Link>
 
