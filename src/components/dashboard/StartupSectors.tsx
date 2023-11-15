@@ -87,10 +87,10 @@ const StartupSectors = () => {
   return isLoading ? (
     <Loader />
   ) : (
-    <Card className='h-full w-full'>
-      <CardTitle className='p-4 mx-4 pb-4 pl-1 text-lg'>Startup Sectors</CardTitle>
+    <Card className='h-full'>
+      <CardTitle className='p-4 mx-4 pl-1 text-lg'>Startup Sectors</CardTitle>
       <Separator className='mb-4' />
-      <ResizableBox className='mx-4 h-[300px] w-96 md:w-[600px] lg:w-[820px]'>
+      <ResizableBox className='mx-4 h-[300px] w-80 sm:w-96 md:w-[600px]'>
         <Chart
           options={{
             data: chartData,
