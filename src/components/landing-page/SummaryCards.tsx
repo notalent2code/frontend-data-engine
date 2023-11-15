@@ -17,6 +17,7 @@ import { useQuery } from '@tanstack/react-query';
 import { StartupSummary } from '@/types';
 import { Loader } from '@/components/ui/Loader';
 import { FC } from 'react';
+import { formatToIndonesianRupiah } from '@/util';
 
 interface SummaryCardsProps {
   type: 'home' | 'dashboard';
@@ -35,25 +36,6 @@ const SummaryCards: FC<SummaryCardsProps> = ({ type }) => {
     queryFn: fetchSummary,
     staleTime: 1000 * 60 * 60 * 24,
   });
-
-  function formatToIndonesianRupiah(number: any) {
-    let scale = '';
-    let scaledNumber = number;
-    if (number >= 1e12) {
-      scale = 'Triliun';
-      scaledNumber = number / 1e12;
-    } else if (number >= 1e9) {
-      scale = 'Miliar';
-      scaledNumber = number / 1e9;
-    } else if (number >= 1e6) {
-      scale = 'Juta';
-      scaledNumber = number / 1e6;
-    }
-
-    scaledNumber = Math.round(scaledNumber);
-
-    return scaledNumber + ' ' + scale;
-  }
 
   return isLoading ? (
     <Loader />
@@ -78,14 +60,14 @@ const SummaryCards: FC<SummaryCardsProps> = ({ type }) => {
         Icon={DollarSign}
         color='bg-primary text-white'
         title={'Total Revenue'}
-        content={formatToIndonesianRupiah(data?.total_revenue)}
+        content={formatToIndonesianRupiah(data?.total_revenue, 'full')}
       />
       <SmallCard
         key={4}
         Icon={CircleDollarSign}
         color='bg-primary text-white'
         title={'Total Pendanaan'}
-        content={formatToIndonesianRupiah(data?.total_funding)}
+        content={formatToIndonesianRupiah(data?.total_funding, 'full')}
       />
     </>
   ) : (
