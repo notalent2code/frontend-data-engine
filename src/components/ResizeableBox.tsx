@@ -5,7 +5,7 @@ import 'react-resizable/css/styles.css';
 
 const ResizableBox = ({
   children,
-  width = 600,
+  width = 800,
   height = 300,
   resizable = false,
   style = {},
@@ -19,7 +19,7 @@ const ResizableBox = ({
   className?: string;
 }) => {
   return (
-    <div style={{ }}>
+    <div className='w-full'>
       <div
         style={{
           display: 'inline-block',
