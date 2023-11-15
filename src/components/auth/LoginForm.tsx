@@ -48,9 +48,13 @@ const LoginForm = () => {
 
       authStore.setToken(access_token);
       authStore.setSession(user);
+      document.cookie = `isLoggedIn=true; path=/; SameSite=Lax;`;
 
-      router.push('/dashboard/analytics');
-
+      if (user.role === 'ADMIN') {
+        router.push('/dashboard/analytics');
+      } else {
+        router.push('/dashboard/startups');
+      }
     } catch (error: any) {
       toast.error(error.response.data.message);
     } finally {

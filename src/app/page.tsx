@@ -9,11 +9,11 @@ export default function Home() {
   return (
     <div className='flex flex-col gap-12 pt-12'>
       <Navbar logo />
-      <Hero className='p-8 main-bg' />
+      <Hero className='p-8 bg-main' />
       <Program />
       <Summary className='p-8 bg-gradient-radial from-slate-100 to-zinc-200' />
       <Benefit />
-      <Footer className='p-8 main-bg' />
+      <Footer className='p-8 bg-main' />
     </div>
   );
 }

@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/DropdownMenu';
 import { useRouter } from 'next/navigation';
-import { Home, LayoutDashboard, LogOut, Trophy } from 'lucide-react';
+import { Home, LayoutDashboard, LogOut, Trophy, User2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import useAxiosPrivate from '@/hooks/use-axios-private';
 
@@ -29,9 +29,11 @@ export function UserSessionNav() {
 
       toast.success(data.message);
 
-      delete axios.defaults.headers.common.Authorization;
       authStore.deleteSession();
       authStore.deleteToken();
+      delete axios.defaults.headers.common.Authorization;
+      document.cookie =
+        'isLoggedIn=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax;';
 
       router.push('/auth/login');
     } catch (error: any) {
@@ -65,6 +67,13 @@ export function UserSessionNav() {
           <DropdownMenuItem className='cursor-pointer'>
             <Home className='mr-2 h-4 w-4' />
             Home
+          </DropdownMenuItem>
+        </Link>
+
+        <Link href='/profile'>
+          <DropdownMenuItem className='cursor-pointer'>
+            <User2 className='mr-2 h-4 w-4' />
+            Profile
           </DropdownMenuItem>
         </Link>
 
