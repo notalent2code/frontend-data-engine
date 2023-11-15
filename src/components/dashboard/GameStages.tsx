@@ -4,7 +4,7 @@ import useAxiosPrivate from '@/hooks/use-axios-private';
 import { useQuery } from '@tanstack/react-query';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import enumReplacer from '@/util/enum-replacer';
+import { enumReplacer } from '@/util';
 import { Loader } from '@/components/ui/Loader';
 import { Card, CardTitle } from '@/components/ui/Card';
 import { GameStages } from '@/types';
@@ -69,21 +69,10 @@ const GameStages = () => {
   return isLoading ? (
     <Loader />
   ) : (
-    <Card className='flex flex-col items-center h-full w-full sm:w-1/3'>
+    <Card className='flex flex-col items-center h-full'>
       <CardTitle className='py-4'>Startup Game Stages</CardTitle>
       <Separator />
       <Doughnut data={chartData} className='p-4' />
-      {/* <CardContent>
-        {labels.map((label, index) => (
-          <div
-            key={index}
-            className='flex flex-col items-center justify-around gap-2 text-sm text-muted-foreground'
-          >
-            <span>{enumReplacer(label)}</span>
-            <span>{((values[index] / data?.total!) * 100).toFixed()}%</span>
-          </div>
-        ))}
-      </CardContent> */}
     </Card>
   );
 };
