@@ -10,20 +10,26 @@ import ResizableBox from '@/components/ResizeableBox';
 import { Card, CardTitle } from '@/components/ui/Card';
 import { Separator } from '../ui/Separator';
 
-const transformData = (data: StartupSectors) => {
-  const transformed: any[] = [];
+export type TransformedData = {
+  sector: string;
+  type: string;
+  value: number;
+};
 
-  if (data) {
-    Object.entries(data).forEach(([sector, values]) => {
-      Object.entries(values).forEach(([type, value]) => {
-        transformed.push({
-          sector,
-          type,
-          value,
-        });
+const transformData = (data: StartupSectors | undefined): TransformedData[] => {
+  const transformed: TransformedData[] = [];
+
+  if (!data) return [];
+
+  Object.entries(data).forEach(([sector, values]) => {
+    Object.entries(values).forEach(([type, value]) => {
+      transformed.push({
+        sector,
+        type,
+        value,
       });
     });
-  }
+  });
 
   return transformed;
 };
@@ -43,32 +49,34 @@ const StartupSectors = () => {
   });
 
   const chartData: any = useMemo(() => {
+    if (!data) return [];
+    
     return [
       {
         label: 'PV',
-        data: transformData(data!).filter((d) => d.type === 'PV'),
+        data: transformData(data).filter((d) => d.type === 'PV'),
       },
       {
         label: 'BMV',
-        data: transformData(data!).filter((d) => d.type === 'BMV'),
+        data: transformData(data).filter((d) => d.type === 'BMV'),
       },
       {
         label: 'MV',
-        data: transformData(data!).filter((d) => d.type === 'MV'),
+        data: transformData(data).filter((d) => d.type === 'MV'),
       },
     ];
   }, [data]);
 
   const primaryAxis = useMemo(
     () => ({
-      getValue: (d: any) => d.sector,
+      getValue: (d: TransformedData) => d.sector,
     }),
     []
   );
 
-  const secondaryAxis = useMemo<AxisOptions<any>>(
+  const secondaryAxis = useMemo<AxisOptions<TransformedData>>(
     () => ({
-      getValue: (d: any) => d.value,
+      getValue: (d: TransformedData) => d.value,
       elementType: 'bar',
     }),
     []
