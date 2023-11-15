@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -28,7 +27,7 @@
     --ring: 346.8 77.2% 49.8%;
     --radius: 0.5rem;
   }
- 
+
   .dark {
     --background: 20 14.3% 4.1%;
     --foreground: 0 0% 95%;
@@ -64,7 +63,7 @@
   }
 }
 
-.main-bg {
+.bg-main {
   background-image: url('/main-background.svg');
   background-repeat: no-repeat;
   background-size: cover;
