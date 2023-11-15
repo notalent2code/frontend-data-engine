@@ -25,3 +25,11 @@ export type GameStages = {
   beta_stage: number;
   gold_stage: number;
 };
+
+export type StartupRevenue = {
+  startup_id: number;
+  startup_name: string;
+  startup_logo_url: string;
+  yearly_revenue: string;
+  year: number;
+};
