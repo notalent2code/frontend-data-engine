@@ -6,7 +6,7 @@ import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import enumReplacer from '@/util/enum-replacer';
 import { Loader } from '@/components/ui/Loader';
-import { Card, CardContent, CardTitle } from '@/components/ui/Card';
+import { Card, CardTitle } from '@/components/ui/Card';
 import { GameStages } from '@/types';
 import { Separator } from '../ui/Separator';
 
@@ -70,7 +70,7 @@ const GameStages = () => {
     <Loader />
   ) : (
     <Card className='flex flex-col py-4 items-center h-full'>
-      <CardTitle className='pb-4'>Game Stages</CardTitle>
+      <CardTitle className='pb-4 pt-3'>Startup Game Stages</CardTitle>
       <Separator className='mb-4' />
       <Doughnut data={chartData} />
       {/* <CardContent>
