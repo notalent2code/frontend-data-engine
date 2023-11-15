@@ -13,7 +13,7 @@ import Search from '@/components/Search';
 import { useDebounce } from '@uidotdev/usehooks';
 import { Loader } from '@/components/ui/Loader';
 import SelectDropdown from '@/components/SelectDropdown';
-import enumReplacer from '@/util/enum-replacer';
+import { enumReplacer } from '@/util';
 import { useAuthStore } from '@/store/auth-store';
 import { buttonVariants } from '@/components/ui/Button';
 
