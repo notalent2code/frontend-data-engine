@@ -16,7 +16,7 @@ const NavigationDropdown = () => {
           <NavigationMenuTrigger className='bg-transparent'>
             <Menu />
           </NavigationMenuTrigger>
-          <NavigationMenuContent className='w-[200px] space-y-4 p-4 list-none main-bg'>
+          <NavigationMenuContent className='w-[200px] space-y-4 p-4 list-none bg-main'>
             <NavigationLinks />
           </NavigationMenuContent>
         </NavigationMenuItem>
