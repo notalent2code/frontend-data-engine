@@ -69,7 +69,7 @@ const GameStages = () => {
   return isLoading ? (
     <Loader />
   ) : (
-    <Card className='flex flex-col items-center h-full'>
+    <Card className='flex flex-col items-center h-full xl:w-fit'>
       <CardTitle className='py-4'>Startup Game Stages</CardTitle>
       <Separator />
       <Doughnut data={chartData} className='p-4' />
