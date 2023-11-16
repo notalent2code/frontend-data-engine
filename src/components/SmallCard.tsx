@@ -19,7 +19,7 @@ const SmallCard: FC<SmallCardProps> = ({ Icon, color, title, content }) => {
         </div>
       </CardHeader>
       <CardContent className='text-left p-0'>
-        <p className='font-bold text-2xl'>{content}</p>
+        <p className='font-bold text-xl'>{content}</p>
         <CardTitle className='text-sm text-muted-foreground'>{title}</CardTitle>
       </CardContent>
     </Card>
