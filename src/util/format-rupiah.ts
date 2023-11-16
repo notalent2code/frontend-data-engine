@@ -18,3 +18,7 @@ export const formatToIndonesianRupiah =
 
     return scaledNumber + ' ' + scale;
   };
+
+export const formatCurrencyValue = (number: number) => {
+  return number.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
