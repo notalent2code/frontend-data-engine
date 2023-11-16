@@ -98,7 +98,7 @@ const StartupSectors = () => {
     <Card className='h-full'>
       <CardTitle className='p-4 mx-4 pl-1 text-lg'>Startup Sectors</CardTitle>
       <Separator className='mb-4' />
-      <ResizableBox className='mx-4 h-[300px] w-80 sm:w-96 md:w-[600px]'>
+      <ResizableBox className='mx-4 h-[300px] w-80 sm:w-96 md:w-[620px]'>
         <Chart
           options={{
             data: chartData,
