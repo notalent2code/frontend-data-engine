@@ -1,5 +1,5 @@
 import GameStages from '@/components/dashboard/GameStages';
-import RevenueSummary from '@/components/dashboard/RevenueSummary';
+import TotalYearlyRevenue from '@/components/dashboard/YearlyRevenue';
 import StartupSectors from '@/components/dashboard/StartupSectors';
 import TopRevenue from '@/components/dashboard/TopRevenue';
 import SummaryCards from '@/components/landing-page/SummaryCards';
@@ -15,7 +15,7 @@ const Page = () => {
       <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
         <TopRevenue />
       </div>
-      <RevenueSummary />
+      <TotalYearlyRevenue />
     </div>
   );
 };
