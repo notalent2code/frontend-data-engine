@@ -64,6 +64,7 @@ const TopRevenue = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['top-revenue'],
     queryFn: fetchTopRevenue,
+    retryOnMount: false,
   });
 
   const chartData = useMemo(() => {
@@ -121,7 +122,7 @@ const TopRevenue = () => {
           Top Startup Revenue {series.label} (IDR)
         </CardTitle>
         <Separator className='mb-4' />
-        <ResizableBox className='h-[120px] w-80 sm:w-96 md:w-[480px]'>
+        <ResizableBox className='h-[120px] w-80 sm:w-96 md:w-[540px]'>
           <Chart
             options={{
               data: [series],
