@@ -135,7 +135,14 @@ const Startups: FC<StartupsProps> = ({ link }) => {
       {data.pages.map((page, i) => (
         <div key={i} className='grid grid-cols-1 md:grid-cols-2 gap-6 pb-6'>
           {page.data.map((startup) => (
-            <Link href={`/startups/${startup.id}/${link}`} key={startup.id}>
+            <Link
+              key={startup.id}
+              href={
+                link === 'detail'
+                  ? `/dashboard/startups/${startup.id}/${link}`
+                  : `/startups/${startup.id}/${link}`
+              }
+            >
               <Card
                 key={startup.id}
                 className='grid grid-flow-row items-start justify-start h-full'
