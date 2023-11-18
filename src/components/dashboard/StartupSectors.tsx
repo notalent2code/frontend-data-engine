@@ -10,6 +10,8 @@ import ResizableBox from '@/components/ResizeableBox';
 import { Card, CardTitle } from '@/components/ui/Card';
 import { Separator } from '@/components/ui/Separator';
 import { enumReplacer } from '@/util';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 type TransformedData = {
   sector: string;
@@ -37,19 +39,30 @@ const transformData = (data: StartupSectors | undefined): TransformedData[] => {
 
 const StartupSectors = () => {
   const axios = useAxiosPrivate();
+  const router = useRouter();
 
   const fetchSectors = async () => {
-    const { data } = await axios.get('/dashboard/sectors');
-    return data as StartupSectors;
+    try {
+      const { data } = await axios.get('/dashboard/sectors');
+      return data as StartupSectors;
+    } catch (error: any) {
+      if (error.response.status === 403) {
+        toast.error('You are not authorized to view this page');
+      } else {
+        toast.error('Something went wrong. Please try again later.');
+      }
+      router.push('/auth/login');
+    }
   };
 
   const { data, isLoading } = useQuery({
     queryKey: ['startup-sectors'],
     queryFn: fetchSectors,
+    retryOnMount: false,
   });
 
   const chartData: any = useMemo(() => {
-    if (!data) return [];
+    if (!data) return router.push('/auth/login')
 
     return [
       {
@@ -65,7 +78,7 @@ const StartupSectors = () => {
         data: transformData(data).filter((d) => d.type === 'MV'),
       },
     ];
-  }, [data]);
+  }, [data, router]);
 
   const primaryAxis = useMemo<AxisOptions<TransformedData>>(
     () => ({
@@ -94,11 +107,11 @@ const StartupSectors = () => {
 
   return isLoading ? (
     <Loader />
-  ) : (
-    <Card className='h-full'>
+  ) : data ? (
+    <Card className='h-full w-full'>
       <CardTitle className='p-4 mx-4 pl-1 text-lg'>Startup Sectors</CardTitle>
       <Separator className='mb-4' />
-      <ResizableBox className='mx-4 h-[300px] w-80 sm:w-96 md:w-[620px]'>
+      <ResizableBox className='mx-4 h-[300px] w-80 sm:w-96 md:w-[780px]'>
         <Chart
           options={{
             data: chartData,
@@ -109,7 +122,7 @@ const StartupSectors = () => {
         />
       </ResizableBox>
     </Card>
-  );
+  ) : null;
 };
 
 export default StartupSectors;
