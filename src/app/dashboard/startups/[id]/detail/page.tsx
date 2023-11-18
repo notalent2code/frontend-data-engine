@@ -1,21 +1,23 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
-import { useParams, useRouter } from 'next/navigation';
-import { useQuery } from '@tanstack/react-query';
-import useAxiosPrivate from '@/hooks/use-axios-private';
-import { StartupDetail } from '@/types';
+import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import GoogleMaps from '@/components/Map';
+import toast from 'react-hot-toast';
+import { StartupDetail } from '@/types';
 import { Badge } from '@/components/ui/Badge';
-import { buttonVariants } from '@/components/ui/Button';
 import { Loader } from '@/components/ui/Loader';
+import { useQuery } from '@tanstack/react-query';
 import { Separator } from '@/components/ui/Separator';
+import { useParams, useRouter } from 'next/navigation';
+import useAxiosPrivate from '@/hooks/use-axios-private';
+import { buttonVariants } from '@/components/ui/Button';
+import Alumni from '@/components/startup-detail/Alumni';
+import People from '@/components/startup-detail/People';
+import Performance from '@/components/startup-detail/Performance';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
-import toast from 'react-hot-toast';
-import PerformanceAccordion from '@/components/startup-detail/PerformanceAccordion';
-import Map from '@/components/Map';
 
 const Page = () => {
   const axios = useAxiosPrivate();
@@ -106,27 +108,31 @@ const Page = () => {
               <Separator />
               <CardContent className='p-4 text-sm'>
                 <p>{startup.description}</p>
-                <div className='grid grid-cols-3 gap-4 pt-4'>
+                <div className='grid grid-cols-1 lg:grid-cols-3 gap-4 pt-4'>
                   <Badge
                     className='flex flex-col p-2 bg-white hover:bg-white outline outline-tertiary
                     text-muted-foreground'
                   >
-                    <span className='pb-2'>Latest Stage</span>
-                    <p className='font-bold'>{startup.latest_stage}</p>
+                    <span className='pb-2 text-center'>Latest Stage</span>
+                    <p className='font-bold text-center'>
+                      {startup.latest_stage}
+                    </p>
                   </Badge>
                   <Badge
                     className='flex flex-col p-2 bg-white hover:bg-white outline outline-tertiary
                     text-muted-foreground'
                   >
-                    <span className='pb-2'>Status</span>
-                    <p className='font-bold'>{startup.status}</p>
+                    <span className='pb-2 text-center'>Status</span>
+                    <p className='font-bold text-center'>{startup.status}</p>
                   </Badge>
                   <Badge
                     className='flex flex-col p-2 bg-white hover:bg-white outline outline-tertiary
                     text-muted-foreground'
                   >
-                    <span className='pb-2'>Intake Type</span>
-                    <p className='font-bold'>{startup.intake_type}</p>
+                    <span className='pb-2 text-center'>Intake Type</span>
+                    <p className='font-bold text-center'>
+                      {startup.intake_type}
+                    </p>
                   </Badge>
                   <Badge className='flex justify-center w-full'>
                     {startup.intake_year}
@@ -142,13 +148,13 @@ const Page = () => {
                     </Badge>
                   </Link>
                 </div>
-                
+
                 <p className='pt-4 text-lg font-bold'>Full Address</p>
                 <p className='py-2 pb-4'>{startup.Location.address}</p>
                 {/* Google Maps Card */}
                 <Card>
                   {startup.Location.latitude && startup.Location.longitude ? (
-                    <Map
+                    <GoogleMaps
                       latitude={startup.Location.latitude}
                       longitude={startup.Location.longitude}
                     />
@@ -159,30 +165,24 @@ const Page = () => {
               </CardContent>
             </Card>
 
-            <Card className='w-4/5'>
-              <CardHeader className='flex flex-row items-center justify-between p-4'>
-                <CardTitle>
-                  <h2 className='text-xl font-bold pt-2'>Performance</h2>
-                </CardTitle>
-                <Link
-                  href={addUrl + '/performance'}
-                  className={cn(
-                    buttonVariants(),
-                    'bg-tertiary hover:bg-tertiary hover:opacity-90'
-                  )}
-                >
-                  Add new
-                </Link>
-              </CardHeader>
-              <Separator />
-              <CardContent className='py-0 px-4 text-sm'>
-                <PerformanceAccordion
-                  data={startup.Performance}
-                  editUrl={editUrl}
-                />
-              </CardContent>
-            </Card>
+            <div className='flex flex-col gap-4 w-4/5'>
+              <Performance
+                data={startup.Performance}
+                addUrl={addUrl}
+                editUrl={editUrl}
+              />
+
+              <Alumni
+                data={startup.Alumni}
+                addUrl={addUrl}
+                editUrl={editUrl}
+              />
+            </div>
           </div>
+        </TabsContent>
+
+        <TabsContent value='people' className='pt-6'>
+          <People data={startup.People} addUrl={addUrl} editUrl={editUrl} />
         </TabsContent>
       </Tabs>
     </div>
