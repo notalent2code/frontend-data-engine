@@ -39,6 +39,7 @@ const GameStages = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['game-stages'],
     queryFn: fetchGameStages,
+    retryOnMount: false,
   });
 
   const { labels, values } = transformData(data!);
@@ -69,7 +70,7 @@ const GameStages = () => {
   return isLoading ? (
     <Loader />
   ) : (
-    <Card className='flex flex-col items-center h-full xl:w-fit'>
+    <Card className='flex flex-col items-center h-full lg:w-fit'>
       <CardTitle className='py-4'>Startup Game Stages</CardTitle>
       <Separator />
       <Doughnut data={chartData} className='p-4' />
