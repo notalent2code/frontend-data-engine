@@ -1,4 +1,12 @@
-import { StartupCategory } from "@prisma/client";
+import {
+  Alumni, Contract, FinancialReport, GrowthStrategy,
+  Location, People, Performance, ProblemSolutionFit,
+  RevenueModel, Service, StartupCategory,
+  StartupIntake,
+  StartupStage,
+  StartupStatus,
+  StartupToInvest, Strategic, Synergy
+} from '@prisma/client';
 
 export type StartupSummary = {
   count: number;
@@ -32,4 +40,33 @@ export type StartupRevenue = {
   startup_logo_url: string;
   yearly_revenue: string;
   year: number;
+};
+
+export type StartupDetail = {
+  id: number;
+  name: string;
+  description: string;
+  category: StartupCategory;
+  latest_stage: StartupStage;
+  status: StartupStatus;
+  intake_type: StartupIntake;
+  intake_year: number;
+  pitchdeck_url: string;
+  website_url: string;
+  logo_url: string;
+  created_at: Date;
+  updated_at: Date;
+  Location: Location;
+  Alumni: Alumni;
+  Contract: Contract;
+  FinancialReport: FinancialReport[];
+  GrowthStrategy: GrowthStrategy[];
+  People: People[];
+  Performance: Performance[];
+  ProblemSolutionFit: ProblemSolutionFit[];
+  RevenueModel: RevenueModel[];
+  Service: Service[];
+  StartupToInvest: StartupToInvest[];
+  Strategic: Strategic[];
+  Synergy: Synergy[];
 };
