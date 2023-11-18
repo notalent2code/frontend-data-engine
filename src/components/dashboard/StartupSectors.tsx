@@ -19,6 +19,11 @@ type TransformedData = {
   value: number;
 };
 
+type ChartData = {
+  label: string;
+  data: TransformedData[];
+};
+
 const transformData = (data: StartupSectors | undefined): TransformedData[] => {
   const transformed: TransformedData[] = [];
 
@@ -58,11 +63,10 @@ const StartupSectors = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['startup-sectors'],
     queryFn: fetchSectors,
-    retryOnMount: false,
   });
 
-  const chartData: any = useMemo(() => {
-    if (!data) return router.push('/auth/login')
+  const chartData: ChartData[] = useMemo(() => {
+    if (!data) return [];
 
     return [
       {
@@ -78,7 +82,7 @@ const StartupSectors = () => {
         data: transformData(data).filter((d) => d.type === 'MV'),
       },
     ];
-  }, [data, router]);
+  }, [data]);
 
   const primaryAxis = useMemo<AxisOptions<TransformedData>>(
     () => ({
