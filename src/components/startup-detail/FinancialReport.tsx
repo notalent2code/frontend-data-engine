@@ -1,13 +1,21 @@
-import { FC, useMemo } from 'react';
+import { FC } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { FinancialReport } from '@prisma/client';
 import { Heading } from '@/components/ui/Heading';
 import { Separator } from '@/components/ui/Separator';
 import { buttonVariants } from '@/components/ui/Button';
-import { Card, CardTitle } from '@/components/ui/Card';
-import { AxisOptions, Chart } from 'react-charts';
-import ResizableBox from '@/components/ResizeableBox';
+import { Card } from '@/components/ui/Card';
+import { Bar } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+} from 'chart.js';
 
 interface FinancialReportProps {
   data: FinancialReport[] | null;
@@ -15,46 +23,24 @@ interface FinancialReportProps {
   editUrl: string;
 }
 
-type FinancialDataPoint = {
-  year: number;
-  type: 'Yearly Revenue' | 'Valuation';
-  value: bigint;
-};
-
-const transformFinancialData = (
-  data: FinancialReport[] | null
-): FinancialDataPoint[] => {
-  const transformed: FinancialDataPoint[] = [];
-
-  if (!data) return [];
-
-  data.forEach((report) => {
-    transformed.push({
-      year: report.year,
-      type: 'Yearly Revenue',
-      value: report.yearly_revenue,
-    });
-    transformed.push({
-      year: report.year,
-      type: 'Valuation',
-      value: report.valuation,
-    });
-  });
-
-  return transformed;
-};
-
-const groupDataByYear = (
-  data: FinancialDataPoint[]
-): Record<string, FinancialDataPoint[]> => {
-  return data.reduce((acc, curr) => {
-    const year = curr.year.toString();
-    if (!acc[year]) {
-      acc[year] = [];
-    }
-    acc[year].push(curr);
-    return acc;
-  }, {} as Record<string, FinancialDataPoint[]>);
+const separateDataByYear = (data: FinancialReport[]) => {
+  return data.map((item) => ({
+    year: item.year,
+    datasets: [
+      {
+        label: 'Yearly Revenue',
+        data: [item.yearly_revenue],
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        barPercentage: 0.2,
+      },
+      {
+        label: 'Valuation',
+        data: [item.valuation],
+        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+        barPercentage: 0.2,
+      },
+    ],
+  }));
 };
 
 const FinancialReport: FC<FinancialReportProps> = ({
@@ -62,48 +48,17 @@ const FinancialReport: FC<FinancialReportProps> = ({
   addUrl,
   editUrl,
 }) => {
-  const primaryAxis = useMemo<AxisOptions<FinancialDataPoint>>(
-    () => ({
-      getValue: (d: FinancialDataPoint) => d.type,
-    }),
-    []
+  const separatedData = separateDataByYear(data || []);
+
+  ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend
   );
 
-  const secondaryAxis = useMemo<AxisOptions<FinancialDataPoint>>(
-    () => ({
-      getValue: (d: FinancialDataPoint) => d.value,
-      elementType: 'bar',
-    }),
-    []
-  );
-
-  const chartData = useMemo(() => {
-    if (!data) return [];
-
-    return [
-      {
-        label: 'Yearly Revenue',
-        data: transformFinancialData(data).filter(
-          (d) => d.type === 'Yearly Revenue'
-        ),
-      },
-      {
-        label: 'Valuation',
-        data: transformFinancialData(data).filter(
-          (d) => d.type === 'Valuation'
-        ),
-      },
-    ];
-  }, [data]);
-
-  const groupedData = useMemo(() => {
-    if (!data) return [];
-
-    return groupDataByYear(transformFinancialData(data));
-  }, [data]);
-  
-  console.log('chartData', chartData)
-  console.log('groupedData', groupedData)
   return (
     <>
       <div className='pb-4'>
@@ -124,28 +79,27 @@ const FinancialReport: FC<FinancialReportProps> = ({
         </div>
         <Separator className='mt-4 lg:mt-0' />
       </div>
-      {data ? (
-        <>
-          {Object.entries(groupedData).map(([year]) => (
-            <Card key={year} className='mb-6 h-full w-full'>
-              <CardTitle className='p-4 mx-4 pl-1 text-lg'>
-                Financial Report {year}
-              </CardTitle>
-              <ResizableBox className='mx-4 h-[300px] w-80 sm:w-96 md:w-[780px]'>
-                <Chart
-                  options={{
-                    data: chartData,
-                    primaryAxis,
-                    secondaryAxes: [secondaryAxis],
-                  }}
-                />
-              </ResizableBox>
-            </Card>
-          ))}
-        </>
-      ) : (
-        <p>No financial report information found.</p>
-      )}
+      <div className='flex flex-row gap-4'>
+        {separatedData.map((yearData, index) => (
+          <Card key={index} className='w-full h-full'>
+            <Bar
+              className='p-4'
+              data={{
+                labels: [yearData.year.toString()],
+                datasets: yearData.datasets,
+              }}
+              options={{
+                responsive: true,
+                plugins: {
+                  legend: {
+                    position: 'top',
+                  },
+                },
+              }}
+            />
+          </Card>
+        ))}
+      </div>
     </>
   );
 };
