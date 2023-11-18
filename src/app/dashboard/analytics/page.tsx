@@ -8,7 +8,7 @@ const Page = () => {
   return (
     <div className='grid grid-flow-row gap-8'>
       <SummaryCards type={'dashboard'} />
-      <div className='grid grid-cols-1 md:grid-cols-[2fr,1fr] gap-8 items-center md:items-start justify-start md:justify-between'>
+      <div className='flex flex-col md:flex-row gap-8 items-center justify-between'>
         <StartupSectors />
         <GameStages />
       </div>
