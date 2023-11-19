@@ -61,7 +61,7 @@ const FinancialReport: FC<FinancialReportProps> = ({
 
   return (
     <>
-      <div className='pb-4'>
+      <div className='py-4'>
         <div className='flex flex-col pt-16 lg:pt-0 lg:flex-row items-start lg:items-center justify-between'>
           <Heading
             title='Financial Report'
