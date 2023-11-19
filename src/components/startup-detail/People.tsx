@@ -35,17 +35,14 @@ const People: FC<PeopleProps> = ({ data, addUrl, editUrl }) => {
           />
           <Link
             href={addUrl + '/people'}
-            className={cn(
-              buttonVariants({ size: 'lg' }),
-              'bg-tertiary hover:bg-tertiary hover:opacity-90'
-            )}
+            className={cn(buttonVariants({ size: 'lg' }))}
           >
             Add new
           </Link>
         </div>
         <Separator className='mt-4 lg:mt-0' />
       </div>
-      {data ? (
+      {data && data.length > 0 ? (
         <div className='grid grid-cols-1 md:grid-cols-2 gap-6 py-6 w-full lg:w-fit'>
           {data.map((person) => (
             <Card key={person.id}>
@@ -133,7 +130,7 @@ const People: FC<PeopleProps> = ({ data, addUrl, editUrl }) => {
           ))}
         </div>
       ) : (
-        <p>No people data</p>
+        <p className='text-sm text-muted-foreground'>No people data found.</p>
       )}
     </>
   );
