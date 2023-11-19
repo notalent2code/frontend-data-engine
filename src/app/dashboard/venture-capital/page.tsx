@@ -190,13 +190,6 @@ const Page = () => {
                         )}
                       </Card>
                     </div>
-                    {/* <Card className='flex flex-row items-center justify-start text-sm gap-2 p-4'>
-                        <span className='font-bold'>Investment Stage</span>
-                        <BarChart2 className='w-4 h-4' />
-                        {investor.investment_stage.map((stage) => (
-                          <span key={stage}>{enumReplacer(stage)}</span>
-                        ))}
-                      </Card> */}
                   </div>
                 </CardHeader>
                 <CardContent>
