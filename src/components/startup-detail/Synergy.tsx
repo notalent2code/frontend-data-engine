@@ -27,7 +27,7 @@ interface SynergyProps {
 
 const Synergy: FC<SynergyProps> = ({ data, addUrl, editUrl, deleteUrl }) => {
   return (
-    <div className='flex flex-col gap-6'>
+    <div className='flex flex-col gap-2'>
       <div className='pb-4'>
         <div className='flex flex-col pt-16 lg:pt-0 lg:flex-row items-start lg:items-center justify-between'>
           <Heading
@@ -99,7 +99,7 @@ const Synergy: FC<SynergyProps> = ({ data, addUrl, editUrl, deleteUrl }) => {
         </div>
       ) : (
         <p className='text-sm text-muted-foreground'>
-          No partnership data information found.
+          No partnership data found.
         </p>
       )}
     </div>
