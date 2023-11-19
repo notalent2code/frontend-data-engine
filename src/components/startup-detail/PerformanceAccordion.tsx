@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import { Performance } from '@prisma/client';
 import Link from 'next/link';
 import { FC } from 'react';
-import { buttonVariants } from '../ui/Button';
+import { buttonVariants } from '@/components/ui/Button';
 
 interface PerformanceAccordionProps {
   data: Performance[];
@@ -59,14 +59,12 @@ const PerformanceAccordion: FC<PerformanceAccordionProps> = ({
               </AccordionItem>
             )}
             {item.people_update && (
-              <AccordionItem value={`people-update-${item.year}`}>  
+              <AccordionItem value={`people-update-${item.year}`}>
                 <AccordionTrigger>People Update</AccordionTrigger>
                 <AccordionContent>
                   {isHtmlContent(item.people_update) ? (
                     <div
-                      dangerouslySetInnerHTML={parseMarkup(
-                        item.people_update
-                      )}
+                      dangerouslySetInnerHTML={parseMarkup(item.people_update)}
                     />
                   ) : (
                     <p>{item.people_update}</p>
@@ -80,9 +78,7 @@ const PerformanceAccordion: FC<PerformanceAccordionProps> = ({
                 <AccordionContent>
                   {isHtmlContent(item.product_update) ? (
                     <div
-                      dangerouslySetInnerHTML={parseMarkup(
-                        item.product_update
-                      )}
+                      dangerouslySetInnerHTML={parseMarkup(item.product_update)}
                     />
                   ) : (
                     <p>{item.product_update}</p>
@@ -96,9 +92,7 @@ const PerformanceAccordion: FC<PerformanceAccordionProps> = ({
                 <AccordionContent>
                   {isHtmlContent(item.action_plan) ? (
                     <div
-                      dangerouslySetInnerHTML={parseMarkup(
-                        item.action_plan
-                      )}
+                      dangerouslySetInnerHTML={parseMarkup(item.action_plan)}
                     />
                   ) : (
                     <p>{item.action_plan}</p>
