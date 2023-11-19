@@ -5,12 +5,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/Select';
-import { SelectOption } from '@/types';
+import { StartupSelectOption } from '@/types';
 import { FC } from 'react';
 
 interface SelectDropdownProps {
   name: string;
-  options: SelectOption[];
+  options: StartupSelectOption[];
   // eslint-disable-next-line no-unused-vars
   onChange: (value: string) => void;
 }
@@ -18,7 +18,7 @@ interface SelectDropdownProps {
 const SelectDropdown: FC<SelectDropdownProps> = ({ name, options, onChange }) => {
   return (
     <Select onValueChange={onChange}>
-      <SelectTrigger className='w-[200px] bg-white'>
+      <SelectTrigger className='flex w-fit gap-2 bg-white'>
         <SelectValue placeholder={name} />
       </SelectTrigger>
       <SelectContent>
