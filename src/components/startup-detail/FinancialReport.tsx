@@ -23,24 +23,20 @@ interface FinancialReportProps {
   editUrl: string;
 }
 
-const separateDataByYear = (data: FinancialReport[]) => {
-  return data.map((item) => ({
-    year: item.year,
-    datasets: [
-      {
-        label: 'Yearly Revenue',
-        data: [item.yearly_revenue],
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-        barPercentage: 0.2,
-      },
-      {
-        label: 'Valuation',
-        data: [item.valuation],
-        backgroundColor: 'rgba(53, 162, 235, 0.5)',
-        barPercentage: 0.2,
-      },
-    ],
-  }));
+const transformFinancialData = (data: FinancialReport[] | null) => {
+  const labels: string[] = [];
+  const yearlyRevenueData: number[] = []; // Assuming these are numbers and not bigint
+  const valuationData: number[] = []; // Adjust data types if necessary
+
+  if (!data) return null;
+
+  data.forEach((item) => {
+    labels.push(item.year.toString());
+    yearlyRevenueData.push(Number(item.yearly_revenue)); // Convert bigint to number if needed
+    valuationData.push(Number(item.valuation)); // Convert bigint to number if needed
+  });
+
+  return { labels, yearlyRevenueData, valuationData };
 };
 
 const FinancialReport: FC<FinancialReportProps> = ({
@@ -48,7 +44,11 @@ const FinancialReport: FC<FinancialReportProps> = ({
   addUrl,
   editUrl,
 }) => {
-  const separatedData = separateDataByYear(data || []);
+  const transformedData = transformFinancialData(data);
+
+  if (!transformedData) return <p>No financial report information found.</p>;
+
+  const { labels, yearlyRevenueData, valuationData } = transformedData;
 
   ChartJS.register(
     CategoryScale,
@@ -67,39 +67,77 @@ const FinancialReport: FC<FinancialReportProps> = ({
             title='Financial Report'
             description='Startup financial report information.'
           />
-          <Link
-            href={addUrl + '/financial-report'}
-            className={cn(
-              buttonVariants({ size: 'lg' }),
-              'bg-tertiary hover:bg-tertiary hover:opacity-90'
+          <div className='flex gap-4'>
+            <Link
+              href={addUrl + '/financial-report'}
+              className={cn(buttonVariants({ size: 'lg' }))}
+            >
+              Add new
+            </Link>
+            {data && data.length > 0 && (
+              <Link
+                href={editUrl + '/financial-report'}
+                className={cn(buttonVariants({ size: 'lg' }))}
+              >
+                Edit
+              </Link>
             )}
-          >
-            Add new
-          </Link>
+          </div>
         </div>
         <Separator className='mt-4 lg:mt-0' />
       </div>
-      <div className='flex flex-row gap-4'>
-        {separatedData.map((yearData, index) => (
-          <Card key={index} className='w-full h-full'>
+      {data && data.length > 0 ? (
+        <div className='flex flex-col lg:flex-row gap-4'>
+          <Card className='w-full'>
             <Bar
               className='p-4'
               data={{
-                labels: [yearData.year.toString()],
-                datasets: yearData.datasets,
+                labels,
+                datasets: [
+                  {
+                    label: 'Yearly Revenue',
+                    data: yearlyRevenueData,
+                    backgroundColor: '#78C1F3',
+                    barPercentage: 0.2,
+                  },
+                ],
               }}
               options={{
                 responsive: true,
                 plugins: {
-                  legend: {
-                    position: 'top',
-                  },
+                  legend: { position: 'top' },
                 },
               }}
             />
           </Card>
-        ))}
-      </div>
+          <Card className='w-full'>
+            <Bar
+              className='p-4'
+              data={{
+                labels,
+                datasets: [
+                  {
+                    label: 'Valuation',
+                    data: valuationData,
+                    backgroundColor: '#B08BBB',
+                    barPercentage: 0.2,
+                  },
+                ],
+              }}
+              options={{
+                responsive: true,
+                plugins: {
+                  legend: { position: 'top' },
+                },
+              }}
+            />
+          </Card>
+        </div>
+      ) : (
+        <p className='text-sm text-muted-foreground'>
+          No financial report data found.
+        </p>
+      )}
     </>
   );
 };
