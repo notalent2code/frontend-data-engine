@@ -1,11 +1,17 @@
 'use client';
 
+import {
+  Pagination,
+  startupCategoryOptions,
+  startupStageOptions,
+  startupStatusOptions,
+} from '@/types';
 import Image from 'next/image';
 import Link from 'next/link';
+import { X } from 'lucide-react';
 import { FC, useEffect, useRef, useState } from 'react';
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { Role, Startup } from '@prisma/client';
-import { Pagination, startupCategoryOptions } from '@/types';
 import { Badge } from '@/components/ui/Badge';
 import useAxiosPrivate from '@/hooks/use-axios-private';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
@@ -15,7 +21,7 @@ import { Loader } from '@/components/ui/Loader';
 import SelectDropdown from '@/components/SelectDropdown';
 import { enumReplacer } from '@/util';
 import { useAuthStore } from '@/store/auth-store';
-import { buttonVariants } from '@/components/ui/Button';
+import { Button, buttonVariants } from '@/components/ui/Button';
 
 interface StartupsProps {
   link: 'catalog' | 'detail';
@@ -27,6 +33,8 @@ const Startups: FC<StartupsProps> = ({ link }) => {
   const role = useAuthStore((state) => state.session?.role);
   const queryClient = useQueryClient();
   const [category, setCategory] = useState<string>('');
+  const [startupStage, setStartupStage] = useState<string>('');
+  const [startupStatus, setStartupStatus] = useState<string>('');
   const [search, setSearch] = useState<string>('');
   const debouncedSearch = useDebounce(search, 750);
 
@@ -34,20 +42,38 @@ const Startups: FC<StartupsProps> = ({ link }) => {
     setCategory(value);
   };
 
+  const handleStageChange = (value: string) => {
+    setStartupStage(value);
+  };
+
+  const handleStatusChange = (value: string) => {
+    setStartupStatus(value);
+  };
+
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
 
-  const fetchStartups = async ({ pageParam = 1 }) => {
-    let url = `startups?page=${pageParam}`;
-    if (!!category) {
-      url += `&category=${category}`;
-    }
-    if (!!debouncedSearch) {
-      url += `&search=${debouncedSearch}`;
-    }
+  const resetFilters = () => {
+    setCategory('');
+    setStartupStage('');
+    setStartupStatus('');
+    setSearch('');
+  };
 
-    const { data: result } = await axios.get(url);
+  const fetchStartups = async ({ pageParam = 1 }) => {
+    const queryParams = [
+      `page=${pageParam}`,
+      category && `category=${category}`,
+      startupStage && `stage=${startupStage}`,
+      startupStatus && `status=${startupStatus}`,
+      debouncedSearch && `search=${debouncedSearch}`,
+    ]
+      .filter(Boolean)
+      .join('&');
+
+    const response = await axios.get(`startups?${queryParams}`);
+    const result = response.data;
 
     return {
       meta: result.meta as Pagination,
@@ -64,7 +90,13 @@ const Startups: FC<StartupsProps> = ({ link }) => {
     isFetchingNextPage,
     status,
   } = useInfiniteQuery({
-    queryKey: ['startups', category, debouncedSearch],
+    queryKey: [
+      'startups',
+      category,
+      startupStage,
+      startupStatus,
+      debouncedSearch,
+    ],
     queryFn: fetchStartups,
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.meta.next,
@@ -72,15 +104,21 @@ const Startups: FC<StartupsProps> = ({ link }) => {
 
   useEffect(() => {
     queryClient.invalidateQueries({
-      queryKey: ['startups', category, debouncedSearch],
+      queryKey: [
+        'startups',
+        category,
+        startupStage,
+        startupStatus,
+        debouncedSearch,
+      ],
     });
-  }, [category, debouncedSearch, queryClient]);
+  }, [category, startupStage, startupStatus, debouncedSearch, queryClient]);
 
   useEffect(() => {
     const options: IntersectionObserverInit = {
-      root: null, // Use the viewport as the root
+      root: null,
       rootMargin: '0px',
-      threshold: 1.0, // 1.0 means when the element is fully in the viewport
+      threshold: 1.0,
     };
 
     const handleIntersection: IntersectionObserverCallback = (entries: any) => {
@@ -104,7 +142,6 @@ const Startups: FC<StartupsProps> = ({ link }) => {
     }
 
     return () => {
-      // Clean up the observer when the component unmounts
       if (observerRefValue) {
         observer.unobserve(observerRefValue);
       }
@@ -118,13 +155,30 @@ const Startups: FC<StartupsProps> = ({ link }) => {
   ) : (
     <div>
       <div className='flex flex-col md:flex-row gap-4 items-center justify-start md:justify-between pb-4 md:pb-2'>
-        <div className='flex flex-col md:flex-row md:gap-4 items-center'>
+        <div className='flex flex-col md:flex-row md:gap-4 w-fit items-center'>
           <Search autoFocus value={search} onChange={handleSearchChange} />
           <SelectDropdown
             name={enumReplacer(category) || 'Category'}
             options={startupCategoryOptions}
             onChange={handleCategoryChange}
           />
+          <SelectDropdown
+            name={enumReplacer(startupStage) || 'Stage'}
+            options={startupStageOptions}
+            onChange={handleStageChange}
+          />
+          <SelectDropdown
+            name={enumReplacer(startupStatus) || 'Status'}
+            options={startupStatusOptions}
+            onChange={handleStatusChange}
+          />
+          <Button
+            onClick={() => resetFilters()}
+            variant={'outline'}
+            className='bg-white'
+          >
+            <X />
+          </Button>
         </div>
         {role === Role.ADMIN ? (
           <Link href='/admin/startups/new' className={buttonVariants()}>
