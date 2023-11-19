@@ -48,14 +48,13 @@ const Service: FC<ServiceProps> = ({ data, addUrl, editUrl }) => {
       {data && data.length > 0 ? (
         <div className='flex flex-row gap-4'>
           {data.map((service) => (
-            <Card key={service.id}>
-              <div className='flex flex-row items-start justify-start gap-4'>
-                <Card className='flex flex-row items-center justify-start text-sm gap-2 p-4'>
-                  <span className='font-bold'>{service.title}</span>
-                  <BadgePercent className='w-4 h-4' />
-                  {service.revenue_percentage} %
-                </Card>
-              </div>
+            <Card
+              key={service.id}
+              className='flex flex-row items-center justify-start text-sm gap-2 p-4'
+            >
+              <span className='font-bold'>{service.title}</span>
+              <BadgePercent className='w-4 h-4' />
+              {service.revenue_percentage} %
             </Card>
           ))}
         </div>
