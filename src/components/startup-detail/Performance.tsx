@@ -22,18 +22,21 @@ const Performance: FC<PerformanceProps> = ({ data, addUrl, editUrl }) => {
         </CardTitle>
         <Link
           href={addUrl + '/performance'}
-          className={cn(
-            buttonVariants({ size: 'lg' }),
-            'bg-tertiary hover:bg-tertiary hover:opacity-90'
-          )}
+          className={cn(buttonVariants({ size: 'lg' }))}
         >
           Add new
         </Link>
       </CardHeader>
       <Separator />
-      <CardContent className='py-0 px-4 text-sm'>
-        <PerformanceAccordion data={data} editUrl={editUrl} />
-      </CardContent>
+      {data && data.length > 0 ? (
+        <CardContent className='py-0 px-4 text-sm'>
+          <PerformanceAccordion data={data} editUrl={editUrl} />
+        </CardContent>
+      ) : (
+        <p className='text-sm text-muted-foreground p-4'>
+          No performance data found.
+        </p>
+      )}
     </Card>
   );
 };
