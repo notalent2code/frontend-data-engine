@@ -58,7 +58,7 @@ const Contract: FC<ContractProps> = ({ data, addUrl, editUrl }) => {
               <CardTitle>PKS Number: {data.pks_number}</CardTitle>
             </Card>
           </CardHeader>
-          <CardContent className='flex flex-col gap-6'>
+          <CardContent className='flex flex-col gap-2'>
             <div className='flex flex-row items-start justify-start gap-4'>
               <Card className='flex flex-row items-center justify-start text-sm gap-2 p-4'>
                 <span className='font-bold'>Signed PKS Date:</span>
@@ -76,7 +76,7 @@ const Contract: FC<ContractProps> = ({ data, addUrl, editUrl }) => {
                 {formatCurrencyValue(parseInt(data.total_funding.toString()))}
               </Card>
             </div>
-            <h3 className='text-lg font-bold'>Convertible Note</h3>
+            <h1 className='text-lg font-bold'>Convertible Note</h1>
             <div className='flex flex-row items-start justify-start gap-4'>
               <Card className='flex flex-row items-center justify-start text-sm gap-2 p-4'>
                 <span className='font-bold'>CN Percentage:</span>
