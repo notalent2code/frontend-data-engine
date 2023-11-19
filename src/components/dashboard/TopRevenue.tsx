@@ -5,10 +5,10 @@ import { StartupRevenue } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { AxisOptions, Chart, Datum } from 'react-charts';
-import { Loader } from '../ui/Loader';
+import { Loader } from '@/components/ui/Loader';
 import { Card, CardTitle } from '@/components/ui/Card';
 import ResizableBox from '../ResizeableBox';
-import { Separator } from '../ui/Separator';
+import { Separator } from '@/components/ui/Separator';
 import { formatToIndonesianRupiah } from '@/util';
 
 type ChartData = {
