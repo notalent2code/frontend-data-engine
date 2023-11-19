@@ -18,6 +18,9 @@ import People from '@/components/startup-detail/People';
 import Performance from '@/components/startup-detail/Performance';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
+import Contract from '@/components/startup-detail/Contract';
+import FinancialReport from '@/components/startup-detail/FinancialReport';
+import Synergy from '@/components/startup-detail/Synergy';
 
 const Page = () => {
   const axios = useAxiosPrivate();
@@ -26,6 +29,7 @@ const Page = () => {
 
   const addUrl = `/dashboard/startups/${startupId}/add`;
   const editUrl = `/dashboard/startups/${startupId}/edit`;
+  const deleteUrl = `/dashboard/startups/${startupId}/delete`;
 
   const fetchStartupDetail = async () => {
     try {
@@ -172,17 +176,38 @@ const Page = () => {
                 editUrl={editUrl}
               />
 
-              <Alumni
-                data={startup.Alumni}
-                addUrl={addUrl}
-                editUrl={editUrl}
-              />
+              <Alumni data={startup.Alumni} addUrl={addUrl} editUrl={editUrl} />
             </div>
           </div>
         </TabsContent>
 
         <TabsContent value='people' className='pt-6'>
           <People data={startup.People} addUrl={addUrl} editUrl={editUrl} />
+        </TabsContent>
+
+        <TabsContent value='financial' className='pt-6'>
+          <div className='flex flex-col gap-6'>
+            <Contract
+              data={startup.Contract}
+              addUrl={addUrl}
+              editUrl={editUrl}
+            />
+
+            <FinancialReport
+              data={startup.FinancialReport}
+              addUrl={addUrl}
+              editUrl={editUrl}
+            />
+          </div>
+        </TabsContent>
+
+        <TabsContent value='partnership' className='pt-6'>
+          <Synergy
+            data={startup.Synergy}
+            addUrl={addUrl}
+            editUrl={editUrl}
+            deleteUrl={deleteUrl}
+          />
         </TabsContent>
       </Tabs>
     </div>
