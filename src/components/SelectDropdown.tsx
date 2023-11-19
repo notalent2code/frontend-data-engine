@@ -5,12 +5,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/Select';
-import { StartupSelectOption } from '@/types';
+import { InvestorSelectOption, StartupSelectOption } from '@/types';
 import { FC } from 'react';
 
 interface SelectDropdownProps {
   name: string;
-  options: StartupSelectOption[];
+  options: StartupSelectOption[] | InvestorSelectOption[];
   // eslint-disable-next-line no-unused-vars
   onChange: (value: string) => void;
 }
