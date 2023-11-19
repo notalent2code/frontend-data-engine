@@ -72,8 +72,7 @@ const Startups: FC<StartupsProps> = ({ link }) => {
       .filter(Boolean)
       .join('&');
 
-    const response = await axios.get(`startups?${queryParams}`);
-    const result = response.data;
+    const {data: result} = await axios.get(`startups?${queryParams}`);
 
     return {
       meta: result.meta as Pagination,
@@ -177,7 +176,7 @@ const Startups: FC<StartupsProps> = ({ link }) => {
             variant={'outline'}
             className='bg-white'
           >
-            <X />
+            <X color='gray' />
           </Button>
         </div>
         {role === Role.ADMIN ? (
