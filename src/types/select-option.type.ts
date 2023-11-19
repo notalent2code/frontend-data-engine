@@ -1,14 +1,30 @@
 import { enumReplacer } from "@/util";
-import { StartupCategory } from "@prisma/client";
+import { StartupCategory, StartupStage, StartupStatus } from "@prisma/client";
 
 const startupCategoryValues = Object.values(StartupCategory);
+const startupStageValues = Object.values(StartupStage);
+const startupStatusValues = Object.values(StartupStatus);
 
-export type SelectOption = {
+export type StartupSelectOption = {
   label: string;
-  value: StartupCategory;
+  value: StartupCategory | StartupStage | StartupStatus;
 };
 
-export const startupCategoryOptions: SelectOption[] = startupCategoryValues.map(
+export const startupCategoryOptions: StartupSelectOption[] = startupCategoryValues.map(
+  (value) => ({
+    value,
+    label: enumReplacer(value),
+  })
+);
+
+export const startupStageOptions: StartupSelectOption[] = startupStageValues.map(
+  (value) => ({
+    value,
+    label: enumReplacer(value),
+  })
+);
+
+export const startupStatusOptions: StartupSelectOption[] = startupStatusValues.map(
   (value) => ({
     value,
     label: enumReplacer(value),
