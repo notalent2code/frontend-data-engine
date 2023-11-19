@@ -3,10 +3,10 @@ import { cn } from '@/lib/utils';
 import { Alumni } from '@prisma/client';
 import Link from 'next/link';
 import { FC } from 'react';
-import { buttonVariants } from '../ui/Button';
-import { Separator } from '../ui/Separator';
+import { buttonVariants } from '@/components/ui/Button';
+import { Separator } from '@/components/ui/Separator';
 import { enumReplacer } from '@/util';
-import { Badge } from '../ui/Badge';
+import { Badge } from '@/components/ui/Badge';
 import { Check, X } from 'lucide-react';
 
 interface AlumniProps {
@@ -35,10 +35,7 @@ const Alumni: FC<AlumniProps> = ({ data, addUrl, editUrl }) => {
         ) : (
           <Link
             href={addUrl + '/alumni'}
-            className={cn(
-              buttonVariants({ size: 'lg' }),
-              'bg-tertiary hover:bg-tertiary hover:opacity-90'
-            )}
+            className={cn(buttonVariants({ size: 'lg' }))}
           >
             Add new
           </Link>
@@ -145,7 +142,7 @@ const Alumni: FC<AlumniProps> = ({ data, addUrl, editUrl }) => {
             </Badge>
           </div>
         ) : (
-          <p>No alumni data</p>
+          <p className='text-sm text-muted-foreground'>No alumni data found.</p>
         )}
       </CardContent>
     </Card>
