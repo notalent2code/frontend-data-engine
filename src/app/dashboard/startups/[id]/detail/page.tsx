@@ -24,6 +24,8 @@ import Synergy from '@/components/startup-detail/Synergy';
 import Strategic from '@/components/startup-detail/Strategic';
 import Service from '@/components/startup-detail/Service';
 import ProblemSolutionFit from '@/components/startup-detail/ProblemSolutionFit';
+import GrowthStrategy from '@/components/startup-detail/GrowthStrategy';
+import RevenueModel from '@/components/startup-detail/RevenueModel';
 
 const Page = () => {
   const axios = useAxiosPrivate();
@@ -224,6 +226,20 @@ const Page = () => {
 
           <ProblemSolutionFit
             data={startup.ProblemSolutionFit}
+            addUrl={addUrl}
+            editUrl={editUrl}
+          />
+        </TabsContent>
+
+        <TabsContent value='revenue-growth' className='flex flex-col gap-2 pt-6'>
+          <GrowthStrategy
+            data={startup.GrowthStrategy}
+            addUrl={addUrl}
+            editUrl={editUrl}
+          />
+
+          <RevenueModel
+            data={startup.RevenueModel}
             addUrl={addUrl}
             editUrl={editUrl}
           />
