@@ -8,7 +8,7 @@ import { enumReplacer } from '@/util';
 import { Loader } from '@/components/ui/Loader';
 import { Card, CardTitle } from '@/components/ui/Card';
 import { GameStages } from '@/types';
-import { Separator } from '../ui/Separator';
+import { Separator } from '@/components/ui/Separator';
 
 const transformData = (data: GameStages) => {
   let labels: Array<keyof GameStages> = [];
