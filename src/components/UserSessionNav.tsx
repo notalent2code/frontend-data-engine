@@ -83,7 +83,7 @@ export function UserSessionNav() {
           </DropdownMenuItem>
         </Link>
 
-        <Link href='/startups'>
+        <Link href='/dashboard/startups'>
           <DropdownMenuItem className='cursor-pointer'>
             <Trophy className='mr-2 h-4 w-4' />
             Portfolio
