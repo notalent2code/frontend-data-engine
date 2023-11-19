@@ -27,7 +27,7 @@ interface PeopleProps {
 const People: FC<PeopleProps> = ({ data, addUrl, editUrl }) => {
   return (
     <>
-      <div className='pb-4'>
+      <div className='flex flex-col gap-2'>
         <div className='flex flex-col pt-16 lg:pt-0 lg:flex-row items-start lg:items-center justify-between'>
           <Heading
             title='People'
