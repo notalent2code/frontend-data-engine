@@ -21,6 +21,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
 import Contract from '@/components/startup-detail/Contract';
 import FinancialReport from '@/components/startup-detail/FinancialReport';
 import Synergy from '@/components/startup-detail/Synergy';
+import Strategic from '@/components/startup-detail/Strategic';
+import Service from '@/components/startup-detail/Service';
+import ProblemSolutionFit from '@/components/startup-detail/ProblemSolutionFit';
 
 const Page = () => {
   const axios = useAxiosPrivate();
@@ -186,7 +189,7 @@ const Page = () => {
         </TabsContent>
 
         <TabsContent value='financial' className='pt-6'>
-          <div className='flex flex-col gap-6'>
+          <div className='flex flex-col gap-2'>
             <Contract
               data={startup.Contract}
               addUrl={addUrl}
@@ -207,6 +210,22 @@ const Page = () => {
             addUrl={addUrl}
             editUrl={editUrl}
             deleteUrl={deleteUrl}
+          />
+        </TabsContent>
+
+        <TabsContent value='strategy' className='flex flex-col gap-2 pt-6'>
+          <Strategic
+            data={startup.Strategic}
+            addUrl={addUrl}
+            editUrl={editUrl}
+          />
+
+          <Service data={startup.Service} addUrl={addUrl} editUrl={editUrl} />
+
+          <ProblemSolutionFit
+            data={startup.ProblemSolutionFit}
+            addUrl={addUrl}
+            editUrl={editUrl}
           />
         </TabsContent>
       </Tabs>
