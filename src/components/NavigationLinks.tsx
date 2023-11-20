@@ -44,7 +44,7 @@ export const investorLinks: NavigationLink[] = [
   },
   {
     name: 'Venture Capital',
-    path: '/dashboard/venture-capital',
+    path: '/dashboard/venture-capital/me/detail',
     icon: Landmark,
   },
 ];
