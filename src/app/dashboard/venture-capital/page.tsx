@@ -65,7 +65,7 @@ const Page = () => {
     isFetchingNextPage,
     status,
   } = useInfiniteQuery({
-    queryKey: ['venture-capitals', instrumentType, debouncedSearch],
+    queryKey: ['investor', instrumentType, debouncedSearch],
     queryFn: fetchVentureCapitals,
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage!.meta.next,
@@ -73,7 +73,7 @@ const Page = () => {
 
   useEffect(() => {
     queryClient.invalidateQueries({
-      queryKey: ['venture-capitals', instrumentType, debouncedSearch],
+      queryKey: ['investor', instrumentType, debouncedSearch],
     });
   }, [instrumentType, debouncedSearch, queryClient]);
 
@@ -144,7 +144,7 @@ const Page = () => {
           {page.data.map((investor) => (
             <Link
               key={investor.id}
-              href={`/dashboard/venture-capital/${investor.id}`}
+              href={`/dashboard/venture-capital/${investor.id}/detail`}
             >
               <Card
                 key={investor.id}
