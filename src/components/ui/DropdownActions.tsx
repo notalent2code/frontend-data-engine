@@ -12,8 +12,8 @@ import Link from 'next/link';
 import { FC } from 'react';
 
 interface DropdownActionsProps {
-  editUrl: string;
-  deleteUrl: string;
+  editUrl?: string;
+  deleteUrl?: string;
 }
 
 const DropdownActions: FC<DropdownActionsProps> = ({ editUrl, deleteUrl }) => {
@@ -29,19 +29,25 @@ const DropdownActions: FC<DropdownActionsProps> = ({ editUrl, deleteUrl }) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end' className='w-[160px]'>
-        <Link href={editUrl}>
-          <DropdownMenuItem className='cursor-pointer'>
-            <Edit className='h-4 w-4 mr-2' />
-            Edit
-          </DropdownMenuItem>
-        </Link>
-        <DropdownMenuSeparator />
-        <Link href={deleteUrl}>
-          <DropdownMenuItem className='cursor-pointer'>
-            <Delete className='h-4 w-4 mr-2' />
-            Delete
-          </DropdownMenuItem>
-        </Link>
+        {editUrl && (
+          <Link href={editUrl}>
+            <DropdownMenuItem className='cursor-pointer'>
+              <Edit className='h-4 w-4 mr-2' />
+              Edit
+            </DropdownMenuItem>
+          </Link>
+        )}
+        {deleteUrl && (
+          <>
+            <DropdownMenuSeparator />
+            <Link href={deleteUrl}>
+              <DropdownMenuItem className='cursor-pointer'>
+                <Delete className='h-4 w-4 mr-2' />
+                Delete
+              </DropdownMenuItem>
+            </Link>
+          </>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );
