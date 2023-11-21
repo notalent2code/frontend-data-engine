@@ -13,12 +13,14 @@ import useAxiosPrivate from '@/hooks/use-axios-private';
 import { Card, CardHeader, CardTitle } from '@/components/ui/Card';
 import { CircleDollarSign, Cookie, Goal, Newspaper, Tag } from 'lucide-react';
 import { enumReplacer, formatCurrencyValue, parseInvestorArray } from '@/util';
+import StartupToInvest from '@/components/venture-capital/StartupToInvest';
 
 const Page = () => {
   const axios = useAxiosPrivate();
   const { id: investorId } = useParams();
   const role = useAuthStore((state) => state.session?.role);
 
+  const addUrl = `/dashboard/venture-capital/${investorId}/add`;
   const editUrl = `/dashboard/venture-capital/${investorId}/edit`;
 
   const fetchVentureCapitalDetail = async () => {
@@ -69,7 +71,7 @@ const Page = () => {
           </div>
           {data && role === 'ADMIN' ? (
             <Link
-              href={editUrl}
+              href={editUrl + '/detail'}
               className={cn(
                 buttonVariants({ size: 'lg' }),
                 'bg-tertiary hover:bg-tertiary hover:opacity-90'
@@ -136,6 +138,12 @@ const Page = () => {
           </Card>
         ) : null}
       </Card>
+
+      <StartupToInvest
+        investorId={investorId as string}
+        addUrl={addUrl}
+        editUrl={editUrl}
+      />
     </div>
   ) : (
     <p className='text-sm text-muted-foreground'>
