@@ -20,6 +20,7 @@ import { Separator } from '@/components/ui/Separator';
 import { buttonVariants } from '@/components/ui/Button';
 import useAxiosPrivate from '@/hooks/use-axios-private';
 import DropdownActions from '@/components/ui/DropdownActions';
+import { enumReplacer } from '@/util';
 
 interface StartupToInvestProps {
   investorId: string;
@@ -100,7 +101,7 @@ const StartupToInvest: FC<StartupToInvestProps> = ({
                 {data.map((item) => (
                   <TableRow key={item.id}>
                     <TableCell className='p-5'>{item.startup.name}</TableCell>
-                    <TableCell>{item.progress}</TableCell>
+                    <TableCell>{enumReplacer(item.progress)}</TableCell>
                     <TableCell className='max-w-md'>{item.detail}</TableCell>
                     <TableCell>
                       {dayjs(item.updated_at).format('DD MMM YYYY')}
