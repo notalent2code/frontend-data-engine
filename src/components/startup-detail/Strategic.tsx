@@ -53,7 +53,7 @@ const Strategic: FC<StrategicProps> = ({
       {data && data.length > 0 ? (
         <Card className='p-4'>
           {data.map((item) => (
-            <div key={item.id} className=''>
+            <div key={item.id}>
               <div className='grid grid-flow-row py-2'>
                 <div className='flex flex-row justify-start gap-2'>
                   {item.business_point === 'BUSINESS_MODEL' ? (
