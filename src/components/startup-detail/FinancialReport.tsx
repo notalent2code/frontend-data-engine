@@ -25,15 +25,15 @@ interface FinancialReportProps {
 
 const transformFinancialData = (data: FinancialReport[] | null) => {
   const labels: string[] = [];
-  const yearlyRevenueData: number[] = []; // Assuming these are numbers and not bigint
-  const valuationData: number[] = []; // Adjust data types if necessary
+  const yearlyRevenueData: number[] = [];
+  const valuationData: number[] = [];
 
   if (!data) return null;
 
   data.forEach((item) => {
     labels.push(item.year.toString());
-    yearlyRevenueData.push(Number(item.yearly_revenue)); // Convert bigint to number if needed
-    valuationData.push(Number(item.valuation)); // Convert bigint to number if needed
+    yearlyRevenueData.push(Number(item.yearly_revenue));
+    valuationData.push(Number(item.valuation));
   });
 
   return { labels, yearlyRevenueData, valuationData };
