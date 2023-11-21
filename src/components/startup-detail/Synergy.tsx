@@ -46,7 +46,7 @@ const Synergy: FC<SynergyProps> = ({ data, addUrl, editUrl, deleteUrl }) => {
       {data && data.length > 0 ? (
         <div className='w-fit'>
           <Card>
-            <div className='overflow-auto max-h-[400px] max-w-6xl'>
+            <div className='overflow-auto max-h-[500px] max-w-6xl'>
               <Table>
                 <TableHeader>
                   <TableRow>
