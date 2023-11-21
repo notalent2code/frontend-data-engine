@@ -35,6 +35,7 @@ const Page = () => {
   const addUrl = `/dashboard/startups/${startupId}/add`;
   const editUrl = `/dashboard/startups/${startupId}/edit`;
   const deleteUrl = `/dashboard/startups/${startupId}/delete`;
+  const onepagerUrl = `/onepager/${startupId}`;
 
   const fetchStartupDetail = async () => {
     try {
@@ -81,20 +82,31 @@ const Page = () => {
       </Card>
 
       <Tabs defaultValue='summary'>
-        <TabsList className='grid grid-cols-2 md:grid-cols-3 lg:grid-flow-col items-center justify-start w-fit gap-2'>
-          {/* Startup & Location & Alumni & Performance */}
-          <TabsTrigger value='summary'>Summary</TabsTrigger>
-          {/* People */}
-          <TabsTrigger value='people'>People</TabsTrigger>
-          {/* Contract & FinancialReport */}
-          <TabsTrigger value='financial'>Financial</TabsTrigger>
-          {/* StartupToInvest & Synergy */}
-          <TabsTrigger value='partnership'>Partnership</TabsTrigger>
-          {/* Strategic & Service & ProblemSolutionFit */}
-          <TabsTrigger value='strategy'>Strategy</TabsTrigger>
-          {/* GrowthStrategy & RevenueModel */}
-          <TabsTrigger value='revenue-growth'>Revenue Growth</TabsTrigger>
-        </TabsList>
+        <div className='flex flex-row gap-2 items-center'>
+          <TabsList className='grid grid-cols-2 md:grid-cols-3 lg:grid-flow-col items-center justify-start w-fit gap-2'>
+            {/* Startup & Location & Alumni & Performance */}
+            <TabsTrigger value='summary'>Summary</TabsTrigger>
+            {/* People */}
+            <TabsTrigger value='people'>People</TabsTrigger>
+            {/* Contract & FinancialReport */}
+            <TabsTrigger value='financial'>Financial</TabsTrigger>
+            {/* StartupToInvest & Synergy */}
+            <TabsTrigger value='partnership'>Partnership</TabsTrigger>
+            {/* Strategic & Service & ProblemSolutionFit */}
+            <TabsTrigger value='strategy'>Strategy</TabsTrigger>
+            {/* GrowthStrategy & RevenueModel */}
+            <TabsTrigger value='revenue-growth'>Revenue Growth</TabsTrigger>
+          </TabsList>
+          <Link
+            href={onepagerUrl}
+            className={cn(
+              buttonVariants({ size: 'sm' }),
+              'bg-white text-tertiary hover:bg-white hover:opacity-90'
+            )}
+          >
+            Onepager
+          </Link>
+        </div>
         <TabsContent value='summary' className='pt-6'>
           <div className='flex flex-row gap-4'>
             <Card className='w-1/2'>
@@ -231,7 +243,10 @@ const Page = () => {
           />
         </TabsContent>
 
-        <TabsContent value='revenue-growth' className='flex flex-col gap-2 pt-6'>
+        <TabsContent
+          value='revenue-growth'
+          className='flex flex-col gap-2 pt-6'
+        >
           <GrowthStrategy
             data={startup.GrowthStrategy}
             addUrl={addUrl}
