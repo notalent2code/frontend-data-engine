@@ -104,7 +104,7 @@ const StartupToInvest: FC<StartupToInvestProps> = ({
                     <TableCell>{enumReplacer(item.progress)}</TableCell>
                     <TableCell className='max-w-md'>{item.detail}</TableCell>
                     <TableCell>
-                      {dayjs(item.updated_at).format('DD MMM YYYY')}
+                      {dayjs(item.updated_at).format('D MMMM YYYY')}
                     </TableCell>
                     <TableCell>
                       <DropdownActions
