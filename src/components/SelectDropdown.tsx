@@ -5,17 +5,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/Select';
-import { InvestorSelectOption, StartupSelectOption } from '@/types';
+import {
+  InvestorSelectOption,
+  StartupSelectOption,
+  UserRoleSelectOption,
+} from '@/types';
 import { FC } from 'react';
 
 interface SelectDropdownProps {
   name: string;
-  options: StartupSelectOption[] | InvestorSelectOption[];
+  options:
+    | StartupSelectOption[]
+    | InvestorSelectOption[]
+    | UserRoleSelectOption[];
   // eslint-disable-next-line no-unused-vars
   onChange: (value: string) => void;
 }
 
-const SelectDropdown: FC<SelectDropdownProps> = ({ name, options, onChange }) => {
+const SelectDropdown: FC<SelectDropdownProps> = ({
+  name,
+  options,
+  onChange,
+}) => {
   return (
     <Select onValueChange={onChange}>
       <SelectTrigger className='flex w-fit gap-2 bg-white'>
@@ -24,11 +35,11 @@ const SelectDropdown: FC<SelectDropdownProps> = ({ name, options, onChange }) =>
       <SelectContent>
         {options.map((item) => (
           <SelectItem
-            key={item.value}  
+            key={item.value}
             value={item.value}
             className='flex items-center space-x-2'
           >
-            {item.label}  
+            {item.label}
           </SelectItem>
         ))}
       </SelectContent>
