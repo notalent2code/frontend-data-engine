@@ -193,7 +193,7 @@ const Startups: FC<StartupsProps> = ({ link }) => {
               href={
                 link === 'detail'
                   ? `/dashboard/startups/${startup.id}/${link}`
-                  : `/startups/${startup.id}/${link}`
+                  : `/${link}/${startup.id}`
               }
             >
               <Card
