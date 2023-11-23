@@ -7,7 +7,7 @@ import Register from '@/components/auth/Register';
 
 const Page: FC = () => {
   return (
-    <div className='max-w-2xl mx-auto h-fit pt-[100px] space-y-4'>
+    <div className='max-w-2xl mx-auto h-fit space-y-4'>
       <Link
         href='/'
         className={cn(
