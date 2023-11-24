@@ -1,16 +1,5 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Input } from '@/components/ui/Input';
-import { Button } from '@/components/ui/Button';
-import { Loader } from '@/components/ui/Loader';
-import axios from '@/lib/axios';
-import { toast } from 'react-hot-toast';
-import { useRouter } from 'next/navigation';
-import { AxiosError } from 'axios';
 import {
   Form,
   FormControl,
@@ -19,6 +8,17 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/Form';
+import * as z from 'zod';
+import { AxiosError } from 'axios';
+import { toast } from 'react-hot-toast';
+import { useForm } from 'react-hook-form';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Input } from '@/components/ui/Input';
+import { Button } from '@/components/ui/Button';
+import { Loader } from '@/components/ui/Loader';
+import { zodResolver } from '@hookform/resolvers/zod';
+import useAxiosPrivate from '@/hooks/use-axios-private';
 
 const registerSchema = z
   .object({
@@ -35,9 +35,10 @@ const registerSchema = z
   });
 
 const RegisterForm = () => {
+  const axios = useAxiosPrivate();
+  const router = useRouter();
   const [isMounted, setIsMounted] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const router = useRouter();
 
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
