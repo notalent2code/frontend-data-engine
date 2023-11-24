@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/Table';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { X } from 'lucide-react';
+import { Check, Edit, X } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { User } from '@prisma/client';
 import Search from '@/components/Search';
@@ -21,9 +21,16 @@ import { useDebounce } from '@uidotdev/usehooks';
 import { Pagination, userRoleOptions } from '@/types';
 import useAxiosPrivate from '@/hooks/use-axios-private';
 import SelectDropdown from '@/components/SelectDropdown';
-import DropdownActions from '@/components/ui/DropdownActions';
 import { Button, buttonVariants } from '@/components/ui/Button';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { Badge } from '@/components/ui/Badge';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/DropdownMenu';
+import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 
 const Page = () => {
   const axios = useAxiosPrivate();
@@ -84,6 +91,15 @@ const Page = () => {
     });
   }, [page, role, debouncedSearch, queryClient]);
 
+  const handleDeactivateInvestor = async (id: string) => {
+    try {
+      await axios.delete(`users/${id}`);
+      toast.success('User deactivated successfully');
+    } catch (error: any) {
+      toast.error('Failed to deactivate user');
+    }
+  };
+
   return isLoading ? (
     <p>Loading...</p>
   ) : error ? (
@@ -137,12 +153,43 @@ const Page = () => {
                   <TableCell className='px-4 py-1'>
                     {item.phone_number}
                   </TableCell>
-                  <TableCell className='px-4 py-1'>{item.role}</TableCell>
-                  <TableCell className='px-4 py-1'>{item.status}</TableCell>
                   <TableCell className='px-4 py-1'>
-                    <DropdownActions
-                      editUrl={`/dashboard/manage-users/edit/${item.id}`}
-                    />
+                    {item.role === 'ADMIN' ? (
+                      <Badge>Admin</Badge>
+                    ) : (
+                      <Badge variant='secondary'>Investor</Badge>
+                    )}
+                  </TableCell>
+                  <TableCell className='px-4 py-1'>
+                    {item.status === 'ACTIVE' ? (
+                      <Check className=' text-white text-xs bg-green-500 rounded-full p-1' />
+                    ) : (
+                      <X className=' text-white text-xs bg-red-500 rounded-full p-1' />
+                    )}
+                  </TableCell>
+                  <TableCell className='px-4 py-1'>
+                    {item.role === 'INVESTOR' && item.status === 'ACTIVE' && (
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant='ghost'
+                            className='flex h-8 w-8 p-0 data-[state=open]:bg-muted'
+                          >
+                            <DotsHorizontalIcon className='h-4 w-4' />
+                            <span className='sr-only'>Open menu</span>
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align='end' className='w-[160px]'>
+                          <DropdownMenuItem
+                            className='cursor-pointer'
+                            onClick={() => handleDeactivateInvestor(item.id)}
+                          >
+                            <Edit className='h-4 w-4 mr-2' />
+                            Deactivate
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}
