@@ -87,7 +87,7 @@ const Page = () => {
   return isLoading ? (
     <Loader />
   ) : profile ? (
-    <div className=''>
+    <div>
       <div className='pb-4'>
         <div className='flex flex-col pt-16 lg:pt-0 lg:flex-row items-start lg:items-center justify-between'>
           <Heading
