@@ -69,7 +69,7 @@ export function UserSessionNav() {
           </DropdownMenuItem>
         </Link>
 
-        <Link href='/profile'>
+        <Link href='/dashboard/profile'>
           <DropdownMenuItem className='cursor-pointer'>
             <User2 className='mr-2 h-4 w-4' />
             Profile
