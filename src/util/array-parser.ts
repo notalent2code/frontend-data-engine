@@ -6,3 +6,9 @@ export const parseInvestorArray = (focusedSectors: string[]): string[] => {
   }
   return focusedSectors;
 }
+
+export const createCommaSeparatedArray = (inputString: string): string[] => {
+  const upperCaseInput = inputString.toUpperCase();
+  const sectorsArray = upperCaseInput.split(',').map(sector => sector.trim());
+  return sectorsArray.filter(sector => sector !== '');
+}
