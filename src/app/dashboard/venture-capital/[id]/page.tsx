@@ -7,21 +7,34 @@ import { Loader } from '@/components/ui/Loader';
 import { Investor, Role } from '@prisma/client';
 import { useQuery } from '@tanstack/react-query';
 import { useAuthStore } from '@/store/auth-store';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { buttonVariants } from '@/components/ui/Button';
 import useAxiosPrivate from '@/hooks/use-axios-private';
 import { Card, CardHeader, CardTitle } from '@/components/ui/Card';
 import { CircleDollarSign, Cookie, Goal, Newspaper, Tag } from 'lucide-react';
 import { enumReplacer, formatCurrencyValue, parseInvestorArray } from '@/util';
 import StartupToInvest from '@/components/venture-capital/StartupToInvest';
+import DeleteAlertDialog from '@/components/DeleteAlertDialog';
+import toast from 'react-hot-toast';
 
 const Page = () => {
   const axios = useAxiosPrivate();
+  const router = useRouter();
   const { id: investorId } = useParams();
   const role = useAuthStore((state) => state.session?.role);
 
   const addUrl = `/dashboard/venture-capital/${investorId}/add`;
   const editUrl = `/dashboard/venture-capital/${investorId}/edit`;
+
+  const deleteVentureCapital = async () => {
+    try {
+      await axios.delete(`investor/${investorId}`);
+      toast.success('Successfully deleted venture capital!');
+      router.push('/dashboard/venture-capital');
+    } catch (error: any) {
+      toast.error('Failed to delete venture capital!');
+    }
+  };
 
   const fetchVentureCapitalDetail = async () => {
     let url = '';
@@ -54,9 +67,7 @@ const Page = () => {
       <Card>
         <CardHeader className='flex flex-row items-center justify-between px-4'>
           <div>
-            <CardTitle>
-              <h1 className='text-2xl font-bold'>{data.name}</h1>
-            </CardTitle>
+            <CardTitle className='text-2xl font-bold'>{data.name}</CardTitle>
             <div className='flex flex-row gap-2 pt-2'>
               <Badge className='text-xs bg-primary'>
                 {enumReplacer(data.instrument_type)}
@@ -70,15 +81,18 @@ const Page = () => {
             </div>
           </div>
           {data && role === 'ADMIN' ? (
-            <Link
-              href={editUrl + '/detail'}
-              className={cn(
-                buttonVariants({ size: 'lg' }),
-                'bg-tertiary hover:bg-tertiary hover:opacity-90'
-              )}
-            >
-              Edit
-            </Link>
+            <div className='flex flex-row gap-2'>
+              <Link
+                href={editUrl}
+                className={cn(
+                  buttonVariants({ size: 'lg' }),
+                  'bg-tertiary hover:bg-tertiary hover:opacity-90'
+                )}
+              >
+                Edit
+              </Link>
+              <DeleteAlertDialog deleteFn={deleteVentureCapital} />
+            </div>
           ) : null}
         </CardHeader>
       </Card>
