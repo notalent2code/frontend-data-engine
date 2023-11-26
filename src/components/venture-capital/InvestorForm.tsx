@@ -54,8 +54,8 @@ const baseInvestorSchema = z.object({
   investor_classification: InvestorClassificationSchema,
   focused_sectors: z.string(),
   remarks: z.string(),
-  ticket_size_min: z.coerce.number(),
-  ticket_size_max: z.coerce.number(),
+  ticket_size_min: z.string(),
+  ticket_size_max: z.string(),
 });
 const createInvestorSchema = baseInvestorSchema;
 const editInvestorSchema = baseInvestorSchema.partial();
@@ -83,16 +83,20 @@ const InvestorForm: FC<InvestorFormProps> = ({ variant, initialData }) => {
   const editForm = useForm<z.infer<typeof baseInvestorSchema>>({
     resolver: zodResolver(editInvestorSchema),
     defaultValues: {
-      investment_stage: [],
+      investment_stage: initialData?.investment_stage,
     },
   });
 
   const onSubmitCreate = async (data: z.infer<typeof createInvestorSchema>) => {
     try {
       const focused_sectors = createCommaSeparatedArray(data.focused_sectors);
-      await axios.post('/investor', { ...data, focused_sectors });
+      const { data: result } = await axios.post('/investor', {
+        ...data,
+        focused_sectors,
+      });
+
       toast.success('Investor created successfully!');
-      router.push('/dashboard/venture-capital');
+      router.push(`/dashboard/venture-capital/${result.id}`);
     } catch (error: any) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
@@ -109,13 +113,13 @@ const InvestorForm: FC<InvestorFormProps> = ({ variant, initialData }) => {
         focused_sectors = createCommaSeparatedArray(data.focused_sectors);
       }
 
-      await axios.put(`/investor/${initialData?.id}`, {
+      await axios.patch(`/investor/${initialData?.id}`, {
         ...data,
         focused_sectors,
       });
 
-      toast.success('Investor editd successfully!');
-      router.push('/dashboard/venture-capital');
+      toast.success('Investor edited successfully!');
+      router.back();
     } catch (error: any) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
@@ -145,627 +149,306 @@ const InvestorForm: FC<InvestorFormProps> = ({ variant, initialData }) => {
         <Separator className='mt-4 lg:mt-0' />
       </div>
 
-      {variant === 'create' ? (
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className='space-y-4'
-          >
-            <div className='flex flex-col w-1/2 gap-4'>
-              <FormField
-                control={createForm.control}
-                name='user_id'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>User ID</FormLabel>
-                    <FormControl>
-                      {initialData?.user_id ? (
-                        <Input
-                          autoFocus
-                          {...field}
-                          defaultValue={initialData?.user_id}
-                        />
-                      ) : (
-                        <Input autoFocus {...field} />
-                      )}
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={createForm.control}
-                name='name'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Investor Name</FormLabel>
-                    <FormControl>
-                      <Input {...field} defaultValue={initialData?.name} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={createForm.control}
-                name='appetites'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Appetites</FormLabel>
-                    <FormControl>
-                      <Textarea
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
+          <div className='flex flex-col w-1/2 gap-4'>
+            <FormField
+              control={form.control}
+              name='user_id'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>User ID</FormLabel>
+                  <FormControl>
+                    {initialData?.user_id ? (
+                      <Input
+                        autoFocus
                         {...field}
-                        defaultValue={initialData?.appetites}
+                        value={initialData?.user_id}
                       />
+                    ) : (
+                      <Input autoFocus {...field} />
+                    )}
+                  </FormControl>
+                  <FormDescription>
+                    This field is optional. Write user ID to assign investor
+                    data to a user.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='name'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Investor Name</FormLabel>
+                  <FormControl>
+                    <Input {...field} defaultValue={initialData?.name} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='appetites'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Appetites</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      {...field}
+                      defaultValue={initialData?.appetites}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='instrument_type'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Instrument Type</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        {initialData?.instrument_type ? (
+                          <SelectValue
+                            placeholder={enumReplacer(
+                              initialData?.instrument_type
+                            )}
+                          />
+                        ) : (
+                          <SelectValue placeholder='Select Instrument Type' />
+                        )}
+                      </SelectTrigger>
                     </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={createForm.control}
-                name='instrument_type'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Instrument Type</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          {initialData?.instrument_type ? (
-                            <SelectValue
-                              placeholder={enumReplacer(
-                                initialData?.instrument_type
-                              )}
-                            />
-                          ) : (
-                            <SelectValue placeholder='Select Instrument Type' />
-                          )}
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value='CN'>CN</SelectItem>
-                        <SelectItem value='EQUITY'>EQUITY</SelectItem>
-                        <SelectItem value='CN_EQUITY'>CN EQUITY</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={createForm.control}
-                name='investment_stage'
-                render={() => (
-                  <FormItem>
-                    <FormLabel>Investment Stage</FormLabel>
-                    {investmentStageCheckbox.map((item) => (
-                      <FormField
-                        key={item.value}
-                        control={createForm.control}
-                        name='investment_stage'
-                        render={({ field }) => {
-                          // Determine if the current item should be checked
-                          const isChecked =
-                            initialData?.investment_stage.includes(item.value);
+                    <SelectContent>
+                      <SelectItem value='CN'>CN</SelectItem>
+                      <SelectItem value='EQUITY'>EQUITY</SelectItem>
+                      <SelectItem value='CN_EQUITY'>CN EQUITY</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='investment_stage'
+              render={() => (
+                <FormItem>
+                  <FormLabel>Investment Stage</FormLabel>
+                  {investmentStageCheckbox.map((item) => (
+                    <FormField
+                      key={item.value}
+                      control={form.control}
+                      name='investment_stage'
+                      render={({ field }) => {
+                        // Determine if the current item should be checked
+                        const isChecked = field.value?.includes(item.value);
 
-                          return (
-                            <FormItem
-                              key={item.value}
-                              className='flex flex-row items-start space-x-3 space-y-0'
-                            >
-                              <FormControl>
-                                <Checkbox
-                                  {...field}
-                                  value={item.value}
-                                  checked={
-                                    isChecked
-                                      ? true
-                                      : field.value?.includes(item.value)
+                        return (
+                          <FormItem
+                            key={item.value}
+                            className='flex flex-row items-start space-x-3 space-y-0'
+                          >
+                            <FormControl>
+                              <Checkbox
+                                {...field}
+                                value={item.value}
+                                checked={
+                                  isChecked
+                                    ? true
+                                    : field.value?.includes(item.value)
+                                }
+                                onCheckedChange={(checked) => {
+                                  if (checked) {
+                                    field.onChange([
+                                      ...(field.value || []),
+                                      item.value,
+                                    ]);
+                                  } else {
+                                    field.onChange(
+                                      (field.value || []).filter(
+                                        (value) => value !== item.value
+                                      )
+                                    );
                                   }
-                                  onCheckedChange={(checked) => {
-                                    if (checked) {
-                                      field.onChange([
-                                        ...(field.value || []),
-                                        item.value,
-                                      ]);
-                                    } else {
-                                      field.onChange(
-                                        (field.value || []).filter(
-                                          (value) => value !== item.value
-                                        )
-                                      );
-                                    }
-                                  }}
-                                />
-                              </FormControl>
-                              <FormLabel className='font-normal'>
-                                {item.label}
-                              </FormLabel>
-                            </FormItem>
-                          );
-                        }}
-                      />
-                    ))}
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                                }}
+                              />
+                            </FormControl>
+                            <FormLabel className='font-normal'>
+                              {item.label}
+                            </FormLabel>
+                          </FormItem>
+                        );
+                      }}
+                    />
+                  ))}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-              <FormField
-                control={createForm.control}
-                name='investment_syndication'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Investment Syndication</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={initialData?.investment_syndication}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          {initialData?.investment_syndication ? (
-                            <SelectValue
-                              placeholder={enumReplacer(
-                                initialData?.investment_syndication
-                              )}
-                            />
-                          ) : (
-                            <SelectValue placeholder='Select Investment Syndication' />
-                          )}
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value='FOLLOW'>FOLLOW</SelectItem>
-                        <SelectItem value='LEAD'>LEAD</SelectItem>
-                        <SelectItem value='DOMINANT_FOLLOW'>
-                          DOMINANT FOLLOW
-                        </SelectItem>
-                        <SelectItem value='DOMINANT_LEAD'>
-                          DOMINANT LEAD
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={createForm.control}
-                name='investor_classification'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Investor Classification</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={initialData?.investor_classification}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          {initialData?.investor_classification ? (
-                            <SelectValue
-                              placeholder={enumReplacer(
-                                initialData?.investor_classification
-                              )}
-                            />
-                          ) : (
-                            <SelectValue placeholder='Select Investor Classification' />
-                          )}
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value='MAINSTREAM_AGNOSTIC'>
-                          MAINSTREAM AGNOSTIC
-                        </SelectItem>
-                        <SelectItem value='SPECIFIC_SECTOR'>
-                          SPECIFIC SECTOR
-                        </SelectItem>
-                        <SelectItem value='IMPACT_INVESTMENT'>
-                          IMPACT INVESTMENT
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={createForm.control}
-                name='focused_sectors'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Focused Sectors</FormLabel>
+            <FormField
+              control={form.control}
+              name='investment_syndication'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Investment Syndication</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={initialData?.investment_syndication}
+                  >
                     <FormControl>
-                      <Textarea
-                        {...field}
-                        placeholder='FINTECH,BIG DATA,GAMES,AGRICULTURE'
-                        defaultValue={initialData?.focused_sectors}
-                      />
+                      <SelectTrigger>
+                        {initialData?.investment_syndication ? (
+                          <SelectValue
+                            placeholder={enumReplacer(
+                              initialData?.investment_syndication
+                            )}
+                          />
+                        ) : (
+                          <SelectValue placeholder='Select Investment Syndication' />
+                        )}
+                      </SelectTrigger>
                     </FormControl>
-                    <FormDescription>
-                      Separate each sector with a comma without space.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={createForm.control}
-                name='remarks'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Remarks</FormLabel>
+                    <SelectContent>
+                      <SelectItem value='FOLLOW'>FOLLOW</SelectItem>
+                      <SelectItem value='LEAD'>LEAD</SelectItem>
+                      <SelectItem value='DOMINANT_FOLLOW'>
+                        DOMINANT FOLLOW
+                      </SelectItem>
+                      <SelectItem value='DOMINANT_LEAD'>
+                        DOMINANT LEAD
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='investor_classification'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Investor Classification</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={initialData?.investor_classification}
+                  >
                     <FormControl>
-                      <Textarea
-                        {...field}
-                        defaultValue={initialData?.remarks}
-                      />
+                      <SelectTrigger>
+                        {initialData?.investor_classification ? (
+                          <SelectValue
+                            placeholder={enumReplacer(
+                              initialData?.investor_classification
+                            )}
+                          />
+                        ) : (
+                          <SelectValue placeholder='Select Investor Classification' />
+                        )}
+                      </SelectTrigger>
                     </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={createForm.control}
-                name='ticket_size_min'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Ticket Size Min</FormLabel>
-                    <FormControl>
-                      <Input
-                        type='number'
-                        {...field}
-                        defaultValue={
-                          Number(initialData?.ticket_size_min) || ''
-                        }
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      Minimum ticket size in USD.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={createForm.control}
-                name='ticket_size_max'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Ticket Size Max</FormLabel>
-                    <FormControl>
-                      <Input
-                        type='number'
-                        {...field}
-                        defaultValue={
-                          Number(initialData?.ticket_size_max) || ''
-                        }
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      Maximum ticket size in USD.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <Button type='submit'>Submit</Button>
-          </form>
-        </Form>
-      ) : (
-        <Form {...editForm}>
-          <form
-            onSubmit={editForm.handleSubmit(onSubmitEdit)}
-            className='space-y-4'
-          >
-            <div className='flex flex-col w-1/2 gap-4'>
-              <FormField
-                control={editForm.control}
-                name='user_id'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>User ID</FormLabel>
-                    <FormControl>
-                      {initialData?.user_id ? (
-                        <Input
-                          autoFocus
-                          {...field}
-                          defaultValue={initialData?.user_id}
-                        />
-                      ) : (
-                        <Input autoFocus {...field} />
-                      )}
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={editForm.control}
-                name='name'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Investor Name</FormLabel>
-                    <FormControl>
-                      <Input {...field} defaultValue={initialData?.name} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={editForm.control}
-                name='appetites'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Appetites</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        {...field}
-                        defaultValue={initialData?.appetites}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={editForm.control}
-                name='instrument_type'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Instrument Type</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          {initialData?.instrument_type ? (
-                            <SelectValue
-                              placeholder={enumReplacer(
-                                initialData?.instrument_type
-                              )}
-                            />
-                          ) : (
-                            <SelectValue placeholder='Select Instrument Type' />
-                          )}
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value='CN'>CN</SelectItem>
-                        <SelectItem value='EQUITY'>EQUITY</SelectItem>
-                        <SelectItem value='CN_EQUITY'>CN EQUITY</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={editForm.control}
-                name='investment_stage'
-                render={() => (
-                  <FormItem>
-                    <FormLabel>Investment Stage</FormLabel>
-                    {investmentStageCheckbox.map((item) => (
-                      <FormField
-                        key={item.value}
-                        control={editForm.control}
-                        name='investment_stage'
-                        render={({ field }) => {
-                          // Determine if the current item should be checked
-                          const isChecked =
-                            initialData?.investment_stage.includes(item.value);
-
-                          return (
-                            <FormItem
-                              key={item.value}
-                              className='flex flex-row items-start space-x-3 space-y-0'
-                            >
-                              <FormControl>
-                                <Checkbox
-                                  {...field}
-                                  value={item.value}
-                                  checked={
-                                    isChecked
-                                      ? true
-                                      : field.value?.includes(item.value)
-                                  }
-                                  onCheckedChange={(checked) => {
-                                    if (checked) {
-                                      field.onChange([
-                                        ...(field.value || []),
-                                        item.value,
-                                      ]);
-                                    } else {
-                                      field.onChange(
-                                        (field.value || []).filter(
-                                          (value) => value !== item.value
-                                        )
-                                      );
-                                    }
-                                  }}
-                                />
-                              </FormControl>
-                              <FormLabel className='font-normal'>
-                                {item.label}
-                              </FormLabel>
-                            </FormItem>
-                          );
-                        }}
-                      />
-                    ))}
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={editForm.control}
-                name='investment_syndication'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Investment Syndication</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={initialData?.investment_syndication}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          {initialData?.investment_syndication ? (
-                            <SelectValue
-                              placeholder={enumReplacer(
-                                initialData?.investment_syndication
-                              )}
-                            />
-                          ) : (
-                            <SelectValue placeholder='Select Investment Syndication' />
-                          )}
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value='FOLLOW'>FOLLOW</SelectItem>
-                        <SelectItem value='LEAD'>LEAD</SelectItem>
-                        <SelectItem value='DOMINANT_FOLLOW'>
-                          DOMINANT FOLLOW
-                        </SelectItem>
-                        <SelectItem value='DOMINANT_LEAD'>
-                          DOMINANT LEAD
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={editForm.control}
-                name='investor_classification'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Investor Classification</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={initialData?.investor_classification}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          {initialData?.investor_classification ? (
-                            <SelectValue
-                              placeholder={enumReplacer(
-                                initialData?.investor_classification
-                              )}
-                            />
-                          ) : (
-                            <SelectValue placeholder='Select Investor Classification' />
-                          )}
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value='MAINSTREAM_AGNOSTIC'>
-                          MAINSTREAM AGNOSTIC
-                        </SelectItem>
-                        <SelectItem value='SPECIFIC_SECTOR'>
-                          SPECIFIC SECTOR
-                        </SelectItem>
-                        <SelectItem value='IMPACT_INVESTMENT'>
-                          IMPACT INVESTMENT
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={editForm.control}
-                name='focused_sectors'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Focused Sectors</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        {...field}
-                        placeholder='FINTECH,BIG DATA,GAMES,AGRICULTURE'
-                        defaultValue={initialData?.focused_sectors}
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      Separate each sector with a comma without space.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={editForm.control}
-                name='remarks'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Remarks</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        {...field}
-                        defaultValue={initialData?.remarks}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={editForm.control}
-                name='ticket_size_min'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Ticket Size Min</FormLabel>
-                    <FormControl>
-                      <Input
-                        type='number'
-                        {...field}
-                        defaultValue={
-                          Number(initialData?.ticket_size_min) || ''
-                        }
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      Minimum ticket size in USD.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={editForm.control}
-                name='ticket_size_max'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Ticket Size Max</FormLabel>
-                    <FormControl>
-                      <Input
-                        type='number'
-                        {...field}
-                        defaultValue={
-                          Number(initialData?.ticket_size_max) || ''
-                        }
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      Maximum ticket size in USD.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <Button type='submit'>Submit</Button>
-          </form>
-        </Form>
-      )}
+                    <SelectContent>
+                      <SelectItem value='MAINSTREAM_AGNOSTIC'>
+                        MAINSTREAM AGNOSTIC
+                      </SelectItem>
+                      <SelectItem value='SPECIFIC_SECTOR'>
+                        SPECIFIC SECTOR
+                      </SelectItem>
+                      <SelectItem value='IMPACT_INVESTMENT'>
+                        IMPACT INVESTMENT
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='focused_sectors'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Focused Sectors</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      {...field}
+                      placeholder='FINTECH,BIG DATA,GAMES,AGRICULTURE'
+                      defaultValue={initialData?.focused_sectors}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Separate each sector with a comma without space.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='remarks'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Remarks</FormLabel>
+                  <FormControl>
+                    <Textarea {...field} defaultValue={initialData?.remarks} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='ticket_size_min'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Ticket Size Min</FormLabel>
+                  <FormControl>
+                    <Input
+                      type='number'
+                      {...field}
+                      defaultValue={Number(initialData?.ticket_size_min) || ''}
+                    />
+                  </FormControl>
+                  <FormDescription>Minimum ticket size in USD.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='ticket_size_max'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Ticket Size Max</FormLabel>
+                  <FormControl>
+                    <Input
+                      type='number'
+                      {...field}
+                      defaultValue={
+                        initialData?.ticket_size_max.toString() || ''
+                      }
+                    />
+                  </FormControl>
+                  <FormDescription>Maximum ticket size in USD.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <Button type='submit'>Submit</Button>
+        </form>
+      </Form>
     </div>
   );
 };
