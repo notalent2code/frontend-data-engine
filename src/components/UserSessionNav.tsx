@@ -30,11 +30,10 @@ export function UserSessionNav() {
       document.cookie =
         'isLoggedIn=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax;';
 
+      router.push('/auth/login');
       const { data } = await axios.delete('/auth/logout');
 
       toast.success(data.message);
-
-      router.push('/auth/login');
     } catch (error: any) {
       toast.error(error.response.data.message);
     }
