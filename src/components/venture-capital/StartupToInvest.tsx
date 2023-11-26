@@ -65,7 +65,7 @@ const StartupToInvest: FC<StartupToInvestProps> = ({
     <Loader />
   ) : error ? (
     <p>Error: {error.message}</p>
-  ) : data && data.length > 0 ? (
+  ) : (
     <div>
       <div className='py-6'>
         <div className='flex flex-col pt-16 lg:pt-0 lg:flex-row items-start lg:items-center justify-between'>
@@ -84,45 +84,47 @@ const StartupToInvest: FC<StartupToInvestProps> = ({
         </div>
         <Separator className='mt-4 lg:mt-0' />
       </div>
-      <div className=''>
-        <Card>
-          <div className='overflow-auto max-h-[500px]'>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className='p-5'>Startup</TableHead>
-                  <TableHead>Progress</TableHead>
-                  <TableHead>Detail</TableHead>
-                  <TableHead>Date Updated</TableHead>
-                  <TableHead>Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {data.map((item) => (
-                  <TableRow key={item.id}>
-                    <TableCell className='p-5'>{item.startup.name}</TableCell>
-                    <TableCell>{enumReplacer(item.progress)}</TableCell>
-                    <TableCell className='max-w-md'>{item.detail}</TableCell>
-                    <TableCell>
-                      {dayjs(item.updated_at).format('D MMMM YYYY')}
-                    </TableCell>
-                    <TableCell>
-                      <DropdownActions
-                        editUrl={`${editUrl}/startup-to-invest/${item.id}`}
-                      />
-                    </TableCell>
+      {data && data.length > 0 ? (
+        <div>
+          <Card>
+            <div className='overflow-auto max-h-[500px]'>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className='p-5'>Startup</TableHead>
+                    <TableHead>Progress</TableHead>
+                    <TableHead>Detail</TableHead>
+                    <TableHead>Date Updated</TableHead>
+                    <TableHead>Actions</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        </Card>
-      </div>
+                </TableHeader>
+                <TableBody>
+                  {data.map((item) => (
+                    <TableRow key={item.id}>
+                      <TableCell className='p-5'>{item.startup.name}</TableCell>
+                      <TableCell>{enumReplacer(item.progress)}</TableCell>
+                      <TableCell className='max-w-md'>{item.detail}</TableCell>
+                      <TableCell>
+                        {dayjs(item.updated_at).format('D MMMM YYYY')}
+                      </TableCell>
+                      <TableCell>
+                        <DropdownActions
+                          editUrl={`${editUrl}/startup-to-invest/${item.id}`}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </Card>
+        </div>
+      ) : (
+        <p className='text-sm text-muted-foreground'>
+          No startup to invest data found.
+        </p>
+      )}
     </div>
-  ) : (
-    <p className='text-sm text-muted-foreground'>
-      No startup to invest data found.
-    </p>
   );
 };
 
