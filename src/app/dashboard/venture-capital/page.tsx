@@ -134,7 +134,7 @@ const Page = () => {
           </Button>
         </div>
         {role === Role.ADMIN ? (
-          <Link href='/admin/startups/new' className={buttonVariants()}>
+          <Link href='/dashboard/venture-capital/create' className={buttonVariants()}>
             Add new
           </Link>
         ) : null}
@@ -144,7 +144,7 @@ const Page = () => {
           {page.data.map((investor) => (
             <Link
               key={investor.id}
-              href={`/dashboard/venture-capital/${investor.id}/detail`}
+              href={`/dashboard/venture-capital/${investor.id}`}
             >
               <Card
                 key={investor.id}
