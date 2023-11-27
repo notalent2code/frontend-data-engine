@@ -34,26 +34,27 @@ import {
   InvestmentSyndicationSchema,
   InvestorClassificationSchema,
 } from '@/../prisma/generated/zod';
+
 import * as z from 'zod';
-import { FC, useEffect, useState } from 'react';
+import { cn } from '@/lib/utils';
 import { AxiosError } from 'axios';
 import { toast } from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/Input';
+import { FC, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/Button';
+import { useDebounce } from '@uidotdev/usehooks';
 import { Heading } from '@/components/ui/Heading';
 import { Checkbox } from '@/components/ui/Checkbox';
 import { Textarea } from '@/components/ui/TextArea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Separator } from '@/components/ui/Separator';
 import useAxiosPrivate from '@/hooks/use-axios-private';
+import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { InvestmentStage, Investor, User } from '@prisma/client';
 import { createCommaSeparatedArray, enumReplacer } from '@/util';
-import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons';
-import { cn } from '@/lib/utils';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useDebounce } from '@uidotdev/usehooks';
 
 // Form schema
 const baseInvestorSchema = z.object({
