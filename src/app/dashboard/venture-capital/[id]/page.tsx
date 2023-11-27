@@ -23,8 +23,7 @@ const Page = () => {
   const { id: investorId } = useParams();
   const role = useAuthStore((state) => state.session?.role);
 
-  const addUrl = `/dashboard/venture-capital/${investorId}/add`;
-  const editUrl = `/dashboard/venture-capital/${investorId}/edit`;
+  const baseUrl = `/dashboard/venture-capital/${investorId}`;
 
   const deleteVentureCapital = async () => {
     try {
@@ -83,7 +82,7 @@ const Page = () => {
           {data && role === 'ADMIN' ? (
             <div className='flex flex-row gap-2'>
               <Link
-                href={editUrl}
+                href={baseUrl + '/edit'}
                 className={cn(
                   buttonVariants({ size: 'lg' }),
                   'bg-tertiary hover:bg-tertiary hover:opacity-90'
@@ -155,8 +154,7 @@ const Page = () => {
 
       <StartupToInvest
         investorId={investorId as string}
-        addUrl={addUrl}
-        editUrl={editUrl}
+        baseUrl={baseUrl}
       />
     </div>
   ) : (
