@@ -24,8 +24,7 @@ import { enumReplacer } from '@/util';
 
 interface StartupToInvestProps {
   investorId: string;
-  addUrl: string;
-  editUrl: string;
+  baseUrl: string;
 }
 
 type Startup = {
@@ -42,8 +41,7 @@ type ExtendedStartupToInvest = StartupToInvest & {
 };
 
 const StartupToInvest: FC<StartupToInvestProps> = ({
-  addUrl,
-  editUrl,
+  baseUrl,
   investorId,
 }) => {
   const axios = useAxiosPrivate();
@@ -75,7 +73,7 @@ const StartupToInvest: FC<StartupToInvestProps> = ({
           />
           {role === 'ADMIN' && (
             <Link
-              href={addUrl + '/startup-to-invest'}
+              href={`${baseUrl}/startup-to-invest/create`}
               className={cn(buttonVariants({ size: 'lg' }))}
             >
               Add new
@@ -109,7 +107,7 @@ const StartupToInvest: FC<StartupToInvestProps> = ({
                       </TableCell>
                       <TableCell>
                         <DropdownActions
-                          editUrl={`${editUrl}/startup-to-invest/${item.id}`}
+                          editUrl={`${baseUrl}/startup-to-invest/${item.id}/edit`}
                         />
                       </TableCell>
                     </TableRow>
