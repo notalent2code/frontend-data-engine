@@ -1,6 +1,18 @@
 'use client';
 
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/Popover';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from '@/components/ui/Command';
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -23,7 +35,7 @@ import {
   InvestorClassificationSchema,
 } from '@/../prisma/generated/zod';
 import * as z from 'zod';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { AxiosError } from 'axios';
 import { toast } from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
@@ -36,9 +48,14 @@ import { Textarea } from '@/components/ui/TextArea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Separator } from '@/components/ui/Separator';
 import useAxiosPrivate from '@/hooks/use-axios-private';
-import { InvestmentStage, Investor } from '@prisma/client';
+import { InvestmentStage, Investor, User } from '@prisma/client';
 import { createCommaSeparatedArray, enumReplacer } from '@/util';
+import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons';
+import { cn } from '@/lib/utils';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useDebounce } from '@uidotdev/usehooks';
 
+// Form schema
 const baseInvestorSchema = z.object({
   user_id: z.string().optional(),
   name: z.string(),
@@ -66,6 +83,19 @@ const investmentStageCheckbox = investmentStageOptions.map((value) => ({
   label: enumReplacer(value),
 }));
 
+// Users dropdown
+type UserDropdown = {
+  label: string;
+  value: string;
+};
+
+const userMapping = (users: User[]): UserDropdown[] => {
+  return users.map((user) => ({
+    value: user.id,
+    label: `${user.first_name} ${user.last_name}`,
+  }));
+};
+
 interface InvestorFormProps {
   variant: 'create' | 'edit';
   initialData?: Investor;
@@ -74,6 +104,34 @@ interface InvestorFormProps {
 const InvestorForm: FC<InvestorFormProps> = ({ variant, initialData }) => {
   const axios = useAxiosPrivate();
   const router = useRouter();
+  const queryClient = useQueryClient();
+  const [users, setUsers] = useState<UserDropdown[]>([]);
+  const [search, setSearch] = useState<string>('');
+  const debounceSearch = useDebounce(search, 300);
+
+  // Users dropdown
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  };
+
+  const fetchUsers = async () => {
+    const { data: result } = await axios.get(`/users?search=${debounceSearch}`);
+    const users = result.data as User[];
+    setUsers(userMapping(users));
+  };
+
+  const { isLoading } = useQuery({
+    queryKey: ['users', debounceSearch],
+    queryFn: fetchUsers,
+  });
+
+  useEffect(() => {
+    queryClient.invalidateQueries({
+      queryKey: ['users', debounceSearch],
+    });
+  }, [debounceSearch, queryClient]);
+
+  // Forms
   const createForm = useForm<z.infer<typeof baseInvestorSchema>>({
     resolver: zodResolver(createInvestorSchema),
     defaultValues: {
@@ -156,22 +214,69 @@ const InvestorForm: FC<InvestorFormProps> = ({ variant, initialData }) => {
               control={form.control}
               name='user_id'
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>User ID</FormLabel>
-                  <FormControl>
-                    {initialData?.user_id ? (
-                      <Input
-                        autoFocus
-                        {...field}
-                        value={initialData?.user_id}
-                      />
-                    ) : (
-                      <Input autoFocus {...field} />
-                    )}
-                  </FormControl>
+                <FormItem className='flex flex-col'>
+                  <FormLabel>User</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant='outline'
+                          role='combobox'
+                          className={cn(
+                            'w-[250px] justify-between',
+                            !field.value && 'text-muted-foreground'
+                          )}
+                        >
+                          {field.value
+                            ? users.find((user) => user.value === field.value)
+                                ?.label
+                            : initialData?.user_id || 'Select user'}
+                          <CaretSortIcon className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className='w-[200px] p-0'>
+                      <Command>
+                        <CommandInput
+                          placeholder='Search user...'
+                          className='h-9'
+                          onChangeCapture={handleSearchChange}
+                        />
+                        {isLoading ? (
+                          <CommandEmpty className='py-6 text-center text-sm'>
+                            Loading...
+                          </CommandEmpty>
+                        ) : (
+                          <CommandEmpty className='py-6 text-center text-sm'>
+                            No user found.
+                          </CommandEmpty>
+                        )}
+                        <CommandGroup>
+                          {users.map((user) => (
+                            <CommandItem
+                              value={user.label}
+                              key={user.value}
+                              onSelect={() => {
+                                form.setValue('user_id', user.value);
+                              }}
+                            >
+                              {user.label}
+                              <CheckIcon
+                                className={cn(
+                                  'ml-auto h-4 w-4',
+                                  user.value === field.value
+                                    ? 'opacity-100'
+                                    : 'opacity-0'
+                                )}
+                              />
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
                   <FormDescription>
-                    This field is optional. Write user ID to assign investor
-                    data to a user.
+                    Select user to associate with this investor data.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
