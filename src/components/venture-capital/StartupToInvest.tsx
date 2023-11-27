@@ -1,4 +1,10 @@
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/Tooltip';
+import {
   Table,
   TableBody,
   TableCell,
@@ -6,21 +12,33 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/Table';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/AlertDialog';
 import dayjs from 'dayjs';
 import { FC } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import toast from 'react-hot-toast';
+import { enumReplacer } from '@/util';
+import { Edit, Trash2 } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
 import { Loader } from '@/components/ui/Loader';
 import { StartupToInvest } from '@prisma/client';
-import { useQuery } from '@tanstack/react-query';
 import { Heading } from '@/components/ui/Heading';
 import { useAuthStore } from '@/store/auth-store';
 import { Separator } from '@/components/ui/Separator';
 import { buttonVariants } from '@/components/ui/Button';
 import useAxiosPrivate from '@/hooks/use-axios-private';
-import DropdownActions from '@/components/ui/DropdownActions';
-import { enumReplacer } from '@/util';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 interface StartupToInvestProps {
   investorId: string;
@@ -40,11 +58,9 @@ type ExtendedStartupToInvest = StartupToInvest & {
   investor: Investor;
 };
 
-const StartupToInvest: FC<StartupToInvestProps> = ({
-  baseUrl,
-  investorId,
-}) => {
+const StartupToInvest: FC<StartupToInvestProps> = ({ baseUrl, investorId }) => {
   const axios = useAxiosPrivate();
+  const queryClient = useQueryClient();
   const role = useAuthStore((state) => state.session?.role);
 
   const fetchStartupToInvest = async () => {
@@ -59,12 +75,24 @@ const StartupToInvest: FC<StartupToInvestProps> = ({
     queryFn: fetchStartupToInvest,
   });
 
+  const deleteStartupToInvest = async (id: string) => {
+    try {
+      await axios.delete(`startup-to-invest/${id}`);
+      toast.success('Successfully deleted startup to invest!');
+      queryClient.invalidateQueries({
+        queryKey: ['startup-to-invest', investorId],
+      });
+    } catch (error: any) {
+      toast.error('Failed to delete startup to invest!');
+    }
+  };
+
   return isLoading ? (
     <Loader />
   ) : error ? (
     <p>Error: {error.message}</p>
   ) : (
-    <div>
+    <div className='pb-16'>
       <div className='py-6'>
         <div className='flex flex-col pt-16 lg:pt-0 lg:flex-row items-start lg:items-center justify-between'>
           <Heading
@@ -93,7 +121,7 @@ const StartupToInvest: FC<StartupToInvestProps> = ({
                     <TableHead>Progress</TableHead>
                     <TableHead>Detail</TableHead>
                     <TableHead>Date Updated</TableHead>
-                    <TableHead>Actions</TableHead>
+                    {role === 'ADMIN' && <TableHead>Action</TableHead>}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -105,11 +133,55 @@ const StartupToInvest: FC<StartupToInvestProps> = ({
                       <TableCell>
                         {dayjs(item.updated_at).format('D MMMM YYYY')}
                       </TableCell>
-                      <TableCell>
-                        <DropdownActions
-                          editUrl={`${baseUrl}/startup-to-invest/${item.id}/edit`}
-                        />
-                      </TableCell>
+                      {role === 'ADMIN' && (
+                        <TableCell>
+                          <div className='flex flex-row gap-2'>
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger>
+                                  <Link
+                                    href={`${baseUrl}/startup-to-invest/${item.id}/edit`}
+                                  >
+                                    <Edit className='h-6 w-6' />
+                                  </Link>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p>Edit data</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+
+                            <AlertDialog>
+                              <AlertDialogTrigger>
+                                <Trash2 className='h-6 w-6' />
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>
+                                    Are you absolutely sure?
+                                  </AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    Please be aware that this action is
+                                    irreversible. Once completed, the data will
+                                    be permanently erased and cannot be
+                                    retrieved.
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                  <AlertDialogAction
+                                    onClick={() =>
+                                      deleteStartupToInvest(item.id)
+                                    }
+                                  >
+                                    Continue
+                                  </AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
+                          </div>
+                        </TableCell>
+                      )}
                     </TableRow>
                   ))}
                 </TableBody>
