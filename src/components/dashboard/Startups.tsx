@@ -180,8 +180,8 @@ const Startups: FC<StartupsProps> = ({ link }) => {
           </Button>
         </div>
         {role === Role.ADMIN ? (
-          <Link href='/admin/startups/new' className={buttonVariants()}>
-            Add Startup
+          <Link href='/dashboard/startups/create' className={buttonVariants()}>
+            Add new
           </Link>
         ) : null}
       </div>
