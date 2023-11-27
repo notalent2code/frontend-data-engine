@@ -90,7 +90,9 @@ const Page = () => {
               >
                 Edit
               </Link>
-              <DeleteAlertDialog deleteFn={deleteVentureCapital} />
+              <div className={buttonVariants({ size: 'lg' })}>
+                <DeleteAlertDialog deleteFn={deleteVentureCapital} />
+              </div>
             </div>
           ) : null}
         </CardHeader>
@@ -152,10 +154,7 @@ const Page = () => {
         ) : null}
       </Card>
 
-      <StartupToInvest
-        investorId={investorId as string}
-        baseUrl={baseUrl}
-      />
+      <StartupToInvest investorId={investorId as string} baseUrl={baseUrl} />
     </div>
   ) : (
     <p className='text-sm text-muted-foreground'>
