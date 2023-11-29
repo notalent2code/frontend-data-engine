@@ -11,7 +11,7 @@ import { CircleDollarSign, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import useAxiosPrivate from '@/hooks/use-axios-private';
 import SelectDropdown from '@/components/SelectDropdown';
-import { investorTypeOptions, Pagination } from '@/types';
+import { instrumentTypeOptions, Pagination } from '@/types';
 import { enumReplacer, formatCurrencyValue } from '@/util';
 import { Button, buttonVariants } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
@@ -122,7 +122,7 @@ const Page = () => {
           <Search autoFocus value={search} onChange={handleSearchChange} />
           <SelectDropdown
             name={enumReplacer(instrumentType) || 'Instrument Type'}
-            options={investorTypeOptions}
+            options={instrumentTypeOptions}
             onChange={handleInstrumentTypeChange}
           />
           <Button
