@@ -43,6 +43,7 @@ import { Separator } from '@/components/ui/Separator';
 import useAxiosPrivate from '@/hooks/use-axios-private';
 import { StartupSchema } from '@/../prisma/generated/zod';
 import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE } from '@/constants';
+import { getImageData } from '@/util';
 
 // Form schema
 const baseStartupSchema = StartupSchema.omit({
@@ -77,19 +78,6 @@ const editStartupSchema = baseStartupSchema.partial().extend({
   }),
 });
 
-function getImageData(event: React.ChangeEvent<HTMLInputElement>) {
-  const dataTransfer = new DataTransfer();
-
-  Array.from(event.target.files!).forEach((image) =>
-    dataTransfer.items.add(image as File)
-  );
-
-  const files = dataTransfer.files;
-  const displayUrl = URL.createObjectURL(event.target.files![0]);
-
-  return { file: files[0], displayUrl };
-}
-
 interface StartupFormProps {
   variant: 'create' | 'edit';
   initialData?: StartupDetail;
@@ -119,7 +107,7 @@ const StartupForm: FC<StartupFormProps> = ({ variant, initialData }) => {
   const onSubmitCreate = async (data: z.infer<typeof createStartupSchema>) => {
     try {
       setIsLoading(true);
-      
+
       const { data: result } = await axios.post<Startup>('/startups', data);
 
       if (result) {
@@ -515,7 +503,6 @@ const StartupForm: FC<StartupFormProps> = ({ variant, initialData }) => {
 
             <Card className='p-2'>
               <Map
-                variant='edit'
                 latitude={
                   clickedLatLng.lat ||
                   initialData?.Location?.latitude ||
