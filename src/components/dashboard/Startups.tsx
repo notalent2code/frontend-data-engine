@@ -72,7 +72,7 @@ const Startups: FC<StartupsProps> = ({ link }) => {
       .filter(Boolean)
       .join('&');
 
-    const {data: result} = await axios.get(`startups?${queryParams}`);
+    const { data: result } = await axios.get(`startups?${queryParams}`);
 
     return {
       meta: result.meta as Pagination,
@@ -192,7 +192,7 @@ const Startups: FC<StartupsProps> = ({ link }) => {
               key={startup.id}
               href={
                 link === 'detail'
-                  ? `/dashboard/startups/${startup.id}/${link}`
+                  ? `/dashboard/startups/${startup.id}`
                   : `/${link}/${startup.id}`
               }
             >
@@ -202,12 +202,18 @@ const Startups: FC<StartupsProps> = ({ link }) => {
               >
                 <CardHeader className='grid grid-flow-row lg:grid-flow-col items-center justify-start'>
                   <div className='w-20 h-20 flex justify-start items-center'>
-                    <Image
-                      src={startup.logo_url}
-                      width={80}
-                      height={80}
-                      alt={startup.name}
-                    />
+                    {startup.logo_url ? (
+                      <Image
+                        src={startup.logo_url}
+                        width={80}
+                        height={80}
+                        alt={startup.name}
+                      />
+                    ) : (
+                      <div className='w-full h-10 flex justify-center items-center bg-gray-200 rounded-full'>
+                        <p className='text-3xl text-gray-400'>?</p>
+                      </div>
+                    )}
                   </div>
                   <div className='space-y-2 lg:pl-6'>
                     <h2 className='text-md text-left font-semibold'>
