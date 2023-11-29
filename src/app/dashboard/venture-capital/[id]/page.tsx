@@ -157,7 +157,7 @@ const Page = () => {
       <StartupToInvest investorId={investorId as string} baseUrl={baseUrl} />
     </div>
   ) : (
-    <p className='text-sm text-muted-foreground'>
+    <p className='text-sm text-muted-foreground py-2'>
       No venture capital data found.
     </p>
   );
