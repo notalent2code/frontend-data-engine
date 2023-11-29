@@ -190,7 +190,7 @@ const StartupToInvest: FC<StartupToInvestProps> = ({ baseUrl, investorId }) => {
           </Card>
         </div>
       ) : (
-        <p className='text-sm text-muted-foreground'>
+        <p className='text-sm text-muted-foreground py-2'>
           No startup to invest data found.
         </p>
       )}
