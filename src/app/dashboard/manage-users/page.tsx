@@ -219,8 +219,8 @@ const Page = () => {
       </div>
     </div>
   ) : (
-    <p className='text-sm text-muted-foreground'>
-      No startup to invest data found.
+    <p className='text-sm text-muted-foreground py-2'>
+      No user data found.
     </p>
   );
 };
