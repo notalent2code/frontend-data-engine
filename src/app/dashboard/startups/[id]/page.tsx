@@ -3,38 +3,40 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
-import GoogleMaps from '@/components/Map';
 import toast from 'react-hot-toast';
 import { StartupDetail } from '@/types';
+import GoogleMaps from '@/components/Map';
 import { Badge } from '@/components/ui/Badge';
 import { Loader } from '@/components/ui/Loader';
 import { useQuery } from '@tanstack/react-query';
+import Alumni from '@/components/startup/Alumni';
+import People from '@/components/startup/People';
+import { useAuthStore } from '@/store/auth-store';
+import Synergy from '@/components/startup/Synergy';
+import Service from '@/components/startup/Service';
+import Contract from '@/components/startup/Contract';
 import { Separator } from '@/components/ui/Separator';
 import { useParams, useRouter } from 'next/navigation';
+import Strategic from '@/components/startup/Strategic';
 import useAxiosPrivate from '@/hooks/use-axios-private';
 import { buttonVariants } from '@/components/ui/Button';
-import Alumni from '@/components/startup-detail/Alumni';
-import People from '@/components/startup-detail/People';
-import Performance from '@/components/startup-detail/Performance';
+import Performance from '@/components/startup/Performance';
+import RevenueModel from '@/components/startup/RevenueModel';
+import DeleteAlertDialog from '@/components/DeleteAlertDialog';
+import GrowthStrategy from '@/components/startup/GrowthStrategy';
+import FinancialReport from '@/components/startup/FinancialReport';
+import ProblemSolutionFit from '@/components/startup/ProblemSolutionFit';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
-import Contract from '@/components/startup-detail/Contract';
-import FinancialReport from '@/components/startup-detail/FinancialReport';
-import Synergy from '@/components/startup-detail/Synergy';
-import Strategic from '@/components/startup-detail/Strategic';
-import Service from '@/components/startup-detail/Service';
-import ProblemSolutionFit from '@/components/startup-detail/ProblemSolutionFit';
-import GrowthStrategy from '@/components/startup-detail/GrowthStrategy';
-import RevenueModel from '@/components/startup-detail/RevenueModel';
+import { enumReplacer } from '@/util';
 
 const Page = () => {
   const axios = useAxiosPrivate();
   const router = useRouter();
+  const role = useAuthStore((state) => state.session?.role);
   const { id: startupId } = useParams();
 
-  const addUrl = `/dashboard/startups/${startupId}/add`;
-  const editUrl = `/dashboard/startups/${startupId}/edit`;
-  const deleteUrl = `/dashboard/startups/${startupId}/delete`;
+  const baseUrl = `/dashboard/startups/${startupId}`;
   const onepagerUrl = `/onepager/${startupId}`;
 
   const fetchStartupDetail = async () => {
@@ -44,6 +46,16 @@ const Page = () => {
     } catch (error: any) {
       toast.error('Something went wrong. Please try again later.');
       router.push('/auth/login');
+    }
+  };
+
+  const deleteStartup = async () => {
+    try {
+      await axios.delete(`startups/${startupId}`);
+      toast.success('Successfully deleted startup!');
+      router.push('/dashboard/startups');
+    } catch (error: any) {
+      toast.error('Failed to delete startup!');
     }
   };
 
@@ -66,46 +78,57 @@ const Page = () => {
         <CardHeader className='flex flex-row items-center justify-between py-0 px-4'>
           <div className='flex flex-row items-center gap-4'>
             <div className='w-20 h-20 flex justify-start items-center'>
-              <Image
-                src={startup.logo_url}
-                width={80}
-                height={80}
-                alt={startup.name}
-              />
+              {startup.logo_url ? (
+                <Image
+                  src={startup.logo_url}
+                  width={80}
+                  height={80}
+                  alt={startup.name}
+                />
+              ) : (
+                <div className='w-20 h-20 flex justify-center items-center bg-gray-200 rounded-md outline-dashed outline-gray-400'>
+                  <p className='text-3xl text-gray-400'>?</p>
+                </div>
+              )}
             </div>
             <CardTitle>
               <h1 className='text-2xl font-bold'>{startup.name}</h1>
             </CardTitle>
           </div>
-          <Badge>{startup.category}</Badge>
+          <Badge>{enumReplacer(startup.category)}</Badge>
         </CardHeader>
       </Card>
 
       <Tabs defaultValue='summary'>
-        <div className='flex flex-row gap-2 items-center'>
-          <TabsList className='grid grid-cols-2 md:grid-cols-3 lg:grid-flow-col items-center justify-start w-fit gap-2'>
-            {/* Startup & Location & Alumni & Performance */}
-            <TabsTrigger value='summary'>Summary</TabsTrigger>
-            {/* People */}
-            <TabsTrigger value='people'>People</TabsTrigger>
-            {/* Contract & FinancialReport */}
-            <TabsTrigger value='financial'>Financial</TabsTrigger>
-            {/* StartupToInvest & Synergy */}
-            <TabsTrigger value='partnership'>Partnership</TabsTrigger>
-            {/* Strategic & Service & ProblemSolutionFit */}
-            <TabsTrigger value='strategy'>Strategy</TabsTrigger>
-            {/* GrowthStrategy & RevenueModel */}
-            <TabsTrigger value='revenue-growth'>Revenue Growth</TabsTrigger>
-          </TabsList>
-          <Link
-            href={onepagerUrl}
-            className={cn(
-              buttonVariants({ size: 'sm' }),
-              'bg-white text-tertiary hover:bg-white hover:opacity-90'
-            )}
-          >
-            Onepager
-          </Link>
+        <div className='flex flex-row justify-between'>
+          <div className='flex flex-row gap-2 items-center'>
+            <TabsList className='grid grid-cols-2 md:grid-cols-3 lg:grid-flow-col items-center justify-start w-fit gap-2'>
+              {/* Startup & Location & Alumni & Performance */}
+              <TabsTrigger value='summary'>Summary</TabsTrigger>
+              {/* People */}
+              <TabsTrigger value='people'>People</TabsTrigger>
+              {/* Contract & FinancialReport */}
+              <TabsTrigger value='financial'>Financial</TabsTrigger>
+              {/* StartupToInvest & Synergy */}
+              <TabsTrigger value='partnership'>Partnership</TabsTrigger>
+              {/* Strategic & Service & ProblemSolutionFit */}
+              <TabsTrigger value='strategy'>Strategy</TabsTrigger>
+              {/* GrowthStrategy & RevenueModel */}
+              <TabsTrigger value='revenue-growth'>Revenue Growth</TabsTrigger>
+            </TabsList>
+            <Link
+              href={onepagerUrl}
+              className={cn(
+                buttonVariants({ size: 'sm' }),
+                'bg-white text-tertiary hover:bg-white hover:opacity-90'
+              )}
+            >
+              Onepager
+            </Link>
+          </div>
+          <div className={cn(buttonVariants(), 'hover:cursor-pointer')}>
+            <DeleteAlertDialog deleteFn={deleteStartup} />
+          </div>
         </div>
         <TabsContent value='summary' className='pt-6'>
           <div className='flex flex-row gap-4'>
@@ -116,15 +139,17 @@ const Page = () => {
                     General Information
                   </h2>
                 </CardTitle>
-                <Link
-                  href={editUrl + '/general'}
-                  className={cn(
-                    buttonVariants({ size: 'lg' }),
-                    'bg-tertiary hover:bg-tertiary hover:opacity-90'
-                  )}
-                >
-                  Edit
-                </Link>
+                {role === 'ADMIN' && (
+                  <Link
+                    href={baseUrl + '/general/edit'}
+                    className={cn(
+                      buttonVariants(),
+                      'bg-tertiary hover:bg-tertiary hover:opacity-90'
+                    )}
+                  >
+                    Edit
+                  </Link>
+                )}
               </CardHeader>
               <Separator />
               <CardContent className='p-4 text-sm'>
@@ -136,7 +161,7 @@ const Page = () => {
                   >
                     <span className='pb-2 text-center'>Latest Stage</span>
                     <p className='font-bold text-center'>
-                      {startup.latest_stage}
+                      {enumReplacer(startup.latest_stage)}
                     </p>
                   </Badge>
                   <Badge
@@ -171,13 +196,13 @@ const Page = () => {
                 </div>
 
                 <p className='pt-4 text-lg font-bold'>Full Address</p>
-                <p className='py-2 pb-4'>{startup.Location.address}</p>
+                <p className='py-2 pb-4'>{startup.Location?.address}</p>
                 {/* Google Maps Card */}
                 <Card>
-                  {startup.Location.latitude && startup.Location.longitude ? (
+                  {startup.Location?.latitude && startup.Location?.longitude ? (
                     <GoogleMaps
-                      latitude={startup.Location.latitude}
-                      longitude={startup.Location.longitude}
+                      latitude={startup.Location?.latitude}
+                      longitude={startup.Location?.longitude}
                     />
                   ) : (
                     <p className='p-4'>No location data</p>
@@ -189,35 +214,40 @@ const Page = () => {
             <div className='flex flex-col gap-4 w-4/5'>
               <Performance
                 data={startup.Performance}
-                addUrl={addUrl}
-                editUrl={editUrl}
+                baseUrl={baseUrl}
               />
 
-              <Alumni data={startup.Alumni} addUrl={addUrl} editUrl={editUrl} />
+              <Alumni
+                data={startup.Alumni}
+                baseUrl={baseUrl}
+              />
             </div>
           </div>
         </TabsContent>
 
         <TabsContent value='people' className='pt-6'>
-          <People data={startup.People} addUrl={addUrl} editUrl={editUrl} />
+          <People
+            data={startup.People}
+            baseUrl={baseUrl}
+          />
         </TabsContent>
 
         <TabsContent value='financial' className='pt-6'>
           <div className='flex flex-col gap-2'>
             <Contract
               data={startup.Contract}
-              addUrl={addUrl}
-              editUrl={editUrl}
+              addUrl={baseUrl + '/contract/add'}
+              editUrl={baseUrl + '/contract/edit'}
             />
 
             <FinancialReport
               data={startup.FinancialReport}
-              addUrl={addUrl}
-              editUrl={editUrl}
+              addUrl={baseUrl + '/financial/add'}
+              editUrl={baseUrl + '/financial/edit'}
             />
           </div>
         </TabsContent>
-
+        {/* 
         <TabsContent value='partnership' className='pt-6'>
           <Synergy
             data={startup.Synergy}
@@ -258,7 +288,7 @@ const Page = () => {
             addUrl={addUrl}
             editUrl={editUrl}
           />
-        </TabsContent>
+        </TabsContent> */}
       </Tabs>
     </div>
   ) : null;
