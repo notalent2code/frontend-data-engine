@@ -98,7 +98,7 @@ const Synergy: FC<SynergyProps> = ({ data, addUrl, editUrl, deleteUrl }) => {
           </Card>
         </div>
       ) : (
-        <p className='text-sm text-muted-foreground'>
+        <p className='text-sm text-muted-foreground py-2'>
           No partnership data found.
         </p>
       )}

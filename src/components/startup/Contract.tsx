@@ -24,7 +24,7 @@ interface ContractProps {
 const Contract: FC<ContractProps> = ({ data, addUrl, editUrl }) => {
   return (
     <>
-      <div className='pb-4'>
+      <div>
         <div className='flex flex-col pt-16 lg:pt-0 lg:flex-row items-start lg:items-center justify-between'>
           <Heading
             title='Contract'
@@ -102,7 +102,7 @@ const Contract: FC<ContractProps> = ({ data, addUrl, editUrl }) => {
           </CardContent>
         </Card>
       ) : (
-        <p>No contract information found.</p>
+        <p className='text-sm text-muted-foreground py-2'>No contract information found.</p>
       )}
     </>
   );

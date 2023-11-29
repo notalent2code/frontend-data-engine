@@ -15,11 +15,7 @@ interface StrategicProps {
   editUrl: string;
 }
 
-const Strategic: FC<StrategicProps> = ({
-  data,
-  addUrl,
-  editUrl,
-}) => {
+const Strategic: FC<StrategicProps> = ({ data, addUrl, editUrl }) => {
   return (
     <div className='flex flex-col gap-2'>
       <div className='pb-4'>
@@ -73,7 +69,7 @@ const Strategic: FC<StrategicProps> = ({
           ))}
         </Card>
       ) : (
-        <p className='text-sm text-muted-foreground'>
+        <p className='text-sm text-muted-foreground py-2'>
           No strategic data found.
         </p>
       )}

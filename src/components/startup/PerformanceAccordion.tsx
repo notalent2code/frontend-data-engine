@@ -1,3 +1,5 @@
+'use clint';
+
 import {
   Accordion,
   AccordionContent,
@@ -9,21 +11,49 @@ import { Performance } from '@prisma/client';
 import Link from 'next/link';
 import { FC } from 'react';
 import { buttonVariants } from '@/components/ui/Button';
+import { useAuthStore } from '@/store/auth-store';
+import toast from 'react-hot-toast';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/AlertDialog';
+import useAxiosPrivate from '@/hooks/use-axios-private';
 
 interface PerformanceAccordionProps {
   data: Performance[];
-  editUrl: string;
+  baseUrl: string;
 }
 
 const PerformanceAccordion: FC<PerformanceAccordionProps> = ({
   data,
-  editUrl,
+  baseUrl,
 }) => {
+  const axios = useAxiosPrivate();
+  const role = useAuthStore((state) => state.session?.role);
   const parseMarkup = (htmlContent: string) => {
     return { __html: htmlContent };
   };
 
   const isHtmlContent = (content: string) => /<\/?[a-z][\s\S]*>/i.test(content);
+
+  const deletePerformance = async (id: string) => {
+    try {
+      await axios.delete(`/performance/${id}`);
+      toast.success('Performance deleted successfully!');
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+    } catch (error: any) {
+      toast.error('Something went wrong!');
+    }
+  };
 
   return (
     <>
@@ -31,15 +61,44 @@ const PerformanceAccordion: FC<PerformanceAccordionProps> = ({
         <div key={item.id}>
           <div className='flex flex-row items-center justify-between pt-4'>
             <h1 className='font-bold text-lg'>Performance {item.year}</h1>
-            <Link
-              href={editUrl + `/performance?id=${item.id}`}
-              className={cn(
-                buttonVariants(),
-                'bg-tertiary hover:bg-tertiary hover:opacity-90'
-              )}
-            >
-              Edit
-            </Link>
+            {role === 'ADMIN' && (
+              <div className='flex flex-row gap-2'>
+                <Link
+                  href={baseUrl + `/performance/${item.id}/edit`}
+                  className={cn(
+                    buttonVariants({ size: 'sm' }),
+                    'bg-tertiary hover:bg-tertiary hover:opacity-90'
+                  )}
+                >
+                  Edit
+                </Link>
+                <div className={buttonVariants({ size: 'sm' })}>
+                  <AlertDialog>
+                    <AlertDialogTrigger>Delete</AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          Are you absolutely sure?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Please be aware that this action is irreversible. Once
+                          completed, the data will be permanently erased and
+                          cannot be retrieved.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => deletePerformance(item.id)}
+                        >
+                          Continue
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
+              </div>
+            )}
           </div>
           <Accordion type='single' collapsible>
             {item.performance_update && (

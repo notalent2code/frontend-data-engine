@@ -1,30 +1,26 @@
 import { FC } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { ProblemSolutionFit } from '@prisma/client';
+import { RevenueModel } from '@prisma/client';
 import { Card } from '@/components/ui/Card';
 import { Heading } from '@/components/ui/Heading';
 import { Separator } from '@/components/ui/Separator';
 import { buttonVariants } from '@/components/ui/Button';
 
-interface ProblemSolutionFitProps {
-  data: ProblemSolutionFit[] | null;
+interface RevenueModelProps {
+  data: RevenueModel[] | null;
   addUrl: string;
   editUrl: string;
 }
 
-const ProblemSolutionFit: FC<ProblemSolutionFitProps> = ({
-  data,
-  addUrl,
-  editUrl,
-}) => {
+const RevenueModel: FC<RevenueModelProps> = ({ data, addUrl, editUrl }) => {
   return (
     <div className='flex flex-col gap-2'>
       <div className='py-4'>
         <div className='flex flex-col pt-16 lg:pt-0 lg:flex-row items-start lg:items-center justify-between'>
           <Heading
-            title='Problem Solution Fit'
-            description="Startup detail information about service's problem solution fit."
+            title='Revenue Model'
+            description='Startup detail information about revenue model.'
           />
           <div className='flex gap-4'>
             <Link
@@ -50,26 +46,19 @@ const ProblemSolutionFit: FC<ProblemSolutionFitProps> = ({
       </div>
       {data && data.length > 0 ? (
         <div className='flex flex-row gap-4'>
-          {data.map((psf) => (
-            <div
-              key={psf.id}
-              className='flex flex-row items-start justify-start gap-4'
-            >
-              <Card className='flex flex-col items-start justify-start gap-2 text-sm p-4'>
-                <span className='font-bold'>{psf.title}</span>
-                <Separator className='w-full' />
-                <p>{psf.description}</p>
-              </Card>
-            </div>
+          {data.map((rm) => (
+            <Card key={rm.id} className='p-4'>
+              <p>{rm.description}</p>
+            </Card>
           ))}
         </div>
       ) : (
-        <p className='text-sm text-muted-foreground'>
-          No problem solution fit data found.
+        <p className='text-sm text-muted-foreground py-2'>
+          No revenue model data found.
         </p>
       )}
     </div>
   );
 };
 
-export default ProblemSolutionFit;
+export default RevenueModel;

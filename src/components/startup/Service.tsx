@@ -59,7 +59,9 @@ const Service: FC<ServiceProps> = ({ data, addUrl, editUrl }) => {
           ))}
         </div>
       ) : (
-        <p className='text-sm text-muted-foreground'>No service data found.</p>
+        <p className='text-sm text-muted-foreground py-2'>
+          No service data found.
+        </p>
       )}
     </div>
   );

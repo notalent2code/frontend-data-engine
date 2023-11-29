@@ -1,3 +1,5 @@
+'use client';
+
 import {
   File,
   Fingerprint,
@@ -17,14 +19,16 @@ import { Badge } from '@/components/ui/Badge';
 import { Separator } from '@/components/ui/Separator';
 import { buttonVariants } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
+import { useAuthStore } from '@/store/auth-store';
 
 interface PeopleProps {
   data: People[] | null;
-  addUrl: string;
-  editUrl: string;
+  baseUrl: string;
 }
 
-const People: FC<PeopleProps> = ({ data, addUrl, editUrl }) => {
+const People: FC<PeopleProps> = ({ data, baseUrl }) => {
+  const role = useAuthStore((state) => state.session?.role);
+
   return (
     <>
       <div className='flex flex-col gap-2'>
@@ -33,12 +37,17 @@ const People: FC<PeopleProps> = ({ data, addUrl, editUrl }) => {
             title='People'
             description='Great people behind the scene.'
           />
-          <Link
-            href={addUrl + '/people'}
-            className={cn(buttonVariants({ size: 'lg' }))}
-          >
-            Add new
-          </Link>
+          {role === 'ADMIN' && (
+            <Link
+              href={baseUrl + '/people/create'}
+              className={cn(
+                buttonVariants(),
+                'bg-tertiary hover:bg-tertiary hover:opacity-90'
+              )}
+            >
+              Add new
+            </Link>
+          )}
         </div>
         <Separator className='mt-4 lg:mt-0' />
       </div>
@@ -63,15 +72,17 @@ const People: FC<PeopleProps> = ({ data, addUrl, editUrl }) => {
                     <Badge>{enumReplacer(person.job_title)}</Badge>
                   </div>
                 </div>
-                <Link
-                  href={editUrl + `/people/${person.id}`}
-                  className={cn(
-                    buttonVariants({ size: 'sm' }),
-                    'bg-tertiary hover:bg-tertiary hover:opacity-90 w-full'
-                  )}
-                >
-                  Edit
-                </Link>
+                {role === 'ADMIN' && (
+                  <Link
+                    href={`${baseUrl}/people/${person.id}/edit`}
+                    className={cn(
+                      buttonVariants({ size: 'sm' }),
+                      'bg-tertiary hover:bg-tertiary hover:opacity-90 w-full'
+                    )}
+                  >
+                    Edit
+                  </Link>
+                )}
               </CardHeader>
               <CardContent>
                 <div className='pb-4'>
@@ -130,7 +141,9 @@ const People: FC<PeopleProps> = ({ data, addUrl, editUrl }) => {
           ))}
         </div>
       ) : (
-        <p className='text-sm text-muted-foreground'>No people data found.</p>
+        <p className='text-sm text-muted-foreground py-2'>
+          No people data found.
+        </p>
       )}
     </>
   );

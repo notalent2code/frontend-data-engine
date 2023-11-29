@@ -61,7 +61,7 @@ const FinancialReport: FC<FinancialReportProps> = ({
 
   return (
     <>
-      <div className='py-4'>
+      <div className='pt-4'>
         <div className='flex flex-col pt-16 lg:pt-0 lg:flex-row items-start lg:items-center justify-between'>
           <Heading
             title='Financial Report'
@@ -134,7 +134,7 @@ const FinancialReport: FC<FinancialReportProps> = ({
           </Card>
         </div>
       ) : (
-        <p className='text-sm text-muted-foreground'>
+        <p className='text-sm text-muted-foreground py-2'>
           No financial report data found.
         </p>
       )}

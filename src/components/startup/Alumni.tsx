@@ -1,3 +1,5 @@
+'use client';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { cn } from '@/lib/utils';
 import { Alumni } from '@prisma/client';
@@ -8,14 +10,30 @@ import { Separator } from '@/components/ui/Separator';
 import { enumReplacer } from '@/util';
 import { Badge } from '@/components/ui/Badge';
 import { Check, X } from 'lucide-react';
+import DeleteAlertDialog from '../DeleteAlertDialog';
+import useAxiosPrivate from '@/hooks/use-axios-private';
+import toast from 'react-hot-toast';
 
 interface AlumniProps {
   data: Alumni | null;
-  addUrl: string;
-  editUrl: string;
+  baseUrl: string;
 }
 
-const Alumni: FC<AlumniProps> = ({ data, addUrl, editUrl }) => {
+const Alumni: FC<AlumniProps> = ({ data, baseUrl }) => {
+  const axios = useAxiosPrivate();
+
+  const deleteAlumni = async () => {
+    try {
+      await axios.delete(`/alumni/${data?.id}`);
+      toast.success('Alumni deleted successfully!');
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+    } catch (error: any) {
+      toast.error('Something went wrong!');
+    }
+  };
+
   return (
     <Card>
       <CardHeader className='flex flex-row items-center justify-between p-4'>
@@ -23,19 +41,27 @@ const Alumni: FC<AlumniProps> = ({ data, addUrl, editUrl }) => {
           <h2 className='text-xl font-bold pt-2'>Alumni</h2>
         </CardTitle>
         {data ? (
-          <Link
-            href={editUrl + '/alumni'}
-            className={cn(
-              buttonVariants({ size: 'lg' }),
-              'bg-tertiary hover:bg-tertiary hover:opacity-90'
-            )}
-          >
-            Edit
-          </Link>
+          <div className='flex flex-row gap-2'>
+            <Link
+              href={`${baseUrl}/alumni/${data.id}/edit`}
+              className={cn(
+                buttonVariants({ size: 'sm' }),
+                'bg-tertiary hover:bg-tertiary hover:opacity-90'
+              )}
+            >
+              Edit
+            </Link>
+            <div className={buttonVariants({ size: 'sm' })}>
+              <DeleteAlertDialog deleteFn={deleteAlumni} />
+            </div>
+          </div>
         ) : (
           <Link
-            href={addUrl + '/alumni'}
-            className={cn(buttonVariants({ size: 'lg' }))}
+            href={baseUrl + '/alumni/create'}
+            className={cn(
+              buttonVariants(),
+              'bg-tertiary hover:bg-tertiary hover:opacity-90'
+            )}
           >
             Add new
           </Link>
@@ -84,7 +110,7 @@ const Alumni: FC<AlumniProps> = ({ data, addUrl, editUrl }) => {
                       hover:bg-white outline outline-tertiary text-muted-foreground'
             >
               <span className='pb-2 text-center'>
-                Product Stopped <br /> or Halt
+                Product Stopped <br /> or Halted
               </span>
               <p className='font-bold text-center'>
                 {data.is_product_stopped_or_vacuum ? (
@@ -142,7 +168,9 @@ const Alumni: FC<AlumniProps> = ({ data, addUrl, editUrl }) => {
             </Badge>
           </div>
         ) : (
-          <p className='text-sm text-muted-foreground'>No alumni data found.</p>
+          <p className='text-sm text-muted-foreground py-2'>
+            No alumni data found.
+          </p>
         )}
       </CardContent>
     </Card>
