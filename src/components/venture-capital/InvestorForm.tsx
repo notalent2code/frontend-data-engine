@@ -55,6 +55,7 @@ import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { InvestmentStage, Investor, User } from '@prisma/client';
 import { createCommaSeparatedArray, enumReplacer } from '@/util';
+import { instrumentTypeOptions } from '@/types';
 
 // Form schema
 const baseInvestorSchema = z.object({
@@ -149,7 +150,7 @@ const InvestorForm: FC<InvestorFormProps> = ({ variant, initialData }) => {
   const onSubmitCreate = async (data: z.infer<typeof createInvestorSchema>) => {
     try {
       const focused_sectors = createCommaSeparatedArray(data.focused_sectors);
-      const { data: result } = await axios.post('/investor', {
+      const { data: result } = await axios.post<Investor>('/investor', {
         ...data,
         focused_sectors,
       });
@@ -172,13 +173,16 @@ const InvestorForm: FC<InvestorFormProps> = ({ variant, initialData }) => {
         focused_sectors = createCommaSeparatedArray(data.focused_sectors);
       }
 
-      await axios.patch(`/investor/${initialData?.id}`, {
-        ...data,
-        focused_sectors,
-      });
+      const { data: result } = await axios.patch<Investor>(
+        `/investor/${initialData?.id}`,
+        {
+          ...data,
+          focused_sectors,
+        }
+      );
 
       toast.success('Investor edited successfully!');
-      router.back();
+      router.push(`/dashboard/venture-capital/${result.id}`);
     } catch (error: any) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
@@ -336,9 +340,11 @@ const InvestorForm: FC<InvestorFormProps> = ({ variant, initialData }) => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value='CN'>CN</SelectItem>
-                      <SelectItem value='EQUITY'>EQUITY</SelectItem>
-                      <SelectItem value='CN_EQUITY'>CN EQUITY</SelectItem>
+                      {instrumentTypeOptions.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                   <FormMessage />
