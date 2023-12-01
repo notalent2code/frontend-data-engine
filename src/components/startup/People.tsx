@@ -20,6 +20,19 @@ import { Separator } from '@/components/ui/Separator';
 import { buttonVariants } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { useAuthStore } from '@/store/auth-store';
+import useAxiosPrivate from '@/hooks/use-axios-private';
+import toast from 'react-hot-toast';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/AlertDialog';
 
 interface PeopleProps {
   data: People[] | null;
@@ -27,7 +40,20 @@ interface PeopleProps {
 }
 
 const People: FC<PeopleProps> = ({ data, baseUrl }) => {
+  const axios = useAxiosPrivate();
   const role = useAuthStore((state) => state.session?.role);
+
+  const deletePerson = async (id: string) => {
+    try {
+      await axios.delete(`/people/${id}`);
+      toast.success('Person deleted successfully!');
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+    } catch (error: any) {
+      toast.error('Something went wrong!');
+    }
+  };
 
   return (
     <>
@@ -56,14 +82,17 @@ const People: FC<PeopleProps> = ({ data, baseUrl }) => {
           {data.map((person) => (
             <Card key={person.id}>
               <CardHeader className='grid grid-flow-row lg:grid-flow-col items-center justify-between'>
-                <div className='w-fit lg:w-80 h-fit flex justify-start items-center gap-4'>
+                <div className='flex justify-start items-center gap-4'>
                   {person.photo_url ? (
-                    <Image
-                      src={person.photo_url}
-                      width={80}
-                      height={80}
-                      alt={person.name}
-                    />
+                    <div className='w-20 h-20 overflow-hidden rounded-full'>
+                      <Image
+                        src={person.photo_url}
+                        width={80}
+                        height={80}
+                        alt={person.name}
+                        className='w-full h-full object-cover rounded-full'
+                      />
+                    </div>
                   ) : (
                     <UserCircle2 width={80} height={80} color='grey' />
                   )}
@@ -73,15 +102,42 @@ const People: FC<PeopleProps> = ({ data, baseUrl }) => {
                   </div>
                 </div>
                 {role === 'ADMIN' && (
-                  <Link
-                    href={`${baseUrl}/people/${person.id}/edit`}
-                    className={cn(
-                      buttonVariants({ size: 'sm' }),
-                      'bg-tertiary hover:bg-tertiary hover:opacity-90 w-full'
-                    )}
-                  >
-                    Edit
-                  </Link>
+                  <div className='flex flex-row gap-2'>
+                    <Link
+                      href={`${baseUrl}/people/${person.id}/edit`}
+                      className={cn(
+                        buttonVariants({ size: 'sm' }),
+                        'bg-tertiary hover:bg-tertiary hover:opacity-90 w-full'
+                      )}
+                    >
+                      Edit
+                    </Link>
+                    <div className={buttonVariants({ size: 'sm' })}>
+                      <AlertDialog>
+                        <AlertDialogTrigger>Delete</AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>
+                              Are you absolutely sure?
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Please be aware that this action is irreversible.
+                              Once completed, the data will be permanently
+                              erased and cannot be retrieved.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => deletePerson(person.id)}
+                            >
+                              Continue
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </div>
+                  </div>
                 )}
               </CardHeader>
               <CardContent>
@@ -111,7 +167,7 @@ const People: FC<PeopleProps> = ({ data, baseUrl }) => {
                       <Link href={person.qr_code_url} target='_blank'>
                         <Card className='flex flex-row items-center justify-start text-sm gap-2 p-2'>
                           <File className='w-4 h-4' />
-                          QR Code Link
+                          QR Code
                         </Card>
                       </Link>
                     ) : null}
