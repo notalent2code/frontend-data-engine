@@ -1,5 +1,6 @@
 'use client';
 
+import { Loader } from '@/components/ui/Loader';
 import InvestorForm from '@/components/venture-capital/InvestorForm';
 import useAxiosPrivate from '@/hooks/use-axios-private';
 import { Investor } from '@prisma/client';
@@ -15,12 +16,16 @@ const Page = () => {
     return data as Investor;
   };
 
-  const { data } = useQuery({
+  const { data, isFetching } = useQuery({
     queryKey: ['investor', id],
     queryFn: fetchInvestor,
   });
 
-  return <InvestorForm variant='edit' initialData={data} />;
+  return isFetching ? (
+    <Loader />
+  ) : (
+    <InvestorForm variant='edit' initialData={data} />
+  );
 };
 
 export default Page;
