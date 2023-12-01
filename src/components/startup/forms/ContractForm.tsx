@@ -172,19 +172,6 @@ const ContractForm: FC<ContractFormProps> = ({ variant, initialData }) => {
           <div className='flex flex-col w-1/2 gap-4'>
             <FormField
               control={form.control}
-              name='startup_id'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Startup ID</FormLabel>
-                  <FormControl>
-                    <Input {...field} type='number' disabled />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
               name='pks_number'
               render={({ field }) => (
                 <FormItem>

@@ -118,13 +118,13 @@ const FinancialReportForm: FC<FinancialReportFormProps> = ({
       <div className='pb-4'>
         {variant === 'create' ? (
           <Heading
-            title='Create Person'
-            description='Create new person data.'
+            title='Create Financial Report'
+            description='Create new financial report data.'
           />
         ) : (
           <Heading
-            title='Edit Person'
-            description='Edit existing person data.'
+            title='Edit Financial Report'
+            description='Edit existing financial report data.'
           />
         )}
         <Separator className='mt-4 lg:mt-0' />
@@ -133,19 +133,6 @@ const FinancialReportForm: FC<FinancialReportFormProps> = ({
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
           <div className='flex flex-col w-1/2 gap-4'>
-            <FormField
-              control={form.control}
-              name='startup_id'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Startup ID</FormLabel>
-                  <FormControl>
-                    <Input {...field} type='number' disabled />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <FormField
               control={form.control}
               name='year'

@@ -29,7 +29,6 @@ import { enumReplacer } from '@/util';
 import { toast } from 'react-hot-toast';
 import { Alumni } from '@prisma/client';
 import { useForm } from 'react-hook-form';
-import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Switch } from '@/components/ui/Switch';
 import { Heading } from '@/components/ui/Heading';
@@ -142,19 +141,6 @@ const AlumniForm: FC<AlumniFormProps> = ({ variant, initialData }) => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
           <div className='flex flex-col w-1/2 gap-4'>
-            <FormField
-              control={form.control}
-              name='startup_id'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Startup ID</FormLabel>
-                  <FormControl>
-                    <Input {...field} type='number' disabled />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <FormField
               control={form.control}
               name='cluster'

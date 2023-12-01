@@ -181,7 +181,7 @@ const FinancialReport: FC<FinancialReportProps> = ({ data, baseUrl }) => {
                     <TableHead>Yearly Revenue</TableHead>
                     <TableHead>Monthly Revenue</TableHead>
                     <TableHead>Valuation</TableHead>
-                    {role === 'ADMIN' && <TableHead>Action</TableHead>}
+                    {role === 'ADMIN' && <TableHead>Actions</TableHead>}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
