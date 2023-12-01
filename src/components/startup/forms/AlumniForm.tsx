@@ -17,10 +17,10 @@ import {
   SelectValue,
 } from '@/components/ui/Select';
 import {
-  AlumniClusterOptions,
-  AlumniFundingStageOptions,
-  AlumniIndustryClusterOptions,
-  AlumniProductClusterOptions,
+  alumniClusterOptions,
+  alumniFundingStageOptions,
+  alumniIndustryClusterOptions,
+  alumniProductClusterOptions,
 } from '@/types';
 import * as z from 'zod';
 import { AxiosError } from 'axios';
@@ -177,7 +177,7 @@ const AlumniForm: FC<AlumniFormProps> = ({ variant, initialData }) => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {AlumniClusterOptions.map((option) => (
+                      {alumniClusterOptions.map((option) => (
                         <SelectItem key={option.value} value={option.value}>
                           {option.label}
                         </SelectItem>
@@ -212,7 +212,7 @@ const AlumniForm: FC<AlumniFormProps> = ({ variant, initialData }) => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {AlumniProductClusterOptions.map((option) => (
+                      {alumniProductClusterOptions.map((option) => (
                         <SelectItem key={option.value} value={option.value}>
                           {option.label}
                         </SelectItem>
@@ -247,7 +247,7 @@ const AlumniForm: FC<AlumniFormProps> = ({ variant, initialData }) => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {AlumniIndustryClusterOptions.map((option) => (
+                      {alumniIndustryClusterOptions.map((option) => (
                         <SelectItem key={option.value} value={option.value}>
                           {option.label}
                         </SelectItem>
@@ -282,7 +282,7 @@ const AlumniForm: FC<AlumniFormProps> = ({ variant, initialData }) => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {AlumniFundingStageOptions.map((option) => (
+                      {alumniFundingStageOptions.map((option) => (
                         <SelectItem key={option.value} value={option.value}>
                           {option.label}
                         </SelectItem>
