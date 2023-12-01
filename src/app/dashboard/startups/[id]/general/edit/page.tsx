@@ -1,6 +1,7 @@
 'use client';
 
 import StartupForm from '@/components/startup/forms/StartupForm';
+import { Loader } from '@/components/ui/Loader';
 import useAxiosPrivate from '@/hooks/use-axios-private';
 import { StartupDetail } from '@/types';
 import { useQuery } from '@tanstack/react-query';
@@ -15,12 +16,16 @@ const Page = () => {
     return data;
   };
 
-  const { data } = useQuery({
+  const { data, isFetching } = useQuery({
     queryKey: ['startup', id],
     queryFn: fetchStartup,
   });
 
-  return <StartupForm variant='edit' initialData={data} />;
+  return isFetching ? (
+    <Loader />
+  ) : (
+    <StartupForm variant='edit' initialData={data} />
+  );
 };
 
 export default Page;
