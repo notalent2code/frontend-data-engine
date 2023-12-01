@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosPrivate from '@/hooks/use-axios-private';
 import AlumniForm from '@/components/startup/forms/AlumniForm';
+import { Loader } from '@/components/ui/Loader';
 
 const Page = () => {
   const axios = useAxiosPrivate();
@@ -15,12 +16,16 @@ const Page = () => {
     return data;
   };
 
-  const { data } = useQuery({
+  const { data, isFetching } = useQuery({
     queryKey: ['alumni', alumniId],
     queryFn: fetchAlumni,
   });
 
-  return <AlumniForm variant='edit' initialData={data} />;
+  return isFetching ? (
+    <Loader />
+  ) : (
+    <AlumniForm variant='edit' initialData={data} />
+  );
 };
 
 export default Page;
