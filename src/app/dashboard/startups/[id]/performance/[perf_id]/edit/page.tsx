@@ -1,6 +1,7 @@
 'use client';
 
 import PerformanceForm from '@/components/startup/forms/PerformanceForm';
+import { Loader } from '@/components/ui/Loader';
 import useAxiosPrivate from '@/hooks/use-axios-private';
 import { Performance } from '@prisma/client';
 import { useQuery } from '@tanstack/react-query';
@@ -17,12 +18,16 @@ const Page = () => {
     return data;
   };
 
-  const { data } = useQuery({
+  const { data, isFetching } = useQuery({
     queryKey: ['performance', performanceId],
     queryFn: fetchPerformance,
   });
 
-  return <PerformanceForm variant='edit' initialData={data} />;
+  return isFetching ? (
+    <Loader />
+  ) : (
+    <PerformanceForm variant='edit' initialData={data} />
+  );
 };
 
 export default Page;
