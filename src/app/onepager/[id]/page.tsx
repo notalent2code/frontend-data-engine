@@ -90,14 +90,17 @@ const Page = () => {
             {startup.People.map((person) => (
               <Card key={person.id} className='w-fit'>
                 <CardHeader className='flex flex-row items-center justify-between'>
-                  <div className='w-fit h-fit flex justify-start items-center gap-4'>
+                  <div className='flex justify-start items-center gap-4'>
                     {person.photo_url ? (
-                      <Image
-                        src={person.photo_url}
-                        width={80}
-                        height={80}
-                        alt={person.name}
-                      />
+                      <div className='w-20 h-20 overflow-hidden rounded-full'>
+                        <Image
+                          src={person.photo_url}
+                          width={80}
+                          height={80}
+                          alt={person.name}
+                          className='w-full h-full object-cover rounded-full'
+                        />
+                      </div>
                     ) : (
                       <UserCircle2 width={80} height={80} color='grey' />
                     )}
