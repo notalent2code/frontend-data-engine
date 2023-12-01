@@ -1,5 +1,5 @@
-import { enumReplacer } from "@/util";
-import { AlumniCluster, AlumniFundingStage, AlumniIndustryCluster, AlumniProductCluster, ContractStatus, InstrumentType, PeopleJobTitle, Role, StartupCategory, StartupIntake, StartupStage, StartupStatus } from "@prisma/client";
+import { enumReplacer, parseSynergyConfidenceLevel } from "@/util";
+import { AlumniCluster, AlumniFundingStage, AlumniIndustryCluster, AlumniProductCluster, ContractStatus, InstrumentType, PeopleJobTitle, ProjectStatus, Role, StartupCategory, StartupIntake, StartupStage, StartupStatus, SynergyConfidenceLevel, SynergyModel, SynergyOutput, SynergyProgress } from "@prisma/client";
 
 const startupCategoryValues = Object.values(StartupCategory);
 const startupStageValues = Object.values(StartupStage);
@@ -16,6 +16,12 @@ const peopleJobTitleValues = Object.values(PeopleJobTitle);
 const contractStatusValues = Object.values(ContractStatus);
 
 const instrumentTypeValues = Object.values(InstrumentType);
+
+const synergyProgressValues = Object.values(SynergyProgress);
+const synergyModelValues = Object.values(SynergyModel);
+const synergyOutputValues = Object.values(SynergyOutput);
+const synergyConfidenceLevelValues = Object.values(SynergyConfidenceLevel);
+const synergyProjectStatusValues = Object.values(ProjectStatus);
 
 const userRoleValues = Object.values(Role);
 
@@ -38,6 +44,12 @@ export type ContractSelectOption = {
 export type InvestorSelectOption = {
   label: string;
   value: InstrumentType;
+};
+
+export type SynergySelectOption = {
+  label: string;
+  value: SynergyProgress | SynergyModel | SynergyOutput
+  | SynergyConfidenceLevel | ProjectStatus;
 };
 
 export type UserRoleSelectOption = {
@@ -116,6 +128,41 @@ export const contractStatusOptions: ContractSelectOption[] = contractStatusValue
 );
 
 export const instrumentTypeOptions: InvestorSelectOption[] = instrumentTypeValues.map(
+  (value) => ({
+    value,
+    label: enumReplacer(value),
+  })
+);
+
+export const synergyProgressOptions: SynergySelectOption[] = synergyProgressValues.map(
+  (value) => ({
+    value,
+    label: enumReplacer(value),
+  })
+);
+
+export const synergyModelOptions: SynergySelectOption[] = synergyModelValues.map(
+  (value) => ({
+    value,
+    label: enumReplacer(value),
+  })
+);
+
+export const synergyOutputOptions: SynergySelectOption[] = synergyOutputValues.map(
+  (value) => ({
+    value,
+    label: enumReplacer(value),
+  })
+);
+
+export const synergyConfidenceLevelOptions: SynergySelectOption[] = synergyConfidenceLevelValues.map(
+  (value) => ({
+    value,
+    label: parseSynergyConfidenceLevel(value),
+  })
+);
+
+export const synergyProjectStatusOptions: SynergySelectOption[] = synergyProjectStatusValues.map(
   (value) => ({
     value,
     label: enumReplacer(value),
