@@ -1,5 +1,5 @@
 import { enumReplacer, parseSynergyConfidenceLevel } from "@/util";
-import { AlumniCluster, AlumniFundingStage, AlumniIndustryCluster, AlumniProductCluster, ContractStatus, InstrumentType, PeopleJobTitle, ProjectStatus, Role, StartupCategory, StartupIntake, StartupStage, StartupStatus, SynergyConfidenceLevel, SynergyModel, SynergyOutput, SynergyProgress } from "@prisma/client";
+import { AlumniCluster, AlumniFundingStage, AlumniIndustryCluster, AlumniProductCluster, ContractStatus, InstrumentType, PeopleJobTitle, ProjectStatus, Role, StartupCategory, StartupIntake, StartupStage, StartupStatus, StrategicBusinessPoint, SynergyConfidenceLevel, SynergyModel, SynergyOutput, SynergyProgress } from "@prisma/client";
 
 const startupCategoryValues = Object.values(StartupCategory);
 const startupStageValues = Object.values(StartupStage);
@@ -22,6 +22,8 @@ const synergyModelValues = Object.values(SynergyModel);
 const synergyOutputValues = Object.values(SynergyOutput);
 const synergyConfidenceLevelValues = Object.values(SynergyConfidenceLevel);
 const synergyProjectStatusValues = Object.values(ProjectStatus);
+
+const strategicBusinessPointValues = Object.values(StrategicBusinessPoint);
 
 const userRoleValues = Object.values(Role);
 
@@ -50,6 +52,11 @@ export type SynergySelectOption = {
   label: string;
   value: SynergyProgress | SynergyModel | SynergyOutput
   | SynergyConfidenceLevel | ProjectStatus;
+};
+
+export type StrategicSelectOption = {
+  label: string;
+  value: StrategicBusinessPoint;
 };
 
 export type UserRoleSelectOption = {
@@ -163,6 +170,13 @@ export const synergyConfidenceLevelOptions: SynergySelectOption[] = synergyConfi
 );
 
 export const synergyProjectStatusOptions: SynergySelectOption[] = synergyProjectStatusValues.map(
+  (value) => ({
+    value,
+    label: enumReplacer(value),
+  })
+);
+
+export const strategicBusinessPointOptions: StrategicSelectOption[] = strategicBusinessPointValues.map(
   (value) => ({
     value,
     label: enumReplacer(value),
