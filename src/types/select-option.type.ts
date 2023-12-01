@@ -1,5 +1,5 @@
 import { enumReplacer } from "@/util";
-import { AlumniCluster, AlumniFundingStage, AlumniIndustryCluster, AlumniProductCluster, InstrumentType, Role, StartupCategory, StartupIntake, StartupStage, StartupStatus } from "@prisma/client";
+import { AlumniCluster, AlumniFundingStage, AlumniIndustryCluster, AlumniProductCluster, InstrumentType, PeopleJobTitle, Role, StartupCategory, StartupIntake, StartupStage, StartupStatus } from "@prisma/client";
 
 const startupCategoryValues = Object.values(StartupCategory);
 const startupStageValues = Object.values(StartupStage);
@@ -11,6 +11,8 @@ const alumniProductClusterValues = Object.values(AlumniProductCluster);
 const alumniIndustryClusterValues = Object.values(AlumniIndustryCluster);
 const alumniFundingStageValues = Object.values(AlumniFundingStage);
 
+const peopleJobTitleValues = Object.values(PeopleJobTitle);
+
 const instrumentTypeValues = Object.values(InstrumentType);
 
 const userRoleValues = Object.values(Role);
@@ -19,6 +21,11 @@ export type StartupSelectOption = {
   label: string;
   value: StartupCategory | StartupStage | StartupStatus | StartupIntake
   | AlumniCluster | AlumniFundingStage | AlumniProductCluster | AlumniIndustryCluster
+};
+
+export type PeopleSelectOption = {
+  label: string;
+  value: PeopleJobTitle;
 };
 
 export type InvestorSelectOption = {
@@ -59,28 +66,35 @@ export const startupIntakeOptions: StartupSelectOption[] = startupIntakeValues.m
   })
 );
 
-export const AlumniClusterOptions: StartupSelectOption[] = alumniClusterValues.map(
+export const alumniClusterOptions: StartupSelectOption[] = alumniClusterValues.map(
   (value) => ({
     value,
     label: enumReplacer(value),
   })
 );
 
-export const AlumniProductClusterOptions: StartupSelectOption[] = alumniProductClusterValues.map(
+export const alumniProductClusterOptions: StartupSelectOption[] = alumniProductClusterValues.map(
   (value) => ({
     value,
     label: enumReplacer(value),
   })
 );
 
-export const AlumniIndustryClusterOptions: StartupSelectOption[] = alumniIndustryClusterValues.map(
+export const alumniIndustryClusterOptions: StartupSelectOption[] = alumniIndustryClusterValues.map(
   (value) => ({
     value,
     label: enumReplacer(value),
   })
 );
 
-export const AlumniFundingStageOptions: StartupSelectOption[] = alumniFundingStageValues.map(
+export const alumniFundingStageOptions: StartupSelectOption[] = alumniFundingStageValues.map(
+  (value) => ({
+    value,
+    label: enumReplacer(value),
+  })
+);
+
+export const peopleJobTitleOptions: PeopleSelectOption[] = peopleJobTitleValues.map(
   (value) => ({
     value,
     label: enumReplacer(value),
