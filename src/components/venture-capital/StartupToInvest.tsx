@@ -111,84 +111,79 @@ const StartupToInvest: FC<StartupToInvestProps> = ({ baseUrl, investorId }) => {
         <Separator className='mt-4 lg:mt-0' />
       </div>
       {data && data.length > 0 ? (
-        <div>
-          <Card>
-            <div className='overflow-auto max-h-[500px]'>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className='p-5'>Startup</TableHead>
-                    <TableHead>Progress</TableHead>
-                    <TableHead>Detail</TableHead>
-                    <TableHead>Date Updated</TableHead>
-                    {role === 'ADMIN' && <TableHead>Action</TableHead>}
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {data.map((item) => (
-                    <TableRow key={item.id}>
-                      <TableCell className='p-5'>{item.startup.name}</TableCell>
-                      <TableCell>{enumReplacer(item.progress)}</TableCell>
-                      <TableCell className='max-w-md'>{item.detail}</TableCell>
+        <Card>
+          <div className='overflow-auto max-h-[500px]'>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className='p-5'>Startup</TableHead>
+                  <TableHead>Progress</TableHead>
+                  <TableHead>Detail</TableHead>
+                  <TableHead>Date Updated</TableHead>
+                  {role === 'ADMIN' && <TableHead>Action</TableHead>}
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {data.map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell className='p-5'>{item.startup.name}</TableCell>
+                    <TableCell>{enumReplacer(item.progress)}</TableCell>
+                    <TableCell className='max-w-md'>{item.detail}</TableCell>
+                    <TableCell>
+                      {dayjs(item.updated_at).format('D MMMM YYYY')}
+                    </TableCell>
+                    {role === 'ADMIN' && (
                       <TableCell>
-                        {dayjs(item.updated_at).format('D MMMM YYYY')}
-                      </TableCell>
-                      {role === 'ADMIN' && (
-                        <TableCell>
-                          <div className='flex flex-row gap-2'>
-                            <TooltipProvider>
-                              <Tooltip>
-                                <TooltipTrigger>
-                                  <Link
-                                    href={`${baseUrl}/startup-to-invest/${item.id}/edit`}
-                                  >
-                                    <Edit className='h-6 w-6' />
-                                  </Link>
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                  <p>Edit data</p>
-                                </TooltipContent>
-                              </Tooltip>
-                            </TooltipProvider>
+                        <div className='flex flex-row gap-2'>
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger>
+                                <Link
+                                  href={`${baseUrl}/startup-to-invest/${item.id}/edit`}
+                                >
+                                  <Edit className='h-6 w-6' />
+                                </Link>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>Edit data</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
 
-                            <AlertDialog>
-                              <AlertDialogTrigger>
-                                <Trash2 className='h-6 w-6' />
-                              </AlertDialogTrigger>
-                              <AlertDialogContent>
-                                <AlertDialogHeader>
-                                  <AlertDialogTitle>
-                                    Are you absolutely sure?
-                                  </AlertDialogTitle>
-                                  <AlertDialogDescription>
-                                    Please be aware that this action is
-                                    irreversible. Once completed, the data will
-                                    be permanently erased and cannot be
-                                    retrieved.
-                                  </AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                  <AlertDialogAction
-                                    onClick={() =>
-                                      deleteStartupToInvest(item.id)
-                                    }
-                                  >
-                                    Continue
-                                  </AlertDialogAction>
-                                </AlertDialogFooter>
-                              </AlertDialogContent>
-                            </AlertDialog>
-                          </div>
-                        </TableCell>
-                      )}
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </Card>
-        </div>
+                          <AlertDialog>
+                            <AlertDialogTrigger>
+                              <Trash2 className='h-6 w-6' />
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>
+                                  Are you absolutely sure?
+                                </AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  Please be aware that this action is
+                                  irreversible. Once completed, the data will be
+                                  permanently erased and cannot be retrieved.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                  onClick={() => deleteStartupToInvest(item.id)}
+                                >
+                                  Continue
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        </div>
+                      </TableCell>
+                    )}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </Card>
       ) : (
         <p className='text-sm text-muted-foreground py-2'>
           No startup to invest data found.
