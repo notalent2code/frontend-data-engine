@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { StartupToInvest } from '@prisma/client';
 import useAxiosPrivate from '@/hooks/use-axios-private';
 import StartupToInvestForm from '@/components/venture-capital/StartupToInvestForm';
+import { Loader } from '@/components/ui/Loader';
 
 const Page = () => {
   const axios = useAxiosPrivate();
@@ -15,12 +16,16 @@ const Page = () => {
     return data as StartupToInvest;
   };
 
-  const { data } = useQuery({
+  const { data, isFetching } = useQuery({
     queryKey: ['startup-to-invest', startupToInvestId],
     queryFn: fetchStartupToInvest,
   });
 
-  return <StartupToInvestForm variant='edit' initialData={data} />;
+  return isFetching ? (
+    <Loader />
+  ) : (
+    <StartupToInvestForm variant='edit' initialData={data} />
+  );
 };
 
 export default Page;
