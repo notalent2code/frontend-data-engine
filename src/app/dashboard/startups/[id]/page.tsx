@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import toast from 'react-hot-toast';
 import { StartupDetail } from '@/types';
-import GoogleMaps from '@/components/Map';
+import Map from '@/components/Map';
 import { Badge } from '@/components/ui/Badge';
 import { Loader } from '@/components/ui/Loader';
 import { useQuery } from '@tanstack/react-query';
@@ -29,12 +29,13 @@ import ProblemSolutionFit from '@/components/startup/ProblemSolutionFit';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
 import { enumReplacer } from '@/util';
+import { useEffect } from 'react';
 
 const Page = () => {
   const axios = useAxiosPrivate();
   const router = useRouter();
-  const role = useAuthStore((state) => state.session?.role);
   const { id: startupId } = useParams();
+  const role = useAuthStore((state) => state.session?.role);
 
   const baseUrl = `/dashboard/startups/${startupId}`;
   const onepagerUrl = `/onepager/${startupId}`;
@@ -198,52 +199,46 @@ const Page = () => {
                 <p className='pt-4 text-lg font-bold'>Full Address</p>
                 <p className='py-2 pb-4'>{startup.Location?.address}</p>
                 {/* Google Maps Card */}
-                <Card>
-                  {startup.Location?.latitude && startup.Location?.longitude ? (
-                    <GoogleMaps
-                      latitude={startup.Location?.latitude}
-                      longitude={startup.Location?.longitude}
-                    />
-                  ) : (
-                    <p className='p-4'>No location data</p>
-                  )}
-                </Card>
+                {startup.Location?.latitude && startup.Location?.longitude ? (
+                  <>
+                    <Card>
+                      <Map
+                        latitude={startup.Location?.latitude}
+                        longitude={startup.Location?.longitude}
+                      />
+                    </Card>
+                    <p className='text-xs text-muted-foreground pt-2'>
+                      If Google Maps marker not showing, try to reload the page.
+                    </p>
+                  </>
+                ) : (
+                  <p className='p-4'>No location data</p>
+                )}
               </CardContent>
             </Card>
 
             <div className='flex flex-col gap-4 w-4/5'>
-              <Performance
-                data={startup.Performance}
-                baseUrl={baseUrl}
-              />
+              <Performance data={startup.Performance} baseUrl={baseUrl} />
 
-              <Alumni
-                data={startup.Alumni}
-                baseUrl={baseUrl}
-              />
+              <Alumni data={startup.Alumni} baseUrl={baseUrl} />
             </div>
           </div>
         </TabsContent>
 
         <TabsContent value='people' className='pt-6'>
-          <People
-            data={startup.People}
-            baseUrl={baseUrl}
-          />
+          <People data={startup.People} baseUrl={baseUrl} />
         </TabsContent>
 
         <TabsContent value='financial' className='pt-6'>
           <div className='flex flex-col gap-2'>
             <Contract
               data={startup.Contract}
-              addUrl={baseUrl + '/contract/add'}
-              editUrl={baseUrl + '/contract/edit'}
+              baseUrl={baseUrl}
             />
 
             <FinancialReport
               data={startup.FinancialReport}
-              addUrl={baseUrl + '/financial/add'}
-              editUrl={baseUrl + '/financial/edit'}
+              baseUrl={baseUrl}
             />
           </div>
         </TabsContent>
