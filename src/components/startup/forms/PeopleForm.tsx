@@ -3,7 +3,6 @@
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -31,7 +30,6 @@ import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Heading } from '@/components/ui/Heading';
 import { People } from '@prisma/client';
-import { Textarea } from '@/components/ui/TextArea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Separator } from '@/components/ui/Separator';
 import useAxiosPrivate from '@/hooks/use-axios-private';
