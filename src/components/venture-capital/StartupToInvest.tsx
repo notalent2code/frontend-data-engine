@@ -38,7 +38,7 @@ import { useAuthStore } from '@/store/auth-store';
 import { Separator } from '@/components/ui/Separator';
 import { buttonVariants } from '@/components/ui/Button';
 import useAxiosPrivate from '@/hooks/use-axios-private';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 interface StartupToInvestProps {
   investorId: string;
@@ -60,7 +60,6 @@ type ExtendedStartupToInvest = StartupToInvest & {
 
 const StartupToInvest: FC<StartupToInvestProps> = ({ baseUrl, investorId }) => {
   const axios = useAxiosPrivate();
-  const queryClient = useQueryClient();
   const role = useAuthStore((state) => state.session?.role);
 
   const fetchStartupToInvest = async () => {
@@ -79,9 +78,9 @@ const StartupToInvest: FC<StartupToInvestProps> = ({ baseUrl, investorId }) => {
     try {
       await axios.delete(`startup-to-invest/${id}`);
       toast.success('Successfully deleted startup to invest!');
-      queryClient.invalidateQueries({
-        queryKey: ['startup-to-invest', investorId],
-      });
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
     } catch (error: any) {
       toast.error('Failed to delete startup to invest!');
     }
