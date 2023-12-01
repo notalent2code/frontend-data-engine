@@ -1,5 +1,5 @@
 import { enumReplacer } from "@/util";
-import { AlumniCluster, AlumniFundingStage, AlumniIndustryCluster, AlumniProductCluster, InstrumentType, PeopleJobTitle, Role, StartupCategory, StartupIntake, StartupStage, StartupStatus } from "@prisma/client";
+import { AlumniCluster, AlumniFundingStage, AlumniIndustryCluster, AlumniProductCluster, ContractStatus, InstrumentType, PeopleJobTitle, Role, StartupCategory, StartupIntake, StartupStage, StartupStatus } from "@prisma/client";
 
 const startupCategoryValues = Object.values(StartupCategory);
 const startupStageValues = Object.values(StartupStage);
@@ -12,6 +12,8 @@ const alumniIndustryClusterValues = Object.values(AlumniIndustryCluster);
 const alumniFundingStageValues = Object.values(AlumniFundingStage);
 
 const peopleJobTitleValues = Object.values(PeopleJobTitle);
+
+const contractStatusValues = Object.values(ContractStatus);
 
 const instrumentTypeValues = Object.values(InstrumentType);
 
@@ -26,6 +28,11 @@ export type StartupSelectOption = {
 export type PeopleSelectOption = {
   label: string;
   value: PeopleJobTitle;
+};
+
+export type ContractSelectOption = {
+  label: string;
+  value: ContractStatus;
 };
 
 export type InvestorSelectOption = {
@@ -95,6 +102,13 @@ export const alumniFundingStageOptions: StartupSelectOption[] = alumniFundingSta
 );
 
 export const peopleJobTitleOptions: PeopleSelectOption[] = peopleJobTitleValues.map(
+  (value) => ({
+    value,
+    label: enumReplacer(value),
+  })
+);
+
+export const contractStatusOptions: ContractSelectOption[] = contractStatusValues.map(
   (value) => ({
     value,
     label: enumReplacer(value),
