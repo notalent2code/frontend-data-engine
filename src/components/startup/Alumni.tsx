@@ -13,6 +13,7 @@ import { Check, X } from 'lucide-react';
 import DeleteAlertDialog from '../DeleteAlertDialog';
 import useAxiosPrivate from '@/hooks/use-axios-private';
 import toast from 'react-hot-toast';
+import { useAuthStore } from '@/store/auth-store';
 
 interface AlumniProps {
   data: Alumni | null;
@@ -21,6 +22,7 @@ interface AlumniProps {
 
 const Alumni: FC<AlumniProps> = ({ data, baseUrl }) => {
   const axios = useAxiosPrivate();
+  const role = useAuthStore((state) => state.session?.role);
 
   const deleteAlumni = async () => {
     try {
@@ -40,31 +42,35 @@ const Alumni: FC<AlumniProps> = ({ data, baseUrl }) => {
         <CardTitle>
           <h2 className='text-xl font-bold pt-2'>Alumni</h2>
         </CardTitle>
-        {data ? (
+        {role === 'ADMIN' && (
           <div className='flex flex-row gap-2'>
-            <Link
-              href={`${baseUrl}/alumni/${data.id}/edit`}
-              className={cn(
-                buttonVariants({ size: 'sm' }),
-                'bg-tertiary hover:bg-tertiary hover:opacity-90'
-              )}
-            >
-              Edit
-            </Link>
-            <div className={buttonVariants({ size: 'sm' })}>
-              <DeleteAlertDialog deleteFn={deleteAlumni} />
-            </div>
-          </div>
-        ) : (
-          <Link
-            href={baseUrl + '/alumni/create'}
-            className={cn(
-              buttonVariants(),
-              'bg-tertiary hover:bg-tertiary hover:opacity-90'
+            {data ? (
+              <>
+                <Link
+                  href={`${baseUrl}/alumni/${data.id}/edit`}
+                  className={cn(
+                    buttonVariants({ size: 'sm' }),
+                    'bg-tertiary hover:bg-tertiary hover:opacity-90'
+                  )}
+                >
+                  Edit
+                </Link>
+                <div className={buttonVariants({ size: 'sm' })}>
+                  <DeleteAlertDialog deleteFn={deleteAlumni} />
+                </div>
+              </>
+            ) : (
+              <Link
+                href={`${baseUrl}/alumni/create`}
+                className={cn(
+                  buttonVariants(),
+                  'bg-tertiary hover:bg-tertiary hover:opacity-90'
+                )}
+              >
+                Add new
+              </Link>
             )}
-          >
-            Add new
-          </Link>
+          </div>
         )}
       </CardHeader>
       <Separator />
