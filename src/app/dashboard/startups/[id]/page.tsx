@@ -29,7 +29,6 @@ import ProblemSolutionFit from '@/components/startup/ProblemSolutionFit';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
 import { enumReplacer } from '@/util';
-import { useEffect } from 'react';
 
 const Page = () => {
   const axios = useAxiosPrivate();
@@ -231,40 +230,24 @@ const Page = () => {
 
         <TabsContent value='financial' className='pt-6'>
           <div className='flex flex-col gap-2'>
-            <Contract
-              data={startup.Contract}
-              baseUrl={baseUrl}
-            />
+            <Contract data={startup.Contract} baseUrl={baseUrl} />
 
-            <FinancialReport
-              data={startup.FinancialReport}
-              baseUrl={baseUrl}
-            />
+            <FinancialReport data={startup.FinancialReport} baseUrl={baseUrl} />
           </div>
         </TabsContent>
-        {/* 
+
         <TabsContent value='partnership' className='pt-6'>
-          <Synergy
-            data={startup.Synergy}
-            addUrl={addUrl}
-            editUrl={editUrl}
-            deleteUrl={deleteUrl}
-          />
+          <Synergy data={startup.Synergy} baseUrl={baseUrl} />
         </TabsContent>
 
         <TabsContent value='strategy' className='flex flex-col gap-2 pt-6'>
-          <Strategic
-            data={startup.Strategic}
-            addUrl={addUrl}
-            editUrl={editUrl}
-          />
+          <Strategic data={startup.Strategic} baseUrl={baseUrl} />
 
-          <Service data={startup.Service} addUrl={addUrl} editUrl={editUrl} />
+          <Service data={startup.Service} baseUrl={baseUrl} />
 
           <ProblemSolutionFit
             data={startup.ProblemSolutionFit}
-            addUrl={addUrl}
-            editUrl={editUrl}
+            baseUrl={baseUrl}
           />
         </TabsContent>
 
@@ -274,16 +257,14 @@ const Page = () => {
         >
           <GrowthStrategy
             data={startup.GrowthStrategy}
-            addUrl={addUrl}
-            editUrl={editUrl}
+            baseUrl={baseUrl}
           />
 
           <RevenueModel
             data={startup.RevenueModel}
-            addUrl={addUrl}
-            editUrl={editUrl}
+            baseUrl={baseUrl}
           />
-        </TabsContent> */}
+        </TabsContent>
       </Tabs>
     </div>
   ) : null;
