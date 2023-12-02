@@ -77,46 +77,50 @@ const GrowthStrategy: FC<GrowthStrategyProps> = ({ data, baseUrl }) => {
         <div className='flex flex-row gap-4'>
           {data.map((item) => (
             <Card key={item.id} className='flex flex-col gap-2 p-4'>
-              <div className='flex flex-row gap-2'>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <Link href={`${baseUrl}/growth-strategy/${item.id}/edit`}>
-                        <Edit className='h-4 w-4' />
-                      </Link>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Edit data</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+              {role === 'ADMIN' && (
+                <div className='flex flex-row gap-2'>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <Link
+                          href={`${baseUrl}/growth-strategy/${item.id}/edit`}
+                        >
+                          <Edit className='h-4 w-4' />
+                        </Link>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Edit data</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
 
-                <AlertDialog>
-                  <AlertDialogTrigger>
-                    <Trash2 className='h-4 w-4' />
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>
-                        Are you absolutely sure?
-                      </AlertDialogTitle>
-                      <AlertDialogDescription>
-                        Please be aware that this action is irreversible. Once
-                        completed, the data will be permanently erased and
-                        cannot be retrieved.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction
-                        onClick={() => deleteGrowthStrategy(item.id)}
-                      >
-                        Continue
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-              </div>
+                  <AlertDialog>
+                    <AlertDialogTrigger>
+                      <Trash2 className='h-4 w-4' />
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          Are you absolutely sure?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Please be aware that this action is irreversible. Once
+                          completed, the data will be permanently erased and
+                          cannot be retrieved.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => deleteGrowthStrategy(item.id)}
+                        >
+                          Continue
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
+              )}
               <p>{item.description}</p>
             </Card>
           ))}
