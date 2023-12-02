@@ -126,9 +126,11 @@ const Page = () => {
               Onepager
             </Link>
           </div>
-          <div className={cn(buttonVariants(), 'hover:cursor-pointer')}>
-            <DeleteAlertDialog deleteFn={deleteStartup} />
-          </div>
+          {role === 'ADMIN' && (
+            <div className={cn(buttonVariants(), 'hover:cursor-pointer')}>
+              <DeleteAlertDialog deleteFn={deleteStartup} />
+            </div>
+          )}
         </div>
         <TabsContent value='summary' className='pt-6'>
           <div className='flex flex-row gap-4'>
@@ -217,7 +219,7 @@ const Page = () => {
             </Card>
 
             <div className='flex flex-col gap-4 w-4/5'>
-              <Performance data={startup.Performance} baseUrl={baseUrl} />
+              <Performance role={role} data={startup.Performance} baseUrl={baseUrl} />
 
               <Alumni data={startup.Alumni} baseUrl={baseUrl} />
             </div>
@@ -255,15 +257,9 @@ const Page = () => {
           value='revenue-growth'
           className='flex flex-col gap-2 pt-6'
         >
-          <GrowthStrategy
-            data={startup.GrowthStrategy}
-            baseUrl={baseUrl}
-          />
+          <GrowthStrategy data={startup.GrowthStrategy} baseUrl={baseUrl} />
 
-          <RevenueModel
-            data={startup.RevenueModel}
-            baseUrl={baseUrl}
-          />
+          <RevenueModel data={startup.RevenueModel} baseUrl={baseUrl} />
         </TabsContent>
       </Tabs>
     </div>
