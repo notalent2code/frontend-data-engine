@@ -48,7 +48,7 @@ const basePeopleSchema = PeopleSchema.pick({
   privy_id: z.string().optional(),
   linkedin_url: z.string().optional(),
   photo: z
-    .instanceof(File)
+    .any()
     .refine((file) => file.size <= MAX_FILE_SIZE, {
       message: `File size must be less than ${MAX_FILE_SIZE / 1024 / 1024} MB`,
     })

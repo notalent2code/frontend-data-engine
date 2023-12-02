@@ -56,7 +56,7 @@ const baseStartupSchema = StartupSchema.omit({
   id: z.coerce.number().int().positive(),
   intake_year: z.coerce.number().int().positive(),
   logo: z
-    .instanceof(File)
+    .any()
     .refine((file) => file.size <= MAX_FILE_SIZE, {
       message: `File size must be less than ${MAX_FILE_SIZE / 1024 / 1024} MB`,
     })
