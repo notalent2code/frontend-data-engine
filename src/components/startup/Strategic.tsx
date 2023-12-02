@@ -58,21 +58,19 @@ const Strategic: FC<StrategicProps> = ({ data, baseUrl }) => {
         <div className='flex flex-col pt-16 lg:pt-0 lg:flex-row items-start lg:items-center justify-between'>
           <Heading
             title='Strategic'
-            description='Startup detail information about Strategic.'
+            description='Startup detail information about strategic.'
           />
-          <div className='flex gap-4'>
-            {role === 'ADMIN' && (
-              <Link
-                href={baseUrl + '/strategic/create'}
-                className={cn(
-                  buttonVariants({ size: 'sm' }),
-                  'bg-tertiary hover:bg-tertiary hover:opacity-90'
-                )}
-              >
-                Add new
-              </Link>
-            )}
-          </div>
+          {role === 'ADMIN' && (
+            <Link
+              href={baseUrl + '/strategic/create'}
+              className={cn(
+                buttonVariants({ size: 'sm' }),
+                'bg-tertiary hover:bg-tertiary hover:opacity-90'
+              )}
+            >
+              Add new
+            </Link>
+          )}
         </div>
         <Separator className='mt-4 lg:mt-0' />
       </div>
