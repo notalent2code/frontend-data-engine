@@ -4,22 +4,24 @@ import { Separator } from '@/components/ui/Separator';
 import { buttonVariants } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import PerformanceAccordion from '@/components/startup/PerformanceAccordion';
-import { Performance } from '@prisma/client';
+import { Performance, Role } from '@prisma/client';
 import { FC } from 'react';
 
 interface PerformanceProps {
+  role: Role | undefined;
   data: Performance[];
   baseUrl: string;
 }
 
-const Performance: FC<PerformanceProps> = ({ data, baseUrl }) => {
+const Performance: FC<PerformanceProps> = ({ role, data, baseUrl }) => {
   return (
     <Card>
       <CardHeader className='flex flex-row items-center justify-between p-4'>
         <CardTitle>
           <h2 className='text-xl font-bold pt-2'>Performance</h2>
         </CardTitle>
-        <Link
+        {role === Role.ADMIN && (
+          <Link
           href={baseUrl + '/performance/create'}
           className={cn(
             buttonVariants(),
@@ -28,6 +30,7 @@ const Performance: FC<PerformanceProps> = ({ data, baseUrl }) => {
         >
           Add new
         </Link>
+        )}
       </CardHeader>
       <Separator />
       {data && data.length > 0 ? (
