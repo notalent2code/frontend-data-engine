@@ -184,7 +184,7 @@ const Page = () => {
               ))}
             </ul>
           </div>
-          <div className=''>
+          <div>
             <h1 className='text-xl font-bold pb-2'>Revenue Model</h1>
             <ul className='list-disc pl-4'>
               {startup.RevenueModel.map((item) => (
