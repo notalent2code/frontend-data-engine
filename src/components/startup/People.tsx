@@ -173,7 +173,7 @@ const People: FC<PeopleProps> = ({ data, baseUrl }) => {
                     ) : null}
                   </div>
                 </div>
-                <div className=''>
+                <div>
                   <h2 className='font-bold pb-2'>Social</h2>
                   <div className='flex flex-row gap-4 items-center justify-start'>
                     {person.privy_id ? (
