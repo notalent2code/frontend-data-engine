@@ -46,7 +46,7 @@ const basePeopleSchema = PeopleSchema.pick({
   phone_number: z.string(),
   email: z.string(),
   privy_id: z.string().optional(),
-  linkedin_url: z.string().optional(),
+  linkedin_url: z.string().url().optional(),
   photo: z
     .any()
     .refine((file) => file.size <= MAX_FILE_SIZE, {
