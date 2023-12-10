@@ -220,9 +220,6 @@ const ContractForm: FC<ContractFormProps> = ({ variant, initialData }) => {
                       />
                     </PopoverContent>
                   </Popover>
-                  <FormDescription>
-                    The date when the contract is signed.
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -264,9 +261,6 @@ const ContractForm: FC<ContractFormProps> = ({ variant, initialData }) => {
                       />
                     </PopoverContent>
                   </Popover>
-                  <FormDescription>
-                    The date when the contract is closed.
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
