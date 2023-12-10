@@ -49,12 +49,16 @@ import { getImageData } from '@/util';
 const baseStartupSchema = StartupSchema.omit({
   id: true,
   intake_year: true,
+  pitchdeck_url: true,
+  website_url: true,
   logo_url: true,
   created_at: true,
   updated_at: true,
 }).extend({
   id: z.coerce.number().int().positive(),
   intake_year: z.coerce.number().int().positive(),
+  pitchdeck_url: z.string().url().optional(),
+  website_url: z.string().url().optional(),
   logo: z
     .any()
     .refine((file) => file.size <= MAX_FILE_SIZE, {
