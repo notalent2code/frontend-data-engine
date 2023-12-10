@@ -3,6 +3,7 @@
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -151,10 +152,13 @@ const FinancialReportForm: FC<FinancialReportFormProps> = ({
               name='yearly_revenue'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Yearly Revenue</FormLabel>
+                  <FormLabel>Yearly Revenue (IDR)</FormLabel>
                   <FormControl>
                     <Input type='number' {...field} />
                   </FormControl>
+                  <FormDescription>
+                    Insert yearly revenue in IDR
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -164,10 +168,13 @@ const FinancialReportForm: FC<FinancialReportFormProps> = ({
               name='valuation'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Valuation</FormLabel>
+                  <FormLabel>Valuation (IDR)</FormLabel>
                   <FormControl>
                     <Input type='number' {...field} />
                   </FormControl>
+                  <FormDescription>
+                    Insert valuation in IDR
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
