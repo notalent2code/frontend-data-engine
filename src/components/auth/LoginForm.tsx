@@ -20,6 +20,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/Form';
+import { AxiosError } from 'axios';
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -56,7 +57,11 @@ const LoginForm = () => {
         router.push('/dashboard/startups');
       }
     } catch (error: any) {
-      toast.error(error.response.data.message);
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message);
+      } else {
+        toast.error('Something went wrong!');
+      }
     } finally {
       setIsLoading(false);
     }
