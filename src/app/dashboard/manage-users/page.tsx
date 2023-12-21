@@ -91,12 +91,15 @@ const Page = () => {
     });
   }, [page, role, debouncedSearch, queryClient]);
 
-  const handleDeactivateInvestor = async (id: string) => {
+  const handleToggleInvestorStatus = async (id: string) => {
     try {
-      await axios.delete(`users/${id}`);
-      toast.success('User deactivated successfully');
+      await axios.patch(`users/status/${id}`);
+      toast.success('User status changed successfully');
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
     } catch (error: any) {
-      toast.error('Failed to deactivate user');
+      toast.error('Failed to change user status');
     }
   };
 
@@ -168,7 +171,7 @@ const Page = () => {
                     )}
                   </TableCell>
                   <TableCell className='px-4 py-1'>
-                    {item.role === 'INVESTOR' && item.status === 'ACTIVE' && (
+                    {item.role === 'INVESTOR' && item.status && (
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button
@@ -182,10 +185,12 @@ const Page = () => {
                         <DropdownMenuContent align='end' className='w-[160px]'>
                           <DropdownMenuItem
                             className='cursor-pointer'
-                            onClick={() => handleDeactivateInvestor(item.id)}
+                            onClick={() => handleToggleInvestorStatus(item.id)}
                           >
                             <Edit className='h-4 w-4 mr-2' />
-                            Deactivate
+                            {item.status === 'ACTIVE'
+                              ? 'Deactivate'
+                              : 'Activate'}
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
@@ -219,9 +224,7 @@ const Page = () => {
       </div>
     </div>
   ) : (
-    <p className='text-sm text-muted-foreground py-2'>
-      No user data found.
-    </p>
+    <p className='text-sm text-muted-foreground py-2'>No user data found.</p>
   );
 };
 
