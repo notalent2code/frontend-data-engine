@@ -7,7 +7,7 @@ const Login = () => {
     <div className='container mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[400px]'>
       <div className='flex flex-col'>
         <Heading
-          title='Log into your account'
+          title='Log in to your account'
           description='Enter your email and password to continue'
         />
         <p className='text-sm text-muted-foreground'>
