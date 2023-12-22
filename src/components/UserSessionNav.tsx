@@ -75,12 +75,14 @@ export function UserSessionNav() {
           </DropdownMenuItem>
         </Link>
 
-        <Link href='/dashboard'>
-          <DropdownMenuItem className='cursor-pointer'>
-            <LayoutDashboard className='mr-2 h-4 w-4' />
-            Dashboard
-          </DropdownMenuItem>
-        </Link>
+        {user.role === 'ADMIN' && (
+          <Link href='/dashboard'>
+            <DropdownMenuItem className='cursor-pointer'>
+              <LayoutDashboard className='mr-2 h-4 w-4' />
+              Dashboard
+            </DropdownMenuItem>
+          </Link>
+        )}
 
         <Link href='/dashboard/startups'>
           <DropdownMenuItem className='cursor-pointer'>
