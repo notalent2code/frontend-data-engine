@@ -26,7 +26,7 @@ const resetPasswordSchema = z
   })
   .refine((data) => data.new_password === data.confirm_new_password, {
     message: 'Password not match',
-    path: ['confirm_password'],
+    path: ['confirm_new_password'],
   });
 
 const ResetPasswordForm = () => {
