@@ -2,9 +2,11 @@ import { useEffect } from 'react';
 import axios from '@/lib/axios';
 import useRefreshtoken from '@/hooks/use-refresh-token';
 import { useAuthStore } from '@/store/auth-store';
+import { usePathname } from 'next/navigation';
 
 const useAxiosPrivate = () => {
   const authStore = useAuthStore();
+  const pathname = usePathname();
   const { refresh } = useRefreshtoken();
 
   useEffect(() => {
@@ -25,7 +27,7 @@ const useAxiosPrivate = () => {
       (response) => response,
       async (error) => {
         const originalRequest = error.config;
-        if (error.response.status === 401 && !originalRequest.sent) {
+        if (error.response.status === 401 && !originalRequest.sent && pathname !== '/auth/login') {
           originalRequest.sent = true;
           const { access_token } = await refresh();
           // eslint-disable-next-line no-console
@@ -42,7 +44,7 @@ const useAxiosPrivate = () => {
       axios.interceptors.request.eject(requestIntercept);
       axios.interceptors.response.eject(responseIntercept);
     };
-  }, [authStore, refresh]);
+  }, [authStore, refresh, pathname]);
 
   return axios;
 };
