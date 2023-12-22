@@ -56,11 +56,7 @@ const RegisterForm = () => {
       router.push('/auth/login');
     } catch (error: any) {
       if (error instanceof AxiosError) {
-        if (error.response?.status === 409) {
-          toast.error('Account with this email already exists!');
-        } else {
-          toast.error(error.response?.data.message);
-        }
+        toast.error(error.response?.data.message);
       } else {
         toast.error('Something went wrong!');
       }
