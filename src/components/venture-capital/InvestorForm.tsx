@@ -528,6 +528,7 @@ const InvestorForm: FC<InvestorFormProps> = ({ variant, initialData }) => {
                   <FormControl>
                     <Input
                       type='number'
+                      min={0}
                       {...field}
                       defaultValue={Number(initialData?.ticket_size_min) || ''}
                     />
@@ -546,6 +547,7 @@ const InvestorForm: FC<InvestorFormProps> = ({ variant, initialData }) => {
                   <FormControl>
                     <Input
                       type='number'
+                      min={0}
                       {...field}
                       defaultValue={
                         initialData?.ticket_size_max.toString() || ''
