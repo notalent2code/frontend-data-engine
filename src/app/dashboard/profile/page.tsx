@@ -75,9 +75,7 @@ const Page = () => {
       }
     } catch (error: any) {
       if (error instanceof AxiosError) {
-        if (error.response?.status === 400) {
-          toast.error(error.response.data.message);
-        }
+        toast.error(error.response?.data.message);
       } else {
         toast.error('Failed to update user profile');
       }
