@@ -35,7 +35,7 @@ const Page = () => {
 
   const fetchOnepager = async () => {
     try {
-      const { data } = await axios.get(`startups/${startupId}`);
+      const { data } = await axios.get(`startups/onepager/${startupId}`);
       return data as StartupDetail;
     } catch (error: any) {
       toast.error('Something went wrong. Please try again later.');
