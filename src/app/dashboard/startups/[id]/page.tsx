@@ -109,7 +109,7 @@ const Page = () => {
               <TabsTrigger value='people'>People</TabsTrigger>
               {/* Contract & FinancialReport */}
               <TabsTrigger value='financial'>Financial</TabsTrigger>
-              {/* StartupToInvest & Synergy */}
+              {/* Synergy */}
               <TabsTrigger value='partnership'>Partnership</TabsTrigger>
               {/* Strategic & Service & ProblemSolutionFit */}
               <TabsTrigger value='strategy'>Strategy</TabsTrigger>

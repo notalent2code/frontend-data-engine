@@ -27,7 +27,7 @@ const useAxiosPrivate = () => {
       (response) => response,
       async (error) => {
         const originalRequest = error.config;
-        if (error.response.status === 401 && !originalRequest.sent && pathname !== '/auth/login') {
+        if (error.response.status === 401 && !originalRequest.sent && !pathname.includes('/auth')) {
           originalRequest.sent = true;
           const { access_token } = await refresh();
           // eslint-disable-next-line no-console

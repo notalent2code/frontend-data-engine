@@ -31,7 +31,7 @@ export const adminLinks: NavigationLink[] = [
     icon: Landmark,
   },
   {
-    name: 'Manage Users',
+    name: 'User Management',
     path: '/dashboard/manage-users',
     icon: Users,
   },
