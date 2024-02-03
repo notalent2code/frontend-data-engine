@@ -108,14 +108,14 @@ const Contract: FC<ContractProps> = ({ data, baseUrl }) => {
         <Separator className='mt-4 lg:mt-0' />
       </div>
       {data ? (
-        <Card className='my-4'>
+        <Card className='my-4 max-w-[360px] md:max-w-6xl'>
           <CardHeader>
             <Card className='py-6 px-4 w-fit'>
-              <CardTitle>PKS Number: {data.pks_number}</CardTitle>
+              <CardTitle>PKS Number: <br /> {data.pks_number}</CardTitle>
             </Card>
           </CardHeader>
           <CardContent className='flex flex-col gap-2'>
-            <div className='flex flex-row items-start justify-start gap-4'>
+            <div className='flex flex-col lg:flex-row items-start justify-start gap-4'>
               <Card className='flex flex-row items-center justify-start text-sm gap-2 p-4'>
                 <span className='font-bold'>Signed PKS Date:</span>
                 <CalendarDays className='w-4 h-4' />
@@ -133,7 +133,7 @@ const Contract: FC<ContractProps> = ({ data, baseUrl }) => {
               </Card>
             </div>
             <h1 className='text-lg font-bold'>Convertible Note</h1>
-            <div className='flex flex-row items-start justify-start gap-4'>
+            <div className='flex flex-col lg:flex-row items-start justify-start gap-4'>
               <Card className='flex flex-row items-center justify-start text-sm gap-2 p-4'>
                 <span className='font-bold'>CN Percentage:</span>
                 <BadgePercent className='w-4 h-4' />

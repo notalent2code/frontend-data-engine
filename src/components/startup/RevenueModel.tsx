@@ -54,7 +54,7 @@ const RevenueModel: FC<RevenueModelProps> = ({ data, baseUrl }) => {
   return (
     <div className='flex flex-col gap-2'>
       <div className='py-4'>
-        <div className='flex flex-col pt-16 lg:pt-0 lg:flex-row items-start lg:items-center justify-between'>
+        <div className='flex flex-col pt-8 lg:pt-0 lg:flex-row items-start lg:items-center justify-between'>
           <Heading
             title='Revenue Model'
             description='Startup detail information about revenue model.'
@@ -74,7 +74,7 @@ const RevenueModel: FC<RevenueModelProps> = ({ data, baseUrl }) => {
         <Separator className='mt-4 lg:mt-0' />
       </div>
       {data && data.length > 0 ? (
-        <div className='flex flex-row gap-4'>
+        <div className='flex flex-col lg:flex-row gap-4'>
           {data.map((item) => (
             <Card key={item.id} className='flex flex-col gap-2 p-4'>
               {role === 'ADMIN' && (

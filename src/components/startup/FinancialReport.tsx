@@ -127,7 +127,7 @@ const FinancialReport: FC<FinancialReportProps> = ({ data, baseUrl }) => {
       {data && data.length > 0 ? (
         <div className='flex flex-col gap-4 pt-4'>
           <div className='flex flex-col lg:flex-row gap-4'>
-            <Card className='w-full'>
+            <Card className='max-w-[360px] md:max-w-6xl'>
               <Bar
                 className='p-4'
                 data={{
@@ -149,7 +149,7 @@ const FinancialReport: FC<FinancialReportProps> = ({ data, baseUrl }) => {
                 }}
               />
             </Card>
-            <Card className='w-full'>
+            <Card className='max-w-[360px] md:max-w-6xl'>
               <Bar
                 className='p-4'
                 data={{
@@ -173,7 +173,7 @@ const FinancialReport: FC<FinancialReportProps> = ({ data, baseUrl }) => {
             </Card>
           </div>
           <Card>
-            <div className='overflow-auto max-h-[500px]'>
+            <div className='overflow-auto max-h-[500px] max-w-[360px] md:max-w-6xl'>
               <Table>
                 <TableHeader>
                   <TableRow>

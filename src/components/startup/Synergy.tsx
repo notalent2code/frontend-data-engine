@@ -64,7 +64,7 @@ const Synergy: FC<SynergyProps> = ({ data, baseUrl }) => {
   return (
     <div className='flex flex-col gap-2'>
       <div className='pb-4'>
-        <div className='flex flex-col pt-16 lg:pt-0 lg:flex-row items-start lg:items-center justify-between'>
+        <div className='flex flex-col lg:pt-0 lg:flex-row items-start lg:items-center justify-between'>
           <Heading
             title='Startup Partnership'
             description='Startup detail information about partnership with Telkom Indonesia.'
@@ -86,7 +86,7 @@ const Synergy: FC<SynergyProps> = ({ data, baseUrl }) => {
       {data && data.length > 0 ? (
         <div className='w-fit'>
           <Card>
-            <div className='overflow-auto max-h-[500px] max-w-6xl'>
+            <div className='overflow-auto max-h-[500px] max-w-[360px] md:max-w-6xl'>
               <Table>
                 <TableHeader>
                   <TableRow>

@@ -93,7 +93,7 @@ const StartupToInvest: FC<StartupToInvestProps> = ({ baseUrl, investorId }) => {
   ) : (
     <div className='pb-16'>
       <div className='py-6'>
-        <div className='flex flex-col pt-16 lg:pt-0 lg:flex-row items-start lg:items-center justify-between'>
+        <div className='flex flex-col lg:flex-row items-start lg:items-center justify-between'>
           <Heading
             title='Startup to Invest'
             description='Detail information about investment between VC and Startup.'

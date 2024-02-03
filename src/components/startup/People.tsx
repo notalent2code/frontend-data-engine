@@ -102,7 +102,7 @@ const People: FC<PeopleProps> = ({ data, baseUrl }) => {
                   </div>
                 </div>
                 {role === 'ADMIN' && (
-                  <div className='flex flex-row gap-2'>
+                  <div className='flex flex-row gap-2 pt-4 lg:pt-0'>
                     <Link
                       href={`${baseUrl}/people/${person.id}/edit`}
                       className={cn(

@@ -6,7 +6,7 @@ interface SearchProps extends React.InputHTMLAttributes<HTMLInputElement> {}
 
 const Search: FC<SearchProps> = ({ ...props }) => {
   return (
-    <div className='relative flex flex-row items-center w-[200px] md:w-[300px] my-6'>
+    <div className='relative flex flex-row items-center w-[200px] md:w-[300px]'>
       <Input
         {...props}
         name='search'

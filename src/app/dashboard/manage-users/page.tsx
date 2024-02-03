@@ -110,7 +110,7 @@ const Page = () => {
   ) : result ? (
     <div>
       <div className='flex flex-col md:flex-row gap-4 items-center justify-start md:justify-between pb-4 md:pb-2'>
-        <div className='flex flex-col md:flex-row md:gap-4 w-fit items-center'>
+        <div className='flex flex-col md:flex-row gap-2 md:gap-4 w-fit items-center'>
           <Search autoFocus value={search} onChange={handleSearchChange} />
           <SelectDropdown
             name={role || 'Role'}
@@ -133,8 +133,8 @@ const Page = () => {
         </Link>
       </div>
 
-      <Card>
-        <div className='overflow-auto max-h-[500px]'>
+      <Card className='w-fit'>
+        <div className='overflow-auto max-h-[500px] max-w-[340px] md:max-w-6xl'>
           <Table>
             <TableHeader>
               <TableRow>

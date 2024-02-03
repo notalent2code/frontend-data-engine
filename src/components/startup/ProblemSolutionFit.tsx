@@ -54,7 +54,7 @@ const ProblemSolutionFit: FC<ProblemSolutionFitProps> = ({ data, baseUrl }) => {
   return (
     <div className='flex flex-col gap-2'>
       <div className='py-4'>
-        <div className='flex flex-col pt-16 lg:pt-0 lg:flex-row items-start lg:items-center justify-between'>
+        <div className='flex flex-col pt-4 lg:pt-0 lg:flex-row items-start lg:items-center justify-between'>
           <Heading
             title='Problem Solution Fit'
             description="Startup detail information about service's problem solution fit."
@@ -74,7 +74,7 @@ const ProblemSolutionFit: FC<ProblemSolutionFitProps> = ({ data, baseUrl }) => {
         <Separator className='mt-4 lg:mt-0' />
       </div>
       {data && data.length > 0 ? (
-        <div className='flex flex-row gap-4'>
+        <div className='flex flex-col lg:flex-row gap-4'>
           {data.map((item) => (
             <div
               key={item.id}

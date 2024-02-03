@@ -55,7 +55,7 @@ const Strategic: FC<StrategicProps> = ({ data, baseUrl }) => {
   return (
     <div className='flex flex-col gap-2'>
       <div className='pb-4'>
-        <div className='flex flex-col pt-16 lg:pt-0 lg:flex-row items-start lg:items-center justify-between'>
+        <div className='flex flex-col pt-8 lg:pt-0 lg:flex-row items-start lg:items-center justify-between'>
           <Heading
             title='Strategic'
             description='Startup detail information about strategic.'

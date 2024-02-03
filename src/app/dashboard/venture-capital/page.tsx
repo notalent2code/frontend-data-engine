@@ -117,8 +117,8 @@ const Page = () => {
     <p>Error: {error.message}</p>
   ) : (
     <div>
-      <div className='flex flex-col md:flex-row gap-4 items-center justify-start md:justify-between pb-4 md:pb-2'>
-        <div className='flex flex-col md:flex-row md:gap-4 w-fit items-center'>
+      <div className='flex flex-col md:flex-row gap-4 items-center justify-start md:justify-between pb-4 md:pb-2 my-6'>
+        <div className='flex flex-col md:flex-row gap-4 w-fit items-center'>
           <Search autoFocus value={search} onChange={handleSearchChange} />
           <SelectDropdown
             name={enumReplacer(instrumentType) || 'Instrument Type'}

@@ -100,8 +100,8 @@ const Page = () => {
       </Card>
 
       <Tabs defaultValue='summary'>
-        <div className='flex flex-row justify-between'>
-          <div className='flex flex-row gap-2 items-center'>
+        <div className='flex flex-col lg:flex-row justify-between'>
+          <div className='flex flex-col lg:flex-row gap-2 justify-between items-center mb-4'>
             <TabsList className='grid grid-cols-2 md:grid-cols-3 lg:grid-flow-col items-center justify-start w-fit gap-2'>
               {/* Startup & Location & Alumni & Performance */}
               <TabsTrigger value='summary'>Summary</TabsTrigger>
@@ -116,16 +116,18 @@ const Page = () => {
               {/* GrowthStrategy & RevenueModel */}
               <TabsTrigger value='revenue-growth'>Revenue Growth</TabsTrigger>
             </TabsList>
+
             <Link
               href={onepagerUrl}
               className={cn(
                 buttonVariants({ size: 'sm' }),
-                'bg-white text-tertiary hover:bg-white hover:opacity-90'
+                'bg-white text-tertiary hover:bg-white hover:opacity-90 mt-20 md:mt-10 lg:mt-0'
               )}
             >
               Onepager
             </Link>
           </div>
+
           {role === 'ADMIN' && (
             <div className={cn(buttonVariants(), 'hover:cursor-pointer')}>
               <DeleteAlertDialog deleteFn={deleteStartup} />
@@ -133,8 +135,8 @@ const Page = () => {
           )}
         </div>
         <TabsContent value='summary' className='pt-6'>
-          <div className='flex flex-row gap-4'>
-            <Card className='w-1/2'>
+          <div className='flex flex-col lg:flex-row gap-4'>
+            <Card className='lg:w-1/2'>
               <CardHeader className='flex flex-row items-center justify-between p-4'>
                 <CardTitle>
                   <h2 className='text-xl font-bold pt-2'>
@@ -218,8 +220,12 @@ const Page = () => {
               </CardContent>
             </Card>
 
-            <div className='flex flex-col gap-4 w-4/5'>
-              <Performance role={role} data={startup.Performance} baseUrl={baseUrl} />
+            <div className='flex flex-col gap-4 lg:w-4/5'>
+              <Performance
+                role={role}
+                data={startup.Performance}
+                baseUrl={baseUrl}
+              />
 
               <Alumni data={startup.Alumni} baseUrl={baseUrl} />
             </div>
@@ -242,7 +248,7 @@ const Page = () => {
           <Synergy data={startup.Synergy} baseUrl={baseUrl} />
         </TabsContent>
 
-        <TabsContent value='strategy' className='flex flex-col gap-2 pt-6'>
+        <TabsContent value='strategy' className='flex flex-col gap-2 lg:pt-6'>
           <Strategic data={startup.Strategic} baseUrl={baseUrl} />
 
           <Service data={startup.Service} baseUrl={baseUrl} />
@@ -255,7 +261,7 @@ const Page = () => {
 
         <TabsContent
           value='revenue-growth'
-          className='flex flex-col gap-2 pt-6'
+          className='flex flex-col gap-2 lg:pt-6'
         >
           <GrowthStrategy data={startup.GrowthStrategy} baseUrl={baseUrl} />
 

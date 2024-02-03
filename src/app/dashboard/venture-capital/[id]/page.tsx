@@ -64,7 +64,7 @@ const Page = () => {
   ) : data ? (
     <div className='grid grid-flow-row gap-8'>
       <Card>
-        <CardHeader className='flex flex-row items-center justify-between px-4'>
+        <CardHeader className='grid gap-2 lg:flex lg:flex-row items-center justify-between px-4'>
           <div>
             <CardTitle className='text-2xl font-bold'>{data.name}</CardTitle>
             <div className='flex flex-row gap-2 pt-2'>
