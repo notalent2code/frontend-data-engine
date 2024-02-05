@@ -109,7 +109,7 @@ const Page = () => {
     <p>Error: {error.message}</p>
   ) : result ? (
     <div>
-      <div className='flex flex-col md:flex-row gap-4 items-center justify-start md:justify-between pb-4 md:pb-2'>
+      <div className='flex flex-col md:flex-row gap-4 items-center justify-start md:justify-between pb-4 md:pb-2 my-6'>
         <div className='flex flex-col md:flex-row gap-2 md:gap-4 w-fit items-center'>
           <Search autoFocus value={search} onChange={handleSearchChange} />
           <SelectDropdown
@@ -133,8 +133,8 @@ const Page = () => {
         </Link>
       </div>
 
-      <Card className='w-fit'>
-        <div className='overflow-auto max-h-[500px] max-w-[340px] md:max-w-6xl'>
+      <Card className='w-fit sm:w-full'>
+        <div className='overflow-auto max-h-[500px] max-w-[340px] sm:max-w-none'>
           <Table>
             <TableHeader>
               <TableRow>
