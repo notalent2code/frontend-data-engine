@@ -110,8 +110,8 @@ const StartupToInvest: FC<StartupToInvestProps> = ({ baseUrl, investorId }) => {
         <Separator className='mt-4 lg:mt-0' />
       </div>
       {data && data.length > 0 ? (
-        <Card>
-          <div className='overflow-auto max-h-[500px]'>
+        <Card className='w-fit sm:w-full'>
+          <div className='overflow-auto max-h-[500px] max-w-[340px] sm:max-w-none'>
             <Table>
               <TableHeader>
                 <TableRow>
