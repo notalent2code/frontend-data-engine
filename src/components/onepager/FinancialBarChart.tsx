@@ -52,7 +52,7 @@ const FinancialBarChart: FC<FinancialBarChartProps> = ({ data }) => {
     <>
       {data && data.length > 0 ? (
         <div className='flex flex-col lg:flex-row items-center justify-center gap-4'>
-          <Card className='flex flex-col items-center justify-center h-full'>
+          <Card className='flex flex-col items-center justify-center h-full w-full'>
             <Bar
               className='p-4'
               data={{
@@ -74,7 +74,7 @@ const FinancialBarChart: FC<FinancialBarChartProps> = ({ data }) => {
               }}
             />
           </Card>
-          <Card className='flex flex-col items-center justify-center h-full'>
+          <Card className='flex flex-col items-center justify-center h-full w-full'>
             <Bar
               className='p-4'
               data={{
