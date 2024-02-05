@@ -1,7 +1,7 @@
 import { SynergyConfidenceLevel } from "@prisma/client";
 
 export const enumReplacer = (value: string) => {
-  return value.replace(/_/g, ' ').toUpperCase();
+  return value?.replace(/_/g, ' ').toUpperCase();
 }
 
 export const parseSynergyConfidenceLevel = (value: SynergyConfidenceLevel) => {
