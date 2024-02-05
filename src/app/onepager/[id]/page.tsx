@@ -78,7 +78,8 @@ const Page = () => {
           <Badge>{startup.category}</Badge>
         </CardHeader>
       </Card>
-      <div className='flex flex-row gap-4'>
+
+      <div className='flex flex-col lg:flex-row gap-4'>
         <Card className='flex flex-col p-4 max-w-md'>
           <h1 className='text-xl font-bold pb-2'>About company</h1>
           <p className='text-sm'>{startup.description}</p>
@@ -86,7 +87,7 @@ const Page = () => {
 
         <Card className='flex flex-col p-4 w-full'>
           <h1 className='text-xl font-bold pb-2'>Our team</h1>
-          <div className='flex flex-row gap-4'>
+          <div className='flex flex-col lg:flex-row gap-4'>
             {startup.People.map((person) => (
               <Card key={person.id} className='w-fit'>
                 <CardHeader className='flex flex-row items-center justify-between'>
@@ -136,7 +137,7 @@ const Page = () => {
         </Card>
       </div>
 
-      <div className='flex flex-row gap-4'>
+      <div className='flex flex-col lg:flex-row gap-4'>
         <Card className='flex flex-col p-4'>
           <h1 className='text-xl font-bold'>Strategic and Business Point</h1>
           {startup.Strategic.map((item) => (
@@ -162,7 +163,7 @@ const Page = () => {
         <FinancialBarChart data={startup.FinancialReport} />
       </div>
 
-      <div className='flex flex-row gap-4'>
+      <div className='flex flex-col lg:flex-row gap-4'>
         <Card className='flex flex-col p-4 w-full'>
           <h1 className='text-xl font-bold pb-2'>Problem Solution Fit</h1>
           {startup.ProblemSolutionFit.map((psf) => (
