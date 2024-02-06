@@ -27,7 +27,7 @@ const Footer: FC<FooterProps> = ({ ...props }) => {
       </div>
       <div className="flex flex-col items-center text-center pt-8">
         <p className='text-sm text-white'>
-          © 2023 Indigo by Telkom Indonesia. All rights reserved.
+          © 2024 Indigo by Telkom Indonesia. All rights reserved.
         </p>
       </div>
     </section>
