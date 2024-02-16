@@ -208,6 +208,7 @@ const Page = () => {
                       <Map
                         latitude={startup.Location?.latitude}
                         longitude={startup.Location?.longitude}
+                        type='view'
                       />
                     </Card>
                     <p className='text-xs text-muted-foreground pt-2'>

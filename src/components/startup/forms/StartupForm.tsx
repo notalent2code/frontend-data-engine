@@ -191,6 +191,13 @@ const StartupForm: FC<StartupFormProps> = ({ variant, initialData }) => {
   const form = variant === 'create' ? createForm : editForm;
   const onSubmit = variant === 'create' ? onSubmitCreate : onSubmitEdit;
 
+  const handleSearchChange = useCallback(
+    (address: string) => {
+      form.setValue('location.address', address);
+    },
+    [form]
+  );
+
   const handleMapClick = useCallback(
     (latLng: { lat: number; lng: number }) => {
       setClickedLatLng(latLng);
@@ -488,25 +495,9 @@ const StartupForm: FC<StartupFormProps> = ({ variant, initialData }) => {
               />
             </div>
 
-            <FormField
-              control={form.control}
-              name='location.address'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Full Address</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      defaultValue={initialData?.Location.address}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
             <Card className='p-2'>
               <Map
+                type='search'
                 latitude={
                   clickedLatLng.lat ||
                   initialData?.Location?.latitude ||
@@ -518,6 +509,7 @@ const StartupForm: FC<StartupFormProps> = ({ variant, initialData }) => {
                   106.8157334
                 }
                 onMapClick={handleMapClick}
+                onSearchChange={handleSearchChange}
               />
             </Card>
             <FormDescription>
